@@ -2,7 +2,7 @@
   "name": "indicate",
   "version": "1.0.0",
   "description": "jQuery Scroll indicator for responsive tables and iframes.",
-  "main": "jquery.indicate.js",
+  "main": "dist/jquery.indicate.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
