@@ -1,0 +1,25 @@
+@keyframes right {
+  from   {
+    transform: translate(0);
+  }
+  to {
+    transform: translate(20px); opacity: 0;
+  }
+}
+
+@keyframes left {
+  from {
+    transform: translate(0);
+  }
+  to {
+    transform: translate(-20px); opacity: 0;
+  }
+}
+
+.hide-right {
+  animation: right 1s forwards ease-out;
+}
+
+.hide-left {
+  animation: left 1s forwards ease-out;
+}
