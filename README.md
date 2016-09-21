@@ -18,8 +18,8 @@ Through a fade effect on the sides this plugin tries to indicate the possibility
 
 ## Usage
 ```
-$('table').indicator();
-$('iframe').indicator();
+$('table').indicate();
+$('iframe').indicate();
 ```
 
 ## Features
