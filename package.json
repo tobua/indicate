@@ -1,6 +1,6 @@
 {
   "name": "indicate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "jQuery Scroll indicator for responsive tables and iframes.",
   "main": "dist/jquery.indicate.js",
   "scripts": {
@@ -28,7 +28,8 @@
     "url": "https://github.com/naminho/jquery-scroll-indicator/issues"
   },
   "homepage": "https://github.com/naminho/jquery-scroll-indicator#readme",
-  "devDependencies": {
+  "dependencies": {
+    "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^2.0.0",

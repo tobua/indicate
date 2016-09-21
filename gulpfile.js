@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     eslint = require('gulp-eslint'),
     pleeease = require('gulp-pleeease'),
     replace = require('gulp-replace'),
-    fs = require('fs');
+    fs = require('fs'),
+    del = require('del');
 
 gulp.task('sass', function () {
     return gulp.src('src/**/*.scss')
@@ -16,11 +17,6 @@ gulp.task('sass', function () {
 });
 
 gulp.task('js', function() {
-    gulp.src('temp/plugin.js')
-        .pipe(uglify())
-        .pipe(concat('jquery.indicate.min.js'))
-        .pipe(gulp.dest('dist'));
-        
     return gulp.src('src/plugin.js')
         .pipe(eslint({
             fix: true,
@@ -34,11 +30,28 @@ gulp.task('js', function() {
         .pipe(gulp.dest('temp'));
 });
 
-gulp.task('default', ['sass', 'js'], function() {
+gulp.task('combine', ['sass', 'js'], function() {
     var target = gulp.src('temp/plugin.js');
     var source = gulp.src('temp/styles.css');
 
     return target.pipe(replace('<!-- inject css here -->', fs.readFileSync('temp/styles.css', 'utf8')))
         .pipe(concat('jquery.indicate.js'))
         .pipe(gulp.dest('dist'));
+});
+
+gulp.task('minify', ['combine'], function() {
+    return gulp.src('dist/jquery.indicate.js')
+        .pipe(uglify())
+        .pipe(concat('jquery.indicate.min.js'))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('d', ['develop']);
+
+gulp.task('develop', ['default'], function() {
+    gulp.watch('src/*', ['default']);
+});
+
+gulp.task('default', ['minify'], function() {
+    return del(['temp'], {force: true});
 });

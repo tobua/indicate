@@ -23,3 +23,33 @@
 .hide-left {
   animation: left 1s forwards ease-out;
 }
+
+.plugin-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.content-wrapper {
+  -webkit-overflow-scrolling: touch !important;
+  overflow: auto !important;
+  user-select: none;
+  -ms-overflow-style: none;
+  user-select: none;
+}
+
+.fade-left, .fade-right {
+  z-index: 1;
+  width: 0px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.fade-left {
+  left: 0;
+  display: none;
+}
+
+.fade-right {
+  right: 0;
+}
