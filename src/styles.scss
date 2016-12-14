@@ -32,9 +32,11 @@
 .content-wrapper {
   -webkit-overflow-scrolling: touch !important;
   overflow: auto !important;
-  user-select: none;
   -ms-overflow-style: none;
-  user-select: none;
+}
+
+.arrow-left, .arrow-right {
+	user-select: none;
 }
 
 .fade-left, .fade-right {

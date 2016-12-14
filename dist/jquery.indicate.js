@@ -1,11 +1,14 @@
 /*
- * jQuery Scroll Indicator 2016 by Matthias Giger
- * http://naminho.ch/scroll-indicator
+ * indicate - jQuery Scroll Indicator Plugin
+ *
+ * Adds horizontal fade effect to tables and iframes.
+ * Intended to let the user know that there is more content so see than currently fits.
+ *
+ * Code: https://github.com/naminho/jquery-scroll-indicator
+ * Demo: http://naminho.ch/scroll-indicator
+ *
  * @author Matthias Giger <matthias.giger@namics.com>
  */
-
-// TODO remove for production
-// global.log = console.log.bind(console);
 
 (function (factory) {
 
@@ -15,7 +18,7 @@
         factory(jQuery, window, document);
     }
 
-} (function($, window, document, undefined) {
+} (function($, window, document) {
 
     $.fn.indicate = function(options, callback) {
 
@@ -24,7 +27,7 @@
 
         if (!$('head #scroll-indicator-animations').length) {
             // Injected styles found in src/styles.scss
-            $('<style id="scroll-indicator-animations">@-webkit-keyframes right{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(20px);transform:translate(20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@keyframes right{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(20px);transform:translate(20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@-webkit-keyframes left{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(-20px);transform:translate(-20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@keyframes left{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(-20px);transform:translate(-20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}.hide-right{-webkit-animation:right 1s forwards ease-out;animation:right 1s forwards ease-out}.hide-left{-webkit-animation:left 1s forwards ease-out;animation:left 1s forwards ease-out}.plugin-wrapper{position:relative;overflow:hidden}.content-wrapper{-webkit-overflow-scrolling:touch!important;overflow:auto!important;-ms-overflow-style:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.fade-left,.fade-right{z-index:1;width:0;height:100%;position:absolute;top:0}.fade-left{left:0;display:none}.fade-right{right:0}</style>').appendTo('head');
+            $('<style id="scroll-indicator-animations">@-webkit-keyframes right{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(20px);transform:translate(20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@keyframes right{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(20px);transform:translate(20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@-webkit-keyframes left{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(-20px);transform:translate(-20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}@keyframes left{from{-webkit-transform:translate(0);transform:translate(0)}to{-webkit-transform:translate(-20px);transform:translate(-20px);opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"}}.hide-right{-webkit-animation:right 1s forwards ease-out;animation:right 1s forwards ease-out}.hide-left{-webkit-animation:left 1s forwards ease-out;animation:left 1s forwards ease-out}.plugin-wrapper{position:relative;overflow:hidden}.content-wrapper{-webkit-overflow-scrolling:touch!important;overflow:auto!important;-ms-overflow-style:none}.arrow-left,.arrow-right{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.fade-left,.fade-right{z-index:1;width:0;height:100%;position:absolute;top:0}.fade-left{left:0;display:none}.fade-right{right:0}</style>').appendTo('head');
         }
 
         options = mergeOptions(options);
@@ -106,10 +109,12 @@
             }
 
             // Prevent accidentially selecting table, when clicking the arrows
-            contentWrapper.attr('unselectable', 'on').on('selectstart', false);
+			fade.left.attr('unselectable', 'on').on('selectstart', false);
+			fade.right.attr('unselectable', 'on').on('selectstart', false);
 
             $(window).on('resize', function() {
                 // TODO maybe set context of this function via .bind()
+				// TODO fade hidden after resize
                 resize();
             });
 

@@ -1,11 +1,14 @@
 /*
- * jQuery Scroll Indicator 2016 by Matthias Giger
- * http://naminho.ch/scroll-indicator
+ * indicate - jQuery Scroll Indicator Plugin
+ *
+ * Adds horizontal fade effect to tables and iframes.
+ * Intended to let the user know that there is more content so see than currently fits.
+ *
+ * Code: https://github.com/naminho/jquery-scroll-indicator
+ * Demo: http://naminho.ch/scroll-indicator
+ *
  * @author Matthias Giger <matthias.giger@namics.com>
  */
-
-// TODO remove for production
-// global.log = console.log.bind(console);
 
 (function (factory) {
 
@@ -15,7 +18,7 @@
         factory(jQuery, window, document);
     }
 
-} (function($, window, document, undefined) {
+} (function($, window, document) {
 
     $.fn.indicate = function(options, callback) {
 
@@ -106,10 +109,12 @@
             }
 
             // Prevent accidentially selecting table, when clicking the arrows
-            contentWrapper.attr('unselectable', 'on').on('selectstart', false);
+			fade.left.attr('unselectable', 'on').on('selectstart', false);
+			fade.right.attr('unselectable', 'on').on('selectstart', false);
 
             $(window).on('resize', function() {
                 // TODO maybe set context of this function via .bind()
+				// TODO fade hidden after resize
                 resize();
             });
 
