@@ -60,5 +60,18 @@ $('table').indicate({arrows: false});
 ## Development
 
 ```
-gulp develop
+yarn
+yarn global add gulp
+yarn develop
+```
+
+To copy the assets to the page, add this task to the gulpfile.js.
+
+```
+gulp.task('default', ['minify', 'copy'], function() {
+
+gulp.task('copy', [], function() {
+    return gulp.src('dist/jquery.indicate.js')
+        .pipe(gulp.dest('../naminho/node_modules/indicate/dist'));
+});
 ```

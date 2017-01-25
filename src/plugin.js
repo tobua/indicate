@@ -50,14 +50,16 @@
 
             uniqueIdentifier = generateUniqueIdentifier();
 
-            element.css('width', '100%');
+            element.css('width', '100%'); // TODO Not always necessary
 
             // Add a wrapper
             element.wrap(
                 '<div class="scroll-indicator plugin-wrapper '+ uniqueIdentifier + '">' +
-                '<div class="content-wrapper '+ uniqueIdentifier + '"></div>' +
-                '<div class="fade-left '+ uniqueIdentifier + '"></div>' +
-                '<div class="fade-right '+ uniqueIdentifier + '"></div>' +
+                  '<div class="content-wrapper '+ uniqueIdentifier + '"></div>' +
+                  '<div class="fade-top '+ uniqueIdentifier + '"></div>' +
+                  '<div class="fade-right '+ uniqueIdentifier + '"></div>' +
+                  '<div class="fade-bottom '+ uniqueIdentifier + '"></div>' +
+                  '<div class="fade-left '+ uniqueIdentifier + '"></div>' +
                 '</div>'
             );
 
@@ -65,6 +67,8 @@
             contentWrapper = $('.content-wrapper.' + uniqueIdentifier, pluginWrapper);
             fade.left = $('.fade-left.' + uniqueIdentifier, pluginWrapper);
             fade.right = $('.fade-right.' + uniqueIdentifier, pluginWrapper);
+            fade.top = $('.fade-top.' + uniqueIdentifier, pluginWrapper);
+            fade.bottom = $('.fade-bottom.' + uniqueIdentifier, pluginWrapper);
 
             settings = $.extend({}, $.fn.indicate.defaults, options);
             contentWrapper.data('settings', settings);
@@ -79,11 +83,7 @@
                 }
             }
 
-            // TODOO
-
-            if (settings.maxHeight) {
-                contentWrapper.css('max-height', settings.maxHeight);
-            }
+            contentWrapper.css('max-height', settings.maxHeight);
 
             if (isIframe) {
                 usePostMessage = differentDomain(element);
@@ -99,6 +99,8 @@
 
             fade.left.css(boxShadow);
             fade.right.css(boxShadow);
+            fade.top.css(boxShadow);
+            fade.bottom.css(boxShadow);
 
             if (settings.arrows) {
                 arrow = addArrows();
@@ -109,12 +111,15 @@
             }
 
             // Prevent accidentially selecting table, when clicking the arrows
-			fade.left.attr('unselectable', 'on').on('selectstart', false);
-			fade.right.attr('unselectable', 'on').on('selectstart', false);
+			      fade.left.attr('unselectable', 'on').on('selectstart', false);
+			      fade.right.attr('unselectable', 'on').on('selectstart', false);
+            fade.top.attr('unselectable', 'on').on('selectstart', false);
+            fade.bottom.attr('unselectable', 'on').on('selectstart', false);
 
             $(window).on('resize', function() {
                 // TODO maybe set context of this function via .bind()
-				// TODO fade hidden after resize
+				        // TODO fade hidden after resize
+                scroll();
                 resize();
             });
 
@@ -170,7 +175,6 @@
                 contentWrapper.on('scroll', function () {
                     if (isIOS()) {
                         var width = contentWrapper.data('width');
-                        // TODO width - 50
                         scroll(contentWrapper.scrollLeft(), width - 50);
                     } else {
                         scroll();
@@ -184,61 +188,115 @@
             /**
              * Shows or hides the fade and the arrows after a scroll event occurred.
              *
-             * @param {number} d The desired diameter of the circle.
+             * @param {number} offsetPost The offset from post message.
+             * @param {number} widthPost The width from post message.
              * @return {void}
              */
             function scroll(offsetPost, widthPost) {
                 var settings = contentWrapper.data('settings'),
                     wrapperWidth = contentWrapper.width(),
                     elementWidth = Math.max(element.width(), element.get(0).scrollWidth),
+                    wrapperHeight = contentWrapper.height(),
+                    elementHeight = Math.max(element.height(), element.get(0).scrollHeight),
                     offset = 0;
 
                 if (settings.arrows && (!arrow.both || arrow.both.length === 0)) {
-                    arrow = getArrows(element);
+                  arrow = getArrows(element);
                 }
 
-                if (isIframe && !usePostMessage)
-                    offset = $(element.contents()).scrollLeft();
-                if (!isIframe)
-                    offset = contentWrapper.scrollLeft();
-                if (isIframe && usePostMessage)
-                    offset = offsetPost;
-                if (isIframe && !usePostMessage && isIOS())
-                    offset = contentWrapper.scrollLeft();
-
-                if (isIframe && !usePostMessage)
-                    elementWidth = $(element.contents()).width();
-                if (isIframe && usePostMessage)
-                    elementWidth = widthPost;
-
-                if (offset > settings.fadeOffset) {
-                    fade.left.show();
-                    fade.left.removeClass('hide-left');
-                    if (settings.arrows && arrow.left) {
-                        arrow.left.show();
-                        arrow.left.removeClass('hide-left');
-                    }
-                } else {
-                    fade.left.addClass('hide-left');
-                    if (arrow.left) {
-                        arrow.left.addClass('hide-left');
-                    }
+                if (isIframe && !usePostMessage) {
+                  offset = $(element.contents()).scrollLeft();
+                  offsetVertical = $(element.contents()).scrollTop();
+                }
+                if (!isIframe) {
+                  offset = contentWrapper.scrollLeft();
+                  offsetVertical = contentWrapper.scrollTop();
+                }
+                if (isIframe && usePostMessage) {
+                  offset = offsetPost;
+                }
+                if (isIframe && !usePostMessage && isIOS()) {
+                  offset = contentWrapper.scrollLeft();
+                  offsetVertical = contentWrapper.scrollTop();
                 }
 
-                //console.log(offset + '+' + wrapperWidth + '+' + settings.fadeOffset + '( ' + (offset + wrapperWidth + settings.fadeOffset) + ') <' + elementWidth);
+                if (isIframe && !usePostMessage) {
+                  elementWidth = $(element.contents()).width();
+                  elementHeight = $(element.contents()).height();
+                }
+                if (isIframe && usePostMessage) {
+                  elementWidth = widthPost;
+                  //  elementHeight = heightPost;
+                }
 
-                if (offset + wrapperWidth + settings.fadeOffset < elementWidth) {
-                    fade.right.show();
-                    fade.right.removeClass('hide-right');
-                    if (settings.arrows && arrow.right) {
-                        arrow.right.show();
-                        arrow.right.removeClass('hide-right');
-                    }
+                if (settings.horizontal) {
+                  if (offset > settings.fadeOffset) {
+                      fade.left.show();
+                      fade.left.removeClass('hide-left');
+                      if (settings.arrows && arrow.left) {
+                          arrow.left.show();
+                          arrow.left.removeClass('hide-left');
+                      }
+                  } else {
+                      fade.left.addClass('hide-left');
+                      if (arrow.left) {
+                          arrow.left.addClass('hide-left');
+                      }
+                  }
                 } else {
-                    fade.right.addClass('hide-right');
-                    if (arrow.right) {
-                        arrow.right.addClass('hide-right');
-                    }
+                  fade.left.hide();
+                  fade.right.hide();
+                }
+
+                if (settings.vertical) {
+                  if (offsetVertical > settings.fadeOffset) {
+                      fade.top.show();
+                      fade.top.removeClass('hide-top');
+                      if (settings.arrows && arrow.top) {
+                          arrow.top.show();
+                          arrow.top.removeClass('hide-top');
+                      }
+                  } else {
+                      fade.top.addClass('hide-top');
+                      if (arrow.top) {
+                          arrow.top.addClass('hide-top');
+                      }
+                  }
+                } else {
+                  fade.top.hide();
+                  fade.bottom.hide();
+                }
+
+                if (settings.horizontal) {
+                  if (offset + wrapperWidth + settings.fadeOffset < elementWidth) {
+                      fade.right.show();
+                      fade.right.removeClass('hide-right');
+                      if (settings.arrows && arrow.right) {
+                          arrow.right.show();
+                          arrow.right.removeClass('hide-right');
+                      }
+                  } else {
+                      fade.right.addClass('hide-right');
+                      if (arrow.right) {
+                          arrow.right.addClass('hide-right');
+                      }
+                  }
+                }
+
+                if (settings.vertical) {
+                  if (offsetVertical + wrapperHeight + settings.fadeOffset < elementHeight) {
+                      fade.bottom.show();
+                      fade.bottom.removeClass('hide-bottom');
+                      if (settings.arrows && arrow.bottom) {
+                          arrow.bottom.show();
+                          arrow.bottom.removeClass('hide-bottom');
+                      }
+                  } else {
+                      fade.bottom.addClass('hide-bottom');
+                      if (arrow.bottom) {
+                          arrow.bottom.addClass('hide-bottom');
+                      }
+                  }
                 }
             }
 
@@ -251,7 +309,9 @@
             function resize() {
                 var settings = contentWrapper.data('settings'),
                     wrapperWidth = contentWrapper.width(),
+                    wrapperHeight = contentWrapper.width(),
                     elementWidth = Math.max(element.width(), element.get(0).scrollWidth),
+                    elementHeight = Math.max(element.height(), element.get(0).scrollHeight),
                     offset;
 
                 if (settings.arrows && (!arrow.both || arrow.both.length === 0)) {
@@ -262,70 +322,114 @@
                     elementWidth = Math.max(contentWrapper.data('width'), elementWidth);
                 }
 
-                if (isIframe && !usePostMessage)
+                if (usePostMessage && contentWrapper.data('height')) {
+                    elementHeight = Math.max(contentWrapper.data('height'), elementHeight);
+                }
+
+                if (isIframe && !usePostMessage) {
                     elementWidth = $(element.contents()).width();
+                    elementHeight = $(element.contents()).height();
+                }
 
                 if (isIOS() && isIframe) {
                     elementWidth = $(element.contents()).get(0).documentElement.width;
+                    elementHeight = $(element.contents()).get(0).documentElement.height;
                 }
 
-                //console.log(elementWidth + '<=' + wrapperWidth);
+                if (settings.horizontal) {
+                  if (elementWidth <= wrapperWidth) {
+                      fade.left.hide();
+                      fade.right.hide();
+                      if (arrow.both && arrow.both.length > 0) {
+                          arrow.both.hide();
+                      }
+                      // TODO add to settings
+                      // contentWrapper.css('white-space', 'normal');
+                  } else {
+                      // contentWrapper.css('white-space', 'nowrap');
+                      if (isIframe && !usePostMessage)
+                          offset = $(element.contents()).scrollLeft();
+                      else
+                          offset = contentWrapper.scrollLeft();
 
-                if (elementWidth <= wrapperWidth) {
-                    fade.left.hide();
-                    fade.right.hide();
-                    if (arrow.both && arrow.both.length > 0) {
-                        arrow.both.hide();
-                    }
-                    // TODO add to settings
-                    contentWrapper.css('white-space', 'normal');
-                } else {
-                    contentWrapper.css('white-space', 'nowrap');
-                    if (isIframe && !usePostMessage)
-                        offset = $(element.contents()).scrollLeft();
-                    else
-                        offset = contentWrapper.scrollLeft();
+                      fade.right.show();
+                      if (settings.arrows) {
+                          arrow.right.show();
+                      }
 
-                    fade.right.show();
-                    if (settings.arrows) {
-                        arrow.right.show();
-                    }
+                      if (offset > settings.fadeOffset) {
+                          fade.left.show();
+                          if (settings.arrows) {
+                              arrow.left.show();
+                          }
+                      }
+                  }
+                }
 
-                    if (offset > settings.fadeOffset) {
-                        fade.left.show();
-                        if (settings.arrows) {
-                            arrow.left.show();
-                        }
-                    }
+                if (settings.vertical) {
+                  if (elementHeight <= wrapperHeight) {
+                      fade.top.hide();
+                      fade.bottom.hide();
+                      if (arrow.vertical && arrow.vertical.length > 0) {
+                          arrow.vertical.hide();
+                      }
+                  } else {
+                      if (isIframe && !usePostMessage) {
+                          offset = $(element.contents()).scrollTop();
+                      } else {
+                          offset = contentWrapper.scrollTop();
+                      }
+
+                      fade.bottom.show();
+                      if (settings.arrows) {
+                          arrow.bottom.show();
+                      }
+
+                      if (offset > settings.fadeOffset) {
+                          fade.top.show();
+                          if (settings.arrows) {
+                              arrow.top.show();
+                          }
+                      }
+                  }
                 }
             }
 
             /**
              * Scrolls to the direction passed in.
              *
-             * @param {string} dir The direction to scroll ('left' / 'right').
+             * @param {string} dir The direction to scroll ('left', 'right', 'top', 'bottom').
              * @return {void}
              */
             function scrollTo(dir) {
                 var settings = contentWrapper.data('settings'),
                     wrapperWidth = contentWrapper.width(),
+                    wrapperHeight = contentWrapper.height(),
                     offset;
 
                 if (!isIframe || (isIframe && isIOS())) {
                     offset = contentWrapper.scrollLeft();
+                    offsetVertical = contentWrapper.scrollTop();
                 } else {
                     if (!usePostMessage) {
                         offset = $(element.contents()).scrollLeft();
+                        offsetVertical = $(element.contents()).scrollTop();
                     }
                 }
 
-                var length = wrapperWidth / settings.scrollDenominator;
+                var length = wrapperWidth / settings.scrollDenominator,
+                  height = wrapperHeight / settings.scrollDenominator;
 
                 if (!isIframe || (isIframe && isIOS())) {
-                    if (dir === 'left')
-                        contentWrapper.animate({scrollLeft: offset - length}, 300);
-                    else
-                        contentWrapper.animate({scrollLeft: offset + length}, 300);
+                    if (dir === 'left') {
+                      contentWrapper.animate({scrollLeft: offset - length}, 300);
+                    } else if (dir === 'right') {
+                      contentWrapper.animate({scrollLeft: offset + length}, 300);
+                    } else if (dir === 'top') {
+                      contentWrapper.animate({scrollTop: offsetVertical - length}, 300);
+                    } else if (dir === 'bottom') {
+                      contentWrapper.animate({scrollTop: offsetVertical + length}, 300);
+                    }
                 } else {
                     if (!usePostMessage) {
                         if (dir === 'left')
@@ -346,75 +450,87 @@
              */
             function addArrows() {
                 var settings = contentWrapper.data('settings'),
-                    arrowLeftImage = '<div class="arrow-left ' + uniqueIdentifier + '">' + getIconLeft(settings) + '</div>',
-                    arrowRightImage = '<div class="arrow-right ' + uniqueIdentifier + '">' + getIconRight(settings) + '</div>',
+                    arrowLeftImage = '<div class="arrow arrow-left ' + uniqueIdentifier + '">' + getIconLeft(settings) + '</div>',
+                    arrowRightImage = '<div class="arrow arrow-right ' + uniqueIdentifier + '">' + getIconRight(settings) + '</div>',
+                    arrowTopImage = '<div class="arrow arrow-top ' + uniqueIdentifier + '">' + getIconTop(settings) + '</div>',
+                    arrowBottomImage = '<div class="arrow arrow-bottom ' + uniqueIdentifier + '">' + getIconBottom(settings) + '</div>',
+                    directions = ['top', 'right', 'bottom', 'left'],
                     arrowLeft,
                     arrowRight,
+                    arrowTop,
+                    arrowBottom,
                     arrows,
                     wrapperStyles,
                     svgStyles;
 
                 pluginWrapper.append(arrowLeftImage);
                 pluginWrapper.append(arrowRightImage);
+                pluginWrapper.append(arrowTopImage);
+                pluginWrapper.append(arrowBottomImage);
 
                 arrowLeft = $('.arrow-left.'+ uniqueIdentifier, pluginWrapper);
                 arrowRight = $('.arrow-right.'+ uniqueIdentifier, pluginWrapper);
+                arrowTop = $('.arrow-top.'+ uniqueIdentifier, pluginWrapper);
+                arrowBottom = $('.arrow-bottom.'+ uniqueIdentifier, pluginWrapper);
 
                 arrows = arrowLeft.add(arrowRight);
+                arrowsVertical = arrowTop.add(arrowBottom);
 
-                wrapperStyles = {
-                    'width': '50px',
-                    'height': '100%',
-                    'position': 'absolute',
-                    'top': '0',
-                    'z-index': '2'
-                };
+                allArrows = arrowLeft.add(arrowRight).add(arrowTop).add(arrowBottom);
 
-                svgStyles = {
-                    'width': '14px',
-                    'height': '24px',
-                    'margin-top': '10px',
-                    'transition-property': 'all',
-                    'transition-duration': '200ms',
-                    'transition-timing-function': 'ease'
-                };
+                allArrows.addClass(settings.arrowPosition);
 
-                arrowLeft.css(wrapperStyles).css('display', 'none');
-                arrowRight.css(wrapperStyles).css('right', '0');
+                arrowLeft.css('display', 'none');
 
-                arrowLeft.find('svg').css(svgStyles).css('margin-left', '2px');
-                arrowRight.find('svg').css(svgStyles).css('margin-right', '2px').css({'position': 'absolute', 'right': '0'});
+                if (!settings.horizontal) {
+                  arrowRight.css('display', 'none');
+                }
 
-                arrows.hover(function(){
-                    if ($(this).find('svg').css('margin-right') === '2px')
-                        arrowRight.find('svg').css('margin-right', '6px');
-                    else
-                        arrowLeft.find('svg').css('margin-left', '6px');
-                }, function(){
-                    if ($(this).find('svg').css('margin-right') === '6px')
-                        arrowRight.find('svg').css('margin-right', '2px');
-                    else
-                        arrowLeft.find('svg').css('margin-left', '2px');
+                arrowTop.css('display', 'none');
+
+                if (!settings.vertical) {
+                  arrowBottom.css('display', 'none');
+                }
+
+                allArrows.hover(function() {
+                  var arrow = $(this);
+                  directions.map(function(direction) {
+                    if (arrow.hasClass('arrow-' + direction)) {
+                      arrow.find('svg').css('margin-' + direction, '6px');
+                    }
+                  });
+                }, function() {
+                  var arrow = $(this);
+                  directions.map(function(direction) {
+                    if (arrow.hasClass('arrow-' + direction)) {
+                      arrow.find('svg').css('margin-' + direction, '2px');
+                    }
+                  });
                 });
 
-                arrowLeft.click(function() {
-                    scrollTo('left');
-                });
-
-                arrowRight.click(function() {
-                    scrollTo('right');
-                });
+                arrowLeft.click(function() {scrollTo('left');});
+                arrowRight.click(function() {scrollTo('right');});
+                arrowTop.click(function() {scrollTo('top');});
+                arrowBottom.click(function() {scrollTo('bottom');});
 
                 arrow = {
                     both: arrows,
                     left: arrowLeft,
-                    right: arrowRight
+                    right: arrowRight,
+                    vertical: arrowsVertical,
+                    top: arrowTop,
+                    bottom: arrowBottom,
+                    allArrows: allArrows
                 };
 
                 return {
                     both: arrows,
                     left: arrowLeft,
-                    right: arrowRight
+                    right: arrowRight,
+                    vertical: arrowsVertical,
+                    top: arrowTop,
+                    bottom: arrowBottom,
+                    allArrows: allArrows
                 };
             }
 
@@ -456,10 +572,13 @@
 
                 if (settings.arrows && (!arrow.both || arrow.both.length === 0)) {
                     arrow = getArrows(element);
-                    log(arrow, 'if')
                 }
 
                 var boxShadow = {
+                    'box-shadow': '0 0 ' + settings.fadeWidth + ' calc(' + settings.fadeWidth + ' * 1.2) ' + settings.color
+                };
+
+                var boxShadowVertical = {
                     'box-shadow': '0 0 ' + settings.fadeWidth + ' calc(' + settings.fadeWidth + ' * 1.2) ' + settings.color
                 };
 
@@ -469,24 +588,35 @@
 
                 fade.left.css(boxShadow);
                 fade.right.css(boxShadow);
+                fade.top.css(boxShadow);
+                fade.bottom.css(boxShadow);
 
-                // UNTESTED
-                if (settings.maxHeight) {
-                    contentWrapper.css('max-height', settings.maxHeight);
-                }
+                contentWrapper.css('max-height', settings.maxHeight);
 
-                // UNTESTED
                 if (settings.arrows) {
-                    if (arrow.both.length < 2) {
+                    if (arrow.all.length < 2) {
                         addArrows();
                     } else {
+                      if (settings.horizontal) {
                         arrow.both.show();
-                        arrowColor = arrowColor || getContrastedColor(settings.color);
-                        $('polyline', arrow.both).attr('stroke', arrowColor);
-                    }
-                } else {
-                    if (arrow.both) {
+                      } else {
                         arrow.both.hide();
+                      }
+
+                      if (settings.vertical) {
+                        arrow.vertical.show();
+                      } else {
+                        arrow.vertical.hide();
+                      }
+
+                      arrowColor = arrowColor || getContrastedColor(settings.color);
+                      $('polyline', arrow.all).attr('stroke', arrowColor);
+                    }
+
+                    removeArrowPositionClassesAndAdd(settings.arrowPosition, arrow.all);
+                } else {
+                    if (arrow.all) {
+                        arrow.all.hide();
                     }
                 }
 
@@ -503,12 +633,19 @@
                 contentWrapper = element.parent();
                 fade = {
                     left: $('.fade-left', wrapper),
-                    right: $('.fade-right', wrapper)
+                    right: $('.fade-right', wrapper),
+                    top: $('.fade-top', wrapper),
+                    bottom: $('.fade-bottom', wrapper)
                 };
                 arrow = {
                     left: $('.arrow-left', wrapper),
                     right: $('.arrow-right', wrapper),
-                    both: $('.arrow-left', wrapper).add($('.arrow-right', wrapper))
+                    top: $('.arrow-top', wrapper),
+                    bottom: $('.arrow-bottom', wrapper),
+                    both: $('.arrow-left', wrapper).add($('.arrow-right', wrapper)),
+                    vertical: $('.arrow-top', wrapper).add($('.arrow-bottom', wrapper)),
+                    all: $('.arrow-left', wrapper).add($('.arrow-right', wrapper))
+                      .add($('.arrow-top', wrapper)).add($('.arrow-bottom', wrapper))
                 };
                 isIframe = element.prop("tagName").toLowerCase() === 'iframe';
                 usePostMessage = element.prop("tagName").toLowerCase() === 'iframe' && differentDomain(element);
@@ -529,7 +666,12 @@
             return {
                 left: $('.arrow-left', wrapper),
                 right: $('.arrow-right', wrapper),
-                both: $('.arrow-left', wrapper).add($('.arrow-right', wrapper))
+                top: $('.arrow-top', wrapper),
+                bottom: $('.arrow-bottom', wrapper),
+                both: $('.arrow-left', wrapper).add($('.arrow-right', wrapper)),
+                vertical: $('.arrow-top', wrapper).add($('.arrow-bottom', wrapper)),
+                all: $('.arrow-left', wrapper).add($('.arrow-right', wrapper))
+                  .add($('.arrow-top', wrapper)).add($('.arrow-bottom', wrapper))
             }
         }
 
@@ -699,18 +841,37 @@
             return options;
         }
 
+        function removeArrowPositionClassesAndAdd(position, arrows) {
+          arrows.removeClass('start center end');
+          arrows.addClass(position);
+        }
+
         function getIconLeft(settings) {
             var color = settings.arrowColor || getContrastedColor(settings.color),
-                defaultIconLeft = '<svg width="14" height="24" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="12,22 2,12 12,2 "/></svg>';
+                defaultIconLeft = '<svg width="14" height="24" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="12,22 2,12 12,2"/></svg>';
 
             return settings.iconLeft || defaultIconLeft;
         }
 
         function getIconRight(settings) {
             var color = settings.arrowColor || getContrastedColor(settings.color),
-                defaultIconRight = '<svg width="14" height="24" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,22 12,12 2,2 "/></svg>';
+                defaultIconRight = '<svg width="14" height="24" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,22 12,12 2,2"/></svg>';
 
             return settings.iconRight || defaultIconRight;
+        }
+
+        function getIconTop(settings) {
+            var color = settings.arrowColor || getContrastedColor(settings.color),
+                defaultIconTop = '<svg width="24" height="14" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,12 12,2 22,12"/></svg>';
+
+            return settings.iconTop || defaultIconTop;
+        }
+
+        function getIconBottom(settings) {
+            var color = settings.arrowColor || getContrastedColor(settings.color),
+                defaultIconBottom = '<svg width="24" height="14" xmlns="http://www.w3.org/2000/svg"><polyline fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,2 12,12 22,2"/></svg>';
+
+            return settings.iconBottom || defaultIconBottom;
         }
     };
 
@@ -721,12 +882,21 @@
         defaultColor: '#FFFFFF',
         // Arrows are shown by default.
         arrows: true,
+        // Defines how the arrows should be positioned inside the fade effect.
+        // Can be set to 'cetner', 'start' or 'end'.
+        arrowPosition: 'start',
         // The face effec's width.
         fadeWidth: '20px',
-        // This many pixels away from the scroll end the effect will be removed.
+        // This far away from the scroll end the effect will be removed.
         fadeOffset: 5,
         // If the element is an iframe the height will be changed to the iframe content height. For tables this is TODO.
-        adaptToContentHeight: true
+        adaptToContentHeight: true,
+        // By default horizontal scrollling is enabled.
+        horizontal: true,
+        // Additionally the effect can also be applied vertically.
+        vertical: false,
+        // Set the max-height of the wrapper.
+        maxHeight: 'none'
     };
 
 }));
