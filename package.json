@@ -1,6 +1,6 @@
 {
   "name": "indicate",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "jQuery Scroll indicator for responsive tables and iframes.",
   "main": "dist/jquery.indicate.js",
   "scripts": {
