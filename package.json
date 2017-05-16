@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Indicate Plugin",
   "main": "Indicate.js",
+  "bundle": "bundle.js",
   "repository": "https://github.com/naminho/indicate",
   "author": "Matthias Giger",
   "license": "MIT",
@@ -16,5 +17,14 @@
   },
   "scripts": {
     "build": "node build"
+  },
+  "dependencies": {
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.4.0",
+    "css-loader": "^0.28.1",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.5",
+    "style-loader": "^0.17.0",
+    "webpack": "^2.5.1"
   }
 }

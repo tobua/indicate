@@ -2,20 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Indicate Plugin - Basic Example</title>
+    <title>Indicate Plugin - Update Example</title>
     <style>
       div {
-        overflow: scroll;
+        overflow: hidden;
         width: 50%;
         height: 50vh;
-      }
-      p {
-        width: 200%;
       }
     </style>
   </head>
   <body>
-    <h1>Indicate Plugin - Basic Example</h1>
+    <h1>Indicate Plugin - Update Example</h1>
+    <p>Two seconds after the plugin was first initialized, it's initialized again which will only trigger an update.</p>
     <div id="target">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam dolor eget justo tincidunt fermentum. Nulla facilisi. Aenean a nibh id ex dictum tempor. Pellentesque rutrum, velit pellentesque hendrerit dictum, erat ex dictum augue, et sagittis risus neque id nulla. Suspendisse molestie elit vitae nulla luctus, et tristique enim varius. Ut eu dolor ullamcorper, finibus ipsum ac, tristique tellus. Aliquam erat volutpat. Duis sed sapien ac turpis posuere condimentum. Vivamus vitae est a felis volutpat vehicula in eget lacus.</p>
       <p>Integer purus turpis, efficitur vitae pulvinar sit amet, blandit non nisi. Duis tincidunt, neque ut tincidunt varius, metus lectus mollis lectus, in facilisis justo felis eget lectus. Proin fermentum dolor in velit viverra aliquet. Vivamus vitae magna ac neque feugiat blandit sit amet non turpis. Nam tempor non nunc et consequat. Morbi est lacus, interdum non ante id, interdum imperdiet lectus. Nunc non dolor risus. In sollicitudin egestas libero, nec aliquam dolor efficitur non. Aliquam id scelerisque purus. Nunc eget commodo arcu, sed tincidunt enim. Morbi convallis sapien eget urna porttitor finibus. Sed congue eros sit amet tellus euismod, pharetra viverra ligula mattis. Vivamus aliquet cursus consequat.</p>
@@ -25,8 +23,11 @@
     </div>
     <script src="../dist/indicate.js"></script>
     <script>
-      const instanceNonExisting = new Indicate(document.getElementById('targets'))
-      const instance = new Indicate(document.getElementById('target'))
+      let instance = new Indicate(document.getElementById('target'))
+
+      setTimeout(function() {
+        instance = new Indicate(document.getElementById('target'))
+      }, 2000)
     </script>
   </body>
 </html>

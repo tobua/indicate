@@ -1,0 +1,16 @@
+[class^="indct-fade-"] {
+  background-color: black;
+  position: absolute;
+}
+
+.hide[class^="indct-fade-"] {
+  display: none;
+}
+
+.indct-fade-left, .indct-fade-right {
+  width: 20px;
+}
+
+.indct-fade-top, .indct-fade-bottom {
+  height: 20px;
+}

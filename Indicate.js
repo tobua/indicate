@@ -1,39 +1,21 @@
-class Regular {
-  constructor() {
-    console.log('Regular constructor')
-  }
-}
+import Options from './src/options'
+import Regular from './src/regular'
+import IFrame from './src/iframe'
+import Table from './src/table'
 
-class IFrame extends Regular {
-  constructor() {
-    super()
-    console.log('Iframe constructor')
-  }
-}
-
-class Table extends Regular {
-  constructor() {
-    super()
-    console.log('Table constructor')
-  }
-}
-
-export class Indicate {
+class Indicate {
   constructor(targetElements, options) {
     if (typeof options !== 'object') {
       options = {}
     }
 
-    console.log('element', targetElements, typeof targetElements)
-
     this.targetElements = targetElements
     this.instances = []
-    this.options = options
-
-    // TODO create several instances in case element is an array
+    this.options = new Options(options)
 
     this.init()
-    console.log('instances', this.instances)
+
+    console.log('Done, all instances: ', this.instances)
   }
 
   /**
@@ -62,12 +44,14 @@ export class Indicate {
 
     switch (tagName) {
       case 'iframe':
-        this.instances.push(new IFrame())
+        this.instances.push(new IFrame(element, this.options))
         break
       case 'table':
-        this.instances.push(new Table())
+        this.instances.push(new Table(element, this.options))
       default:
-        this.instances.push(new Regular())
+        this.instances.push(new Regular(element, this.options))
     }
   }
 }
+
+module.exports = Indicate
