@@ -2,17 +2,17 @@ import hasClass from './helpers/hasClass'
 import addClass from './helpers/addClass'
 import removeClass from './helpers/removeClass'
 import getOffset from './helpers/getOffset'
-import Config from './constants/config'
+import ClassNames from './constants/classNames'
 import './styles/regular.scss'
 
 export default class Regular {
-  constructor(element, options) {
+  constructor (element, options) {
     console.log('Regular constructor()')
 
     this.element = element
     this.options = options
 
-    if (hasClass(this.element, Config.elementClass)) {
+    if (hasClass(this.element, ClassNames.elementClass)) {
       this.update()
     } else {
       this.create()
@@ -21,25 +21,25 @@ export default class Regular {
     this.resize()
   }
 
-  create() {
+  create () {
     console.log('create()')
     // Create nodes from string template and store them in config.
 
-    this.element.className += ' ' + Config.elementClass
+    this.element.className += ' ' + ClassNames.elementClass
     this.insertFadeElements()
     this.registerHandlers()
   }
 
-  update() {
+  update () {
     console.log('update()')
   }
 
-  registerHandlers() {
+  registerHandlers () {
     this.element.addEventListener('scroll', this.scroll.bind(this))
     window.addEventListener('resize', this.resize.bind(this))
   }
 
-  scroll() {
+  scroll () {
     console.log('scroll()')
     if (this.options.horizontal) {
       this.scrollHorizontal()
@@ -50,7 +50,7 @@ export default class Regular {
     }
   }
 
-  scrollHorizontal() {
+  scrollHorizontal () {
     console.log('scrollHorizontal()')
     const scrollLeft = this.element.scrollLeft
 
@@ -67,7 +67,7 @@ export default class Regular {
     }
   }
 
-  scrollVertical() {
+  scrollVertical () {
     console.log('scrollVertical()')
     const scrollTop = this.element.scrollTop
 
@@ -84,7 +84,7 @@ export default class Regular {
     }
   }
 
-  hide(direction) {
+  hide (direction) {
     console.log('hide(' + direction)
     const Direction = direction.charAt(0).toUpperCase() + direction.slice(1)
 
@@ -94,7 +94,7 @@ export default class Regular {
     }
   }
 
-  show(direction) {
+  show (direction) {
     console.log('show(' + direction)
     const Direction = direction.charAt(0).toUpperCase() + direction.slice(1)
 
@@ -104,7 +104,7 @@ export default class Regular {
     }
   }
 
-  resize() {
+  resize () {
     console.log('resize()')
     this.updateFadeElementPosition()
     // TODO check if scrollWidth necessary in any browsers
@@ -115,13 +115,13 @@ export default class Regular {
     this.elementVisibleHeight = this.element.clientHeight
   }
 
-  insertFadeElements() {
+  insertFadeElements () {
     const directions = this.getApplicableDirections()
 
     directions.map((direction, index) => {
       const Direction = direction.charAt(0).toUpperCase() + direction.slice(1)
       this['fade' + Direction] = document.createElement('div')
-      this['fade' + Direction].className = Config['fade' + Direction + 'Class']
+      this['fade' + Direction].className = ClassNames['fade' + Direction + 'Class']
       this.element.parentNode.appendChild(this['fade' + Direction])
 
       // Initially it's not possible to scroll to top or left.
@@ -131,7 +131,7 @@ export default class Regular {
     })
   }
 
-  updateFadeElementPosition() {
+  updateFadeElementPosition () {
     const elementOffset = getOffset(this.element)
 
     if (this.options.horizontal) {
@@ -151,7 +151,7 @@ export default class Regular {
     }
   }
 
-  getApplicableDirections() {
+  getApplicableDirections () {
     let out = []
 
     if (this.options.horizontal) {

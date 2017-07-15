@@ -4,7 +4,7 @@ import IFrame from './src/iframe'
 import Table from './src/table'
 
 class Indicate {
-  constructor(targetElements, options) {
+  constructor (targetElements, options) {
     if (typeof options !== 'object') {
       options = {}
     }
@@ -22,7 +22,7 @@ class Indicate {
    * Initializes the instances depending on whether it's a single element or
    * an array of nodes.
    */
-  init() {
+  init () {
     const elements = this.targetElements
 
     if (elements) {
@@ -39,7 +39,7 @@ class Indicate {
   /**
    * Creates an instance of the appropriate class depending on the elements tag.
    */
-  createInstanceForElement(element) {
+  createInstanceForElement (element) {
     const tagName = String(element.tagName).toLowerCase()
 
     switch (tagName) {
@@ -48,6 +48,7 @@ class Indicate {
         break
       case 'table':
         this.instances.push(new Table(element, this.options))
+        break
       default:
         this.instances.push(new Regular(element, this.options))
     }

@@ -2,20 +2,16 @@
   background-color: black;
   position: absolute;
   opacity: 1;
-  transition: opacity 1s linear;
-}
+  transition: opacity 1s linear; }
 
 .hide[class^="idc-fade-"] {
   opacity: 0;
-  transition: opacity 1s linear;
-}
+  transition: opacity 1s linear; }
 
 .idc-fade-left,
 .idc-fade-right {
-  width: 20px;
-}
+  width: 20px; }
 
 .idc-fade-top,
 .idc-fade-bottom {
-  height: 20px;
-}
+  height: 20px; }
