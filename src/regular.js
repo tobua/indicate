@@ -1,9 +1,11 @@
+import { groupBy } from 'lodash'
 import hasClass from './helpers/hasClass'
 import addClass from './helpers/addClass'
 import removeClass from './helpers/removeClass'
 import getOffset from './helpers/getOffset'
 import ClassNames from './constants/classNames'
-import './styles/regular.scss'
+import './styles/fades.scss'
+import './styles/arrows.scss'
 
 export default class Regular {
   constructor (element, options) {
@@ -11,6 +13,7 @@ export default class Regular {
 
     this.element = element
     this.options = options
+    this.cssQueue = []
 
     if (hasClass(this.element, ClassNames.elementClass)) {
       this.update()
@@ -23,24 +26,38 @@ export default class Regular {
 
   create () {
     console.log('create()')
-    // Create nodes from string template and store them in config.
 
-    this.element.className += ' ' + ClassNames.elementClass
+    this.element.className += ` ${ClassNames.elementClass}`
+    this.setDirections()
     this.insertFadeElements()
-    this.registerHandlers()
+    this.insertArrows()
+    this.hideInitial()
+    this.registerListeners()
   }
 
   update () {
     console.log('update()')
+
+    this.setDirections()
   }
 
-  registerHandlers () {
-    this.element.addEventListener('scroll', this.scroll.bind(this))
-    window.addEventListener('resize', this.resize.bind(this))
+  registerListeners () {
+    this.element.addEventListener('scroll', () => this.scroll())
+    window.addEventListener('resize', () => this.resize())
+
+    this.directions.map(direction => {
+      const element = this.arrows[direction] || this.fades[direction]
+      element.addEventListener('click', this.handleClick)
+    })
+  }
+
+  handleClick (event) {
+    const direction = event.target.className.match(/[\w]*($|\s)/)[0];
+
+    console.log('TODO scroll');
   }
 
   scroll () {
-    console.log('scroll()')
     if (this.options.horizontal) {
       this.scrollHorizontal()
     }
@@ -84,30 +101,11 @@ export default class Regular {
     }
   }
 
-  hide (direction) {
-    console.log('hide(' + direction)
-    const Direction = direction.charAt(0).toUpperCase() + direction.slice(1)
-
-    if (!this['is' + Direction + 'Hidden']) {
-      this['is' + Direction + 'Hidden'] = true
-      addClass(this['fade' + Direction], 'hide')
-    }
-  }
-
-  show (direction) {
-    console.log('show(' + direction)
-    const Direction = direction.charAt(0).toUpperCase() + direction.slice(1)
-
-    if (this['is' + Direction + 'Hidden']) {
-      this['is' + Direction + 'Hidden'] = false
-      removeClass(this['fade' + Direction], 'hide')
-    }
-  }
-
   resize () {
     console.log('resize()')
-    this.updateFadeElementPosition()
+    this.updateElementPositions()
     // TODO check if scrollWidth necessary in any browsers
+    // TODO BUGGY
     this.elementFullWidth = Math.max(this.element.getBoundingClientRect().width, this.element.scrollWidth)
     this.elementFullHeight = Math.max(this.element.getBoundingClientRect().height, this.element.scrollHeight)
 
@@ -115,53 +113,128 @@ export default class Regular {
     this.elementVisibleHeight = this.element.clientHeight
   }
 
+  hide (direction) {
+    console.log(`hide(${direction})`)
+    const hidePropertyName = `is${direction}Hidden`
+
+    if (!this[hidePropertyName]) {
+      this[hidePropertyName] = true
+      addClass(this.fades[direction], 'hide')
+      addClass(this.arrows[direction], 'hide')
+    }
+  }
+
+  hideInitial () {
+    this.hide('top')
+    this.hide('left')
+  }
+
+  show (direction) {
+    console.log(`show(${direction})`)
+    const hidePropertyName = `is${direction}Hidden`
+
+    if (this[hidePropertyName]) {
+      this[hidePropertyName] = false
+      removeClass(this.fades[direction], 'hide')
+      removeClass(this.arrows[direction], 'hide')
+    }
+  }
+
   insertFadeElements () {
-    const directions = this.getApplicableDirections()
+    this.fades = {}
 
-    directions.map((direction, index) => {
-      const Direction = direction.charAt(0).toUpperCase() + direction.slice(1)
-      this['fade' + Direction] = document.createElement('div')
-      this['fade' + Direction].className = ClassNames['fade' + Direction + 'Class']
-      this.element.parentNode.appendChild(this['fade' + Direction])
-
-      // Initially it's not possible to scroll to top or left.
-      if (direction === 'left' || direction === 'top') {
-        this.hide(direction)
-      }
+    this.directions.map((direction, index) => {
+      this.fades[direction] = document.createElement('div')
+      this.fades[direction].className = ClassNames[`fade-${direction}`]
+      this.element.parentNode.appendChild(this.fades[direction])
     })
   }
 
-  updateFadeElementPosition () {
+  insertArrows () {
+    if (!this.options.arrows) {
+      return;
+    }
+
+    this.arrows = {}
+
+    this.directions.map(direction => {
+      this.arrows[direction] = document.createElement('div')
+      this.arrows[direction].className = ClassNames[`arrow-${direction}`]
+      this.element.parentNode.appendChild(this.arrows[direction])
+    })
+  }
+
+  updateElementPositions () {
     const elementOffset = getOffset(this.element)
 
     if (this.options.horizontal) {
-      this.fadeLeft.style.left = elementOffset.left + 'px'
-      this.fadeLeft.style.top = elementOffset.top + 'px'
-      this.fadeRight.style.left = elementOffset.left + (this.element.getBoundingClientRect().width - 20) + 'px'
-      this.fadeRight.style.top = elementOffset.top + 'px'
+      this.fades.left.style.left = elementOffset.left + 'px'
+      this.fades.left.style.top = elementOffset.top + 'px'
+      this.fades.right.style.left = elementOffset.left + (this.element.getBoundingClientRect().width - 20) + 'px'
+      this.fades.right.style.top = elementOffset.top + 'px'
+
+      this.arrows.left.style.left = elementOffset.left + 'px'
+      this.arrows.left.style.top = elementOffset.top + 'px'
+      this.arrows.right.style.left = elementOffset.left + (this.element.getBoundingClientRect().width - 20) + 'px'
+      this.arrows.right.style.top = elementOffset.top + 'px'
     }
 
     if (this.options.vertical) {
-      this.fadeTop.style.left = elementOffset.left + 'px'
-      this.fadeTop.style.top = elementOffset.top + 'px'
-      this.fadeTop.style.width = this.element.getBoundingClientRect().width + 'px'
-      this.fadeBottom.style.top = elementOffset.top + (this.element.getBoundingClientRect().height - 20) + 'px'
-      this.fadeBottom.style.left = elementOffset.left + 'px'
-      this.fadeBottom.style.width = this.element.getBoundingClientRect().width + 'px'
+      this.fades.top.style.left = elementOffset.left + 'px'
+      this.fades.top.style.top = elementOffset.top + 'px'
+      this.fades.top.style.width = this.element.getBoundingClientRect().width + 'px'
+      this.fades.bottom.style.top = elementOffset.top + (this.element.getBoundingClientRect().height - 20) + 'px'
+      this.fades.bottom.style.left = elementOffset.left + 'px'
+      this.fades.bottom.style.width = this.element.getBoundingClientRect().width + 'px'
+
+      this.arrows.top.style.left = elementOffset.left + 'px'
+      this.arrows.top.style.top = elementOffset.top + 'px'
+      this.arrows.top.style.width = this.element.getBoundingClientRect().width + 'px'
+      this.arrows.bottom.style.top = elementOffset.top + (this.element.getBoundingClientRect().height - 20) + 'px'
+      this.arrows.bottom.style.left = elementOffset.left + 'px'
+      this.arrows.bottom.style.width = this.element.getBoundingClientRect().width + 'px'
     }
   }
 
-  getApplicableDirections () {
-    let out = []
+  setDirections () {
+    this.directions = []
 
     if (this.options.horizontal) {
-      out.push('left', 'right')
+      this.directions.push('left', 'right')
     }
 
     if (this.options.vertical) {
-      out.push('top', 'bottom')
+      this.directions.push('top', 'bottom')
     }
+  }
 
-    return out
+  /**
+   * Collects all CSS changes. All these will be applied one when the plugin
+   * has finished initializing.
+   **/
+  setCSS(selector, attribute, value) {
+    this.cssQueue.push({
+      selector,
+      attribute,
+      value,
+    })
+  }
+
+  /**
+   * Applies all the collected styles and clears the queue.
+   **/
+  applyCSS() {
+    const bySelectors = groupBy(this.cssQueue, 'selector')
+    const byAttributes = bySelectors.keys().map(key => groupBy(bySelectors[key], 'attribute'))
+
+    // TODO log and test
+
+    byAttributes.keys().map(key => {
+      const item = bySelectors[key]
+      const node = this.element.querySelector(key)
+      node.style[item.attribute] = item.value
+    })
+
+    this.cssQueue = []
   }
 }

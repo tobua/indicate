@@ -1,0 +1,48 @@
+[class^="idc-arrow-"] {
+  position: absolute;
+  opacity: 1;
+  transition: opacity 300ms linear;
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+}
+
+.hide[class^="idc-arrow-"] {
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+[class^="idc-arrow-"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[class^="idc-arrow-"]::before {
+  content: '›';
+}
+
+.idc-arrow-top,
+.idc-arrow-bottom {
+  height: 20px;
+}
+
+.idc-arrow-right,
+.idc-arrow-left {
+  width: 20px;
+}
+
+.idc-arrow-top::before {
+  transform: rotate(-90deg);
+}
+
+.idc-arrow-right {
+  transform: rotate(0deg);
+}
+
+.idc-arrow-bottom {
+  transform: rotate(90deg);
+}
+
+.idc-arrow-left {
+  transform: rotate(180deg);
+}

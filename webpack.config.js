@@ -41,7 +41,7 @@ module.exports = function (env) {
       isProduction ? new UglifyJSPlugin() : EmptyPlugin
     ],
     devServer: {
-      contentBase: path.join(__dirname, 'examples'),
+      contentBase: [path.join(__dirname, 'examples'), path.join(__dirname, 'dist')],
       compress: true,
       port: 3000
     }

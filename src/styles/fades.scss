@@ -1,0 +1,36 @@
+[class^="idc-fade-"] {
+  position: absolute;
+  opacity: 1;
+  transition: opacity 300ms linear;
+}
+
+.hide[class^="idc-fade-"] {
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.idc-fade-top,
+.idc-fade-bottom {
+  height: 20px;
+}
+
+.idc-fade-right,
+.idc-fade-left {
+  width: 20px;
+}
+
+.idc-fade-top {
+  background: linear-gradient(to top, transparent, white);
+}
+
+.idc-fade-right {
+  background: linear-gradient(to right, transparent, white);
+}
+
+.idc-fade-bottom {
+  background: linear-gradient(to bottom, transparent, white);
+}
+
+.idc-fade-left {
+  background: linear-gradient(to left, transparent, white);
+}
