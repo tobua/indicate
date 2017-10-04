@@ -3,6 +3,14 @@ import Regular from './src/regular'
 import IFrame from './src/iframe'
 import Table from './src/table'
 
+/**
+ * indicate - jQuery Scroll Indicator Plugin
+ *
+ * Adds horizontal fade effect to tables and iframes.
+ * Intended to let the user know that there is more content so see than currently fits.
+ *
+ * @author Matthias Giger <matthias.giger@namics.com>
+ */
 class Indicate {
   constructor (targetElements, options) {
     if (typeof options !== 'object') {
@@ -14,8 +22,6 @@ class Indicate {
     this.options = new Options(options)
 
     this.init()
-
-    console.log('Done, all instances: ', this.instances)
   }
 
   /**

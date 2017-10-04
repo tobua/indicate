@@ -1,6 +1,8 @@
 const defaultOptions = {
     // Clicking on the arrow will scroll (1 / value) of the currently visible width.
   scrollDenominator: 2,
+  // What is the max length that should be scrolled independently of the container and scrollDenominator.
+  maxScrollLength: 50,
     // If color is not specified it will either be the surrounding color or white.
   color: '#FFFFFF',
     // Arrows are shown by default.
