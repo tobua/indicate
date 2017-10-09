@@ -1,0 +1,9 @@
+.idc-element {
+  overflow: scroll;
+  -ms-overflow-style: none;
+}
+
+.idc-element::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}

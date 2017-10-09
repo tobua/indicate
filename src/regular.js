@@ -1,4 +1,4 @@
-import { groupBy } from 'lodash'
+import groupBy from 'lodash/groupBy'
 import hasClass from './helpers/hasClass'
 import addClass from './helpers/addClass'
 import removeClass from './helpers/removeClass'
@@ -6,6 +6,7 @@ import getOffset from './helpers/getOffset'
 import ClassNames from './constants/classNames'
 import './styles/fades.scss'
 import './styles/arrows.scss'
+import './styles/regular.scss'
 
 export default class Regular {
   constructor (element, options) {
@@ -26,6 +27,7 @@ export default class Regular {
    * Creates an instance.
    **/
   create () {
+    this.makeElementResponsive()
     this.element.className += ` ${ClassNames.elementClass}`
     this.setDirections()
     this.insertFadeElements()
@@ -46,10 +48,18 @@ export default class Regular {
   }
 
   /**
+   * Adds a responsive wrapper for table elements.
+   **/
+  makeElementResponsive () {
+    this.parent = this.element.parentElement
+    this.scrollableElement = this.element
+  }
+
+  /**
    * Register the scorll, resize and arrow click listeners.
    **/
   registerListeners () {
-    this.element.addEventListener('scroll', () => this.scroll())
+    this.scrollableElement.addEventListener('scroll', () => this.scroll())
     window.addEventListener('resize', () => this.resize())
 
     this.directions.map(direction => {
@@ -79,15 +89,15 @@ export default class Regular {
    * Scroll left of right after a click.
    **/
   clickHorizontal (direction) {
-    const scrollLeft = this.element.scrollLeft
+    const scrollLeft = this.scrollableElement.scrollLeft
     const containerLength = this.elementVisibleWidth
 
     const scrollLength = containerLength / this.options.scrollDenominator
 
     if (direction === 'right') {
-      this.element.scrollLeft = scrollLeft + scrollLength
+      this.scrollableElement.scrollLeft = scrollLeft + scrollLength
     } else {
-      this.element.scrollLeft = scrollLeft - scrollLength
+      this.scrollableElement.scrollLeft = scrollLeft - scrollLength
     }
   }
 
@@ -124,7 +134,7 @@ export default class Regular {
    * Adapts the visibility of the horizontal elements after a scroll.
    **/
   scrollHorizontal () {
-    const scrollLeft = this.element.scrollLeft
+    const scrollLeft = this.scrollableElement.scrollLeft
 
     if (this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth) {
       this.hide('right')
@@ -143,7 +153,7 @@ export default class Regular {
    * Adapts the visibility of the vertical elements after a scroll.
    **/
   scrollVertical () {
-    const scrollTop = this.element.scrollTop
+    const scrollTop = this.scrollableElement.scrollTop
 
     if (this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight) {
       this.hide('bottom')
@@ -162,13 +172,17 @@ export default class Regular {
    * On page resize we need to adapt the container measurements.
    **/
   resize () {
+    const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
+
     this.updateElementPositions()
 
-    this.elementFullWidth = Math.max(this.element.getBoundingClientRect().width, this.element.scrollWidth)
-    this.elementFullHeight = Math.max(this.element.getBoundingClientRect().height, this.element.scrollHeight)
+    this.elementFullWidth = Math.max(scrollElementBounds.width, this.element.scrollWidth)
+    this.elementFullHeight = Math.max(scrollElementBounds.height, this.element.scrollHeight)
 
-    this.elementVisibleWidth = this.element.clientWidth
-    this.elementVisibleHeight = this.element.clientHeight
+    this.elementVisibleWidth = this.scrollableElement.clientWidth
+    this.elementVisibleHeight = this.scrollableElement.clientHeight
+
+    this.scroll()
   }
 
   /**
@@ -215,7 +229,7 @@ export default class Regular {
     this.directions.map((direction, index) => {
       this.fades[direction] = document.createElement('div')
       this.fades[direction].className = ClassNames[`fade-${direction}`]
-      this.element.parentNode.appendChild(this.fades[direction])
+      this.parent.appendChild(this.fades[direction])
     })
   }
 
@@ -224,7 +238,7 @@ export default class Regular {
    **/
   insertArrows () {
     if (!this.options.arrows) {
-      return;
+      return
     }
 
     this.arrows = {}
@@ -232,7 +246,7 @@ export default class Regular {
     this.directions.map(direction => {
       this.arrows[direction] = document.createElement('div')
       this.arrows[direction].className = ClassNames[`arrow-${direction}`]
-      this.element.parentNode.appendChild(this.arrows[direction])
+      this.parent.appendChild(this.arrows[direction])
     })
   }
 
@@ -241,38 +255,39 @@ export default class Regular {
    * create and if the position or size of the container changes. Not on scroll.
    **/
   updateElementPositions () {
-    const elementOffset = getOffset(this.element)
+    const elementOffset = getOffset(this.scrollableElement)
+    const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
 
     if (this.options.horizontal) {
       this.fades.left.style.left = elementOffset.left + 'px'
       this.fades.left.style.top = elementOffset.top + 'px'
-      this.fades.left.style.height = this.element.getBoundingClientRect().height + 'px'
-      this.fades.right.style.left = elementOffset.left + (this.element.getBoundingClientRect().width - 20) + 'px'
+      this.fades.left.style.height = scrollElementBounds.height + 'px'
+      this.fades.right.style.left = elementOffset.left + (scrollElementBounds.width - 20) + 'px'
       this.fades.right.style.top = elementOffset.top + 'px'
-      this.fades.right.style.height = this.element.getBoundingClientRect().height + 'px'
+      this.fades.right.style.height = scrollElementBounds.height + 'px'
 
       this.arrows.left.style.left = elementOffset.left + 'px'
       this.arrows.left.style.top = elementOffset.top + 'px'
-      this.arrows.left.style.height = this.element.getBoundingClientRect().height + 'px'
-      this.arrows.right.style.left = elementOffset.left + (this.element.getBoundingClientRect().width - 20) + 'px'
+      this.arrows.left.style.height = scrollElementBounds.height + 'px'
+      this.arrows.right.style.left = elementOffset.left + (scrollElementBounds.width - 20) + 'px'
       this.arrows.right.style.top = elementOffset.top + 'px'
-      this.arrows.right.style.height = this.element.getBoundingClientRect().height + 'px'
+      this.arrows.right.style.height = scrollElementBounds.height + 'px'
     }
 
     if (this.options.vertical) {
       this.fades.top.style.left = elementOffset.left + 'px'
       this.fades.top.style.top = elementOffset.top + 'px'
-      this.fades.top.style.width = this.element.getBoundingClientRect().width + 'px'
-      this.fades.bottom.style.top = elementOffset.top + (this.element.getBoundingClientRect().height - 20) + 'px'
+      this.fades.top.style.width = scrollElementBounds.width + 'px'
+      this.fades.bottom.style.top = elementOffset.top + (scrollElementBounds.height - 20) + 'px'
       this.fades.bottom.style.left = elementOffset.left + 'px'
-      this.fades.bottom.style.width = this.element.getBoundingClientRect().width + 'px'
+      this.fades.bottom.style.width = scrollElementBounds.width + 'px'
 
       this.arrows.top.style.left = elementOffset.left + 'px'
       this.arrows.top.style.top = elementOffset.top + 'px'
-      this.arrows.top.style.width = this.element.getBoundingClientRect().width + 'px'
-      this.arrows.bottom.style.top = elementOffset.top + (this.element.getBoundingClientRect().height - 20) + 'px'
+      this.arrows.top.style.width = scrollElementBounds.width + 'px'
+      this.arrows.bottom.style.top = elementOffset.top + (scrollElementBounds.height - 20) + 'px'
       this.arrows.bottom.style.left = elementOffset.left + 'px'
-      this.arrows.bottom.style.width = this.element.getBoundingClientRect().width + 'px'
+      this.arrows.bottom.style.width = scrollElementBounds.width + 'px'
     }
   }
 
@@ -298,11 +313,11 @@ export default class Regular {
     const color = this.options.color
 
     if (color === '#FFFFFF') {
-      return;
+      return
     }
 
     this.directions.map(direction => {
-      this.fades[direction].style.background = `linear-gradient(to ${direction}, transparent, ${color})`
+      this.fades[direction].style.background = `linear-gradient(to ${direction}, rgba(255,255,255,0) 0%, ${color} 100%)`
     })
   }
 
@@ -310,18 +325,18 @@ export default class Regular {
    * Collects all CSS changes. All these will be applied one when the plugin
    * has finished initializing.
    **/
-  setCSS(selector, attribute, value) {
+  setCSS (selector, attribute, value) {
     this.cssQueue.push({
       selector,
       attribute,
-      value,
+      value
     })
   }
 
   /**
    * Applies all the collected styles and clears the queue.
    **/
-  applyCSS() {
+  applyCSS () {
     const bySelectors = groupBy(this.cssQueue, 'selector')
     const byAttributes = bySelectors.keys().map(key => groupBy(bySelectors[key], 'attribute'))
 

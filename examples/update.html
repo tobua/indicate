@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Indicate Plugin - Update Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
     <style>
       div {
@@ -27,11 +28,11 @@
     </div>
     <script src="../dist/indicate.js"></script>
     <script>
-      let instance = new Indicate(document.getElementById('target'))
+      let instance = new Indicate.default(document.getElementById('target'))
 
       setInterval(function() {
         // TODO random color
-        instance = new Indicate(document.getElementById('target'), {color: '#FF0000'})
+        instance = new Indicate.default(document.getElementById('target'), {color: '#FF0000'})
       }, 2000)
     </script>
   </body>

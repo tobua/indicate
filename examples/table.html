@@ -3,116 +3,124 @@
   <head>
     <meta charset="utf-8">
     <title>Indicate Plugin - Basic Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
     <style>
-      table {
-        width: 50%;
-        overflow-x: auto;
-      }
       th, td {
         padding: 20px;
       }
+	  .container {
+		 position: relative;
+		 margin-top: 50px;
+	 }
     </style>
   </head>
   <body>
-    <h1>Indicate Plugin - Basic Example</h1>
-    <table id="target">
-      <tr>
-        <th>
-          Header 1
-        </th>
-        <th>
-          Header 2
-        </th>
-        <th>
-          Header 3
-        </th>
-        <th>
-          Header 4
-        </th>
-        <th>
-          Header 5
-        </th>
-        <th>
-          Header 6
-        </th>
-        <th>
-          Header 7
-        </th>
-      </tr>
-      <tr>
-        <td>
-          Col 1
-        </td>
-        <td>
-          Col 2
-        </td>
-        <td>
-          Col 3
-        </td>
-        <td>
-          Col 4
-        </td>
-        <td>
-          Col 5
-        </td>
-        <td>
-          Col 6
-        </td>
-        <td>
-          Col 7
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Col 1
-        </td>
-        <td>
-          Col 2
-        </td>
-        <td>
-          Col 3
-        </td>
-        <td>
-          Col 4
-        </td>
-        <td>
-          Col 5
-        </td>
-        <td>
-          Col 6
-        </td>
-        <td>
-          Col 7
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Col 1
-        </td>
-        <td>
-          Col 2
-        </td>
-        <td>
-          Col 3
-        </td>
-        <td>
-          Col 4
-        </td>
-        <td>
-          Col 5
-        </td>
-        <td>
-          Col 6
-        </td>
-        <td>
-          Col 7
-        </td>
-      </tr>
-    </table>
+    <h1>Indicate Plugin - Table Example</h1>
+	<div class="container">
+		<h2>Some Heading</h2>
+		<div style="padding: 20px;">
+			<h2>Some Heading</h2>
+			<p>Test</p>
+		    <table id="target">
+		      <tr>
+		        <th>
+		          Header 1
+		        </th>
+		        <th>
+		          Header 2
+		        </th>
+		        <th>
+		          Header 3
+		        </th>
+		        <th>
+		          Header 4
+		        </th>
+		        <th>
+		          Header 5
+		        </th>
+		        <th>
+		          Header 6
+		        </th>
+		        <th>
+		          Header 7
+		        </th>
+		      </tr>
+		      <tr>
+		        <td>
+		          Col 1
+		        </td>
+		        <td>
+		          Col 2
+		        </td>
+		        <td>
+		          Col 3
+		        </td>
+		        <td>
+		          Col 4
+		        </td>
+		        <td>
+		          Col 5
+		        </td>
+		        <td>
+		          Col 6
+		        </td>
+		        <td>
+		          Col 7
+		        </td>
+		      </tr>
+		      <tr>
+		        <td>
+		          Col 1
+		        </td>
+		        <td>
+		          Col 2
+		        </td>
+		        <td>
+		          Col 3
+		        </td>
+		        <td>
+		          Col 4
+		        </td>
+		        <td>
+		          Col 5
+		        </td>
+		        <td>
+		          Col 6
+		        </td>
+		        <td>
+		          Col 7
+		        </td>
+		      </tr>
+		      <tr>
+		        <td>
+		          Col 1
+		        </td>
+		        <td>
+		          Col 2
+		        </td>
+		        <td>
+		          Col 3
+		        </td>
+		        <td>
+		          Col 4
+		        </td>
+		        <td>
+		          Col 5
+		        </td>
+		        <td>
+		          Col 6
+		        </td>
+		        <td>
+		          Col 7
+		        </td>
+		      </tr>
+		    </table>
+		</div>
+	</div>
     <script src="../dist/indicate.js"></script>
     <script>
-      const instance = new Indicate(document.getElementById('target'))
+      const instance = new Indicate.default(document.getElementById('target'))
     </script>
   </body>
 </html>

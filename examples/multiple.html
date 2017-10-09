@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Indicate Plugin - Multiple Instances Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
     <style>
       div {
@@ -42,8 +43,8 @@
     </div>
     <script src="../dist/indicate.js"></script>
     <script>
-      const instance = new Indicate(document.getElementsByClassName('target'))
-      const coloredInstance = new Indicate(document.getElementsByClassName('colored'), {color: '#0000FF'})
+      const instance = new Indicate.default(document.getElementsByClassName('target'))
+      const coloredInstance = new Indicate.default(document.getElementsByClassName('colored'), {color: '#0000FF'})
     </script>
   </body>
 </html>

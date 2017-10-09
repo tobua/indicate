@@ -11,6 +11,8 @@ module.exports = function (env) {
     entry: './Indicate.js',
     output: {
       library: 'Indicate',
+      libraryTarget: 'umd',
+      umdNamedDefine: true,
       filename: `dist/indicate${isProduction ? '.min' : ''}.js`
     },
     module: {

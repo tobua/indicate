@@ -61,4 +61,4 @@ class Indicate {
   }
 }
 
-module.exports = Indicate
+export default Indicate

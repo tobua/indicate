@@ -1,0 +1,10 @@
+.idc-table-wrapper {
+  overflow-y: scroll;
+  width: 100%;
+  -ms-overflow-style: none;
+}
+
+.idc-table-wrapper::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
