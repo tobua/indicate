@@ -36,7 +36,6 @@ export default class Regular {
     this.registerListeners()
     this.hideInitial()
     this.resize()
-    this.scroll()
   }
 
   /**
@@ -48,7 +47,7 @@ export default class Regular {
   }
 
   /**
-   * Adds a responsive wrapper for table elements.
+   * For regular elements no wrapper is needed.
    **/
   makeElementResponsive () {
     this.parent = this.element.parentElement
@@ -63,7 +62,7 @@ export default class Regular {
     window.addEventListener('resize', () => this.resize())
 
     this.directions.map(direction => {
-      const element = this.arrows[direction] || this.fades[direction]
+      const element = this.arrows ? this.arrows[direction] : this.fades[direction]
       // Note that listeners on hidden elements will not be working.
       element.addEventListener('click', (event) => this.handleClick(event))
     })
@@ -176,11 +175,11 @@ export default class Regular {
 
     this.updateElementPositions()
 
-    this.elementFullWidth = Math.max(scrollElementBounds.width, this.element.scrollWidth)
-    this.elementFullHeight = Math.max(scrollElementBounds.height, this.element.scrollHeight)
+    this.elementFullWidth = Math.max(scrollElementBounds.width, this.scrollableElement.scrollWidth)
+    this.elementFullHeight = Math.max(scrollElementBounds.height, this.scrollableElement.scrollHeight)
 
-    this.elementVisibleWidth = this.scrollableElement.clientWidth
-    this.elementVisibleHeight = this.scrollableElement.clientHeight
+    this.elementVisibleWidth = Math.max(this.scrollableElement.clientWidth, scrollElementBounds.width)
+    this.elementVisibleHeight = Math.max(this.scrollableElement.clientHeight, scrollElementBounds.height)
 
     this.scroll()
   }
@@ -194,7 +193,9 @@ export default class Regular {
     if (!this[hidePropertyName]) {
       this[hidePropertyName] = true
       addClass(this.fades[direction], 'hide')
-      addClass(this.arrows[direction], 'hide')
+      if (this.arrows) {
+        addClass(this.arrows[direction], 'hide')
+      }
     }
   }
 
@@ -216,7 +217,9 @@ export default class Regular {
     if (this[hidePropertyName]) {
       this[hidePropertyName] = false
       removeClass(this.fades[direction], 'hide')
-      removeClass(this.arrows[direction], 'hide')
+      if (this.arrows) {
+        removeClass(this.arrows[direction], 'hide')
+      }
     }
   }
 
@@ -259,36 +262,40 @@ export default class Regular {
     const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
 
     if (this.options.horizontal) {
-      this.fades.left.style.left = elementOffset.left + 'px'
-      this.fades.left.style.top = elementOffset.top + 'px'
-      this.fades.left.style.height = scrollElementBounds.height + 'px'
-      this.fades.right.style.left = elementOffset.left + (scrollElementBounds.width - 20) + 'px'
-      this.fades.right.style.top = elementOffset.top + 'px'
-      this.fades.right.style.height = scrollElementBounds.height + 'px'
+      this.setElementPositionHorizontal(this.fades.left, elementOffset, scrollElementBounds, false)
+      this.setElementPositionHorizontal(this.fades.right, elementOffset, scrollElementBounds, true)
 
-      this.arrows.left.style.left = elementOffset.left + 'px'
-      this.arrows.left.style.top = elementOffset.top + 'px'
-      this.arrows.left.style.height = scrollElementBounds.height + 'px'
-      this.arrows.right.style.left = elementOffset.left + (scrollElementBounds.width - 20) + 'px'
-      this.arrows.right.style.top = elementOffset.top + 'px'
-      this.arrows.right.style.height = scrollElementBounds.height + 'px'
+      if (this.arrows) {
+        this.setElementPositionHorizontal(this.arrows.left, elementOffset, scrollElementBounds, false)
+        this.setElementPositionHorizontal(this.arrows.right, elementOffset, scrollElementBounds, true)
+      }
     }
 
     if (this.options.vertical) {
-      this.fades.top.style.left = elementOffset.left + 'px'
-      this.fades.top.style.top = elementOffset.top + 'px'
-      this.fades.top.style.width = scrollElementBounds.width + 'px'
-      this.fades.bottom.style.top = elementOffset.top + (scrollElementBounds.height - 20) + 'px'
-      this.fades.bottom.style.left = elementOffset.left + 'px'
-      this.fades.bottom.style.width = scrollElementBounds.width + 'px'
+      this.setElementPositionVertical(this.fades.top, elementOffset, scrollElementBounds, false)
+      this.setElementPositionVertical(this.fades.bottom, elementOffset, scrollElementBounds, true)
 
-      this.arrows.top.style.left = elementOffset.left + 'px'
-      this.arrows.top.style.top = elementOffset.top + 'px'
-      this.arrows.top.style.width = scrollElementBounds.width + 'px'
-      this.arrows.bottom.style.top = elementOffset.top + (scrollElementBounds.height - 20) + 'px'
-      this.arrows.bottom.style.left = elementOffset.left + 'px'
-      this.arrows.bottom.style.width = scrollElementBounds.width + 'px'
+      if (this.arrows) {
+        this.setElementPositionVertical(this.arrows.top, elementOffset, scrollElementBounds, false)
+        this.setElementPositionVertical(this.arrows.bottom, elementOffset, scrollElementBounds, true)
+      }
     }
+  }
+
+  setElementPositionHorizontal (element, elementOffset, scrollElementBounds, includeOffset) {
+    const offset = includeOffset ? (scrollElementBounds.width - 20) : 0
+
+    element.style.left = elementOffset.left + offset + 'px'
+    element.style.top = elementOffset.top + 'px'
+    element.style.height = scrollElementBounds.height + 'px'
+  }
+
+  setElementPositionVertical (element, elementOffset, scrollElementBounds, includeOffset) {
+    const offset = includeOffset ? (scrollElementBounds.height - 20) : 0
+
+    element.style.left = elementOffset.left + 'px'
+    element.style.top = elementOffset.top + offset + 'px'
+    element.style.width = scrollElementBounds.width + 'px'
   }
 
   /**
