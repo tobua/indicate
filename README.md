@@ -1,4 +1,4 @@
-# indicate - jQuery Scroll Indicator Plugin
+# indicate - Scroll Indicator Plugin
 Fade effect and arrows for responsive tables and iframes with no dependencies.
 
 Size: 4.5 kB gzipped (including 0.5 kB CSS)
