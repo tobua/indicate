@@ -1,4 +1,4 @@
-import Regular from './regular'
+import Regular from './Regular'
 import addClass from './helpers/addClass'
 import ClassNames from './constants/classNames'
 import './styles/table.scss'

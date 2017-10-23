@@ -1,4 +1,5 @@
-import Regular from './regular'
+import Regular from './Regular'
+import './styles/iframe.scss'
 
 export default class IFrame extends Regular {
   constructor (element, options) {

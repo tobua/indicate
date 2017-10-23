@@ -1,7 +1,7 @@
-import Options from './src/options'
-import Regular from './src/regular'
-import IFrame from './src/iframe'
-import Table from './src/table'
+import Options from './src/Options'
+import Regular from './src/Regular'
+import IFrame from './src/IFrame'
+import Table from './src/Table'
 
 /**
  * indicate - jQuery Scroll Indicator Plugin
@@ -11,7 +11,7 @@ import Table from './src/table'
  *
  * @author Matthias Giger <matthias.giger@namics.com>
  */
-class Indicate {
+export default class Indicate {
   constructor (targetElements, options) {
     if (typeof options !== 'object') {
       options = {}
@@ -42,6 +42,15 @@ class Indicate {
     }
   }
 
+  update (newOptions) {
+    this.options.update(newOptions)
+    this.instances.forEach((instance) => instance.update(this.options))
+  }
+
+  destroy () {
+    this.instances.forEach((instance) => instance.destroy())
+  }
+
   /**
    * Creates an instance of the appropriate class depending on the elements tag.
    */
@@ -60,5 +69,3 @@ class Indicate {
     }
   }
 }
-
-export default Indicate

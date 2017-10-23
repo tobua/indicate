@@ -1,8 +1,7 @@
-import groupBy from 'lodash/groupBy'
-import hasClass from './helpers/hasClass'
 import addClass from './helpers/addClass'
 import removeClass from './helpers/removeClass'
 import getOffset from './helpers/getOffset'
+import getSize from './helpers/getSize'
 import ClassNames from './constants/classNames'
 import './styles/fades.scss'
 import './styles/arrows.scss'
@@ -12,14 +11,10 @@ export default class Regular {
   constructor (element, options) {
     this.element = element
     this.options = options
-    this.cssQueue = []
+    this.resizeFunction = () => this.resize()
+    this.scrollFunction = () => this.scroll()
 
-    if (hasClass(this.element, ClassNames.elementClass)) {
-      this.update()
-    } else {
-      this.create()
-    }
-
+    this.create()
     this.resize()
   }
 
@@ -31,19 +26,29 @@ export default class Regular {
     this.element.className += ` ${ClassNames.elementClass}`
     this.setDirections()
     this.insertFadeElements()
-    this.setFadeColor()
     this.insertArrows()
     this.registerListeners()
     this.hideInitial()
-    this.resize()
+
+    this.hook('create')
   }
 
   /**
-   * Updates an exising instance when new options received.
+   * Updates an exising instance when new options are received.
    **/
-  update () {
+  update (options) {
+    this.options = options
     this.setDirections()
-    this.setFadeColor()
+
+    this.hook('update')
+  }
+
+  /**
+   * Cleans up the instance.
+   **/
+  destroy () {
+    this.scrollableElement.removeEventListener('scroll', this.scrollFunction)
+    window.removeEventListener('resize', this.resizeFunction)
   }
 
   /**
@@ -58,8 +63,8 @@ export default class Regular {
    * Register the scorll, resize and arrow click listeners.
    **/
   registerListeners () {
-    this.scrollableElement.addEventListener('scroll', () => this.scroll())
-    window.addEventListener('resize', () => this.resize())
+    this.scrollableElement.addEventListener('scroll', this.scrollFunction)
+    window.addEventListener('resize', this.resizeFunction)
 
     this.directions.map(direction => {
       const element = this.arrows ? this.arrows[direction] : this.fades[direction]
@@ -172,14 +177,19 @@ export default class Regular {
    **/
   resize () {
     const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
-
-    this.updateElementPositions()
+    const scrollElementSize = getSize(this.scrollableElement)
 
     this.elementFullWidth = Math.max(scrollElementBounds.width, this.scrollableElement.scrollWidth)
     this.elementFullHeight = Math.max(scrollElementBounds.height, this.scrollableElement.scrollHeight)
 
+    // Probably unneeded check if needed for browser compatibility
     this.elementVisibleWidth = Math.max(this.scrollableElement.clientWidth, scrollElementBounds.width)
     this.elementVisibleHeight = Math.max(this.scrollableElement.clientHeight, scrollElementBounds.height)
+
+    this.elementWidth = scrollElementSize.width
+    this.elementHeight = scrollElementSize.height
+
+    window.requestAnimationFrame(() => this.updateElementPositions())
 
     this.scroll()
   }
@@ -259,43 +269,42 @@ export default class Regular {
    **/
   updateElementPositions () {
     const elementOffset = getOffset(this.scrollableElement)
-    const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
 
     if (this.options.horizontal) {
-      this.setElementPositionHorizontal(this.fades.left, elementOffset, scrollElementBounds, false)
-      this.setElementPositionHorizontal(this.fades.right, elementOffset, scrollElementBounds, true)
+      this.setElementPositionHorizontal(this.fades.left, elementOffset, false)
+      this.setElementPositionHorizontal(this.fades.right, elementOffset, true)
 
       if (this.arrows) {
-        this.setElementPositionHorizontal(this.arrows.left, elementOffset, scrollElementBounds, false)
-        this.setElementPositionHorizontal(this.arrows.right, elementOffset, scrollElementBounds, true)
+        this.setElementPositionHorizontal(this.arrows.left, elementOffset, false)
+        this.setElementPositionHorizontal(this.arrows.right, elementOffset, true)
       }
     }
 
     if (this.options.vertical) {
-      this.setElementPositionVertical(this.fades.top, elementOffset, scrollElementBounds, false)
-      this.setElementPositionVertical(this.fades.bottom, elementOffset, scrollElementBounds, true)
+      this.setElementPositionVertical(this.fades.top, elementOffset, false)
+      this.setElementPositionVertical(this.fades.bottom, elementOffset, true)
 
       if (this.arrows) {
-        this.setElementPositionVertical(this.arrows.top, elementOffset, scrollElementBounds, false)
-        this.setElementPositionVertical(this.arrows.bottom, elementOffset, scrollElementBounds, true)
+        this.setElementPositionVertical(this.arrows.top, elementOffset, false)
+        this.setElementPositionVertical(this.arrows.bottom, elementOffset, true)
       }
     }
   }
 
-  setElementPositionHorizontal (element, elementOffset, scrollElementBounds, includeOffset) {
-    const offset = includeOffset ? (scrollElementBounds.width - 20) : 0
+  setElementPositionHorizontal (element, elementOffset, includeOffset) {
+    const offset = includeOffset ? `${this.elementWidth}px - ${this.options.fadeWidth}` : '0px'
 
-    element.style.left = elementOffset.left + offset + 'px'
-    element.style.top = elementOffset.top + 'px'
-    element.style.height = scrollElementBounds.height + 'px'
+    element.style.left = `calc(${elementOffset.left}px + ${offset})`
+    element.style.top = `${elementOffset.top}px`
+    element.style.height = `${this.elementHeight}px`
   }
 
-  setElementPositionVertical (element, elementOffset, scrollElementBounds, includeOffset) {
-    const offset = includeOffset ? (scrollElementBounds.height - 20) : 0
+  setElementPositionVertical (element, elementOffset, includeOffset) {
+    const offset = includeOffset ? `${this.elementHeight}px - ${this.options.fadeWidth}` : '0px'
 
-    element.style.left = elementOffset.left + 'px'
-    element.style.top = elementOffset.top + offset + 'px'
-    element.style.width = scrollElementBounds.width + 'px'
+    element.style.left = `${elementOffset.left}px`
+    element.style.top = `calc(${elementOffset.top}px + ${offset})`
+    element.style.width = `${this.elementWidth}px`
   }
 
   /**
@@ -314,45 +323,9 @@ export default class Regular {
   }
 
   /**
-   * Sets the fade color.
+   * Calls the feature hooks for the supplied lifecycle method.
    **/
-  setFadeColor () {
-    const color = this.options.color
-
-    if (color === '#FFFFFF') {
-      return
-    }
-
-    this.directions.map(direction => {
-      this.fades[direction].style.background = `linear-gradient(to ${direction}, rgba(255,255,255,0) 0%, ${color} 100%)`
-    })
-  }
-
-  /**
-   * Collects all CSS changes. All these will be applied one when the plugin
-   * has finished initializing.
-   **/
-  setCSS (selector, attribute, value) {
-    this.cssQueue.push({
-      selector,
-      attribute,
-      value
-    })
-  }
-
-  /**
-   * Applies all the collected styles and clears the queue.
-   **/
-  applyCSS () {
-    const bySelectors = groupBy(this.cssQueue, 'selector')
-    const byAttributes = bySelectors.keys().map(key => groupBy(bySelectors[key], 'attribute'))
-
-    byAttributes.keys().map(key => {
-      const item = bySelectors[key]
-      const node = this.element.querySelector(key)
-      node.style[item.attribute] = item.value
-    })
-
-    this.cssQueue = []
+  hook (method) {
+    this.options.features.forEach((feature) => feature[method] ? feature[method](this) : 0)
   }
 }

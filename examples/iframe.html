@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Indicate Plugin - Basic Example</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../dist/indicate.css">
+    <style>
+      iframe {
+        width: 100%;
+        height: 50vh;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Indicate Plugin - iframe Example</h1>
+    <iframe src="/iframe-content.html" id="target"></iframe>
+    <script src="../dist/indicate.js"></script>
+    <script>
+      const instance = new Indicate.default(document.getElementById('target'))
+    </script>
+  </body>
+</html>

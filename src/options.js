@@ -1,23 +1,20 @@
 import { assign } from 'es6-object-assign'
+import * as features from './features/index'
 
 const defaultOptions = {
   // Clicking on the arrow will scroll (1 / value) of the currently visible width.
   scrollDenominator: 2,
-  // What is the max length that should be scrolled independently of the container and scrollDenominator.
-  maxScrollLength: 50,
-  // If color is not specified it will either be the surrounding color or white.
+  // The fade effect color.
   color: '#FFFFFF',
-  // Arrows are shown by default.
+  // Should arrows be show.
   arrows: true,
-  // Defines how the arrows should be positioned inside the fade effect.
+  // Defines where the arrows should be positioned inside the fade effect.
   // Can be set to 'cetner', 'start' or 'end'.
-  arrowPosition: 'start',
+  arrowPosition: 'center',
   // The face effec's width.
   fadeWidth: '20px',
   // This far away from the scroll end the effect will be removed.
   fadeOffset: 5,
-  // If the element is an iframe the height will be changed to the iframe content height. For tables this is TODO.
-  adaptToContentHeight: true,
   // By default horizontal scrollling is enabled.
   horizontal: true,
   // Additionally the effect can also be applied vertically.
@@ -28,6 +25,31 @@ const defaultOptions = {
 
 export default class Options {
   constructor (options) {
-    assign(this, assign(defaultOptions, options))
+    assign(this, assign({}, defaultOptions, options))
+    this.checkFeatures()
+    this.initializeFeatures()
+  }
+
+  update (newOptions) {
+    assign(this, assign({}, this, newOptions))
+    this.checkFeatures()
+    this.initializeFeatures()
+  }
+
+  /**
+   * Checks which features are applicable and returns only those.
+   **/
+  checkFeatures () {
+    const featuresArray = Object.keys(features).map((key) => features[key])
+    this.features = featuresArray.filter((feature) => {
+      return feature.check(this)
+    })
+  }
+
+  /**
+   * Initializes the feature inststances.
+   **/
+  initializeFeatures () {
+    this.features = this.features.map((Feature) => new Feature(this))
   }
 }

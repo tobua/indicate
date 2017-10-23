@@ -2,14 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Indicate Plugin - Update Example</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicate Plugin - Basic Example</title>
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
     <style>
       div {
-        overflow: scroll;
-        width: 50%;
         height: 50vh;
+      }
+      .container {
+        position: relative;
+        margin-top: 50px;
       }
       p {
         width: 200%;
@@ -17,8 +19,7 @@
     </style>
   </head>
   <body>
-    <h1>Indicate Plugin - Update Example</h1>
-    <span>Two seconds after the plugin was first initialized, it's initialized again which will only trigger an update.</span>
+    <h1>Indicate Plugin - Destroy Example</h1>
     <div id="target">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam dolor eget justo tincidunt fermentum. Nulla facilisi. Aenean a nibh id ex dictum tempor. Pellentesque rutrum, velit pellentesque hendrerit dictum, erat ex dictum augue, et sagittis risus neque id nulla. Suspendisse molestie elit vitae nulla luctus, et tristique enim varius. Ut eu dolor ullamcorper, finibus ipsum ac, tristique tellus. Aliquam erat volutpat. Duis sed sapien ac turpis posuere condimentum. Vivamus vitae est a felis volutpat vehicula in eget lacus.</p>
       <p>Integer purus turpis, efficitur vitae pulvinar sit amet, blandit non nisi. Duis tincidunt, neque ut tincidunt varius, metus lectus mollis lectus, in facilisis justo felis eget lectus. Proin fermentum dolor in velit viverra aliquet. Vivamus vitae magna ac neque feugiat blandit sit amet non turpis. Nam tempor non nunc et consequat. Morbi est lacus, interdum non ante id, interdum imperdiet lectus. Nunc non dolor risus. In sollicitudin egestas libero, nec aliquam dolor efficitur non. Aliquam id scelerisque purus. Nunc eget commodo arcu, sed tincidunt enim. Morbi convallis sapien eget urna porttitor finibus. Sed congue eros sit amet tellus euismod, pharetra viverra ligula mattis. Vivamus aliquet cursus consequat.</p>
@@ -26,13 +27,10 @@
       <p>Ut gravida tempor malesuada. Integer vel cursus sem, vel imperdiet odio. Duis eget orci id turpis cursus eleifend. Sed elementum orci placerat, faucibus odio non, lobortis tortor. Nulla pharetra mattis mauris vel molestie. Sed varius metus nec massa porta, quis porta mi cursus. Curabitur vulputate neque orci, a dignissim massa facilisis vel. Vestibulum risus nisl, tincidunt at tempor malesuada, ornare ut justo. Duis tincidunt ut est vel aliquam. Aenean venenatis cursus ullamcorper. Donec ac mauris lacus. Vivamus blandit semper convallis. Aliquam vitae augue a justo interdum feugiat. Vestibulum rutrum eros nec neque suscipit ullamcorper. Mauris mattis ante ut risus dignissim, eu faucibus quam lacinia.</p>
       <p>Maecenas commodo a nulla eleifend lacinia. Quisque sagittis egestas turpis ut lacinia. Maecenas sed odio nisi. Integer facilisis, purus et feugiat volutpat, massa sem bibendum est, in volutpat nibh sapien quis justo. Quisque et sapien ultrices, molestie nisl vitae, vulputate mi. Nulla magna est, faucibus at risus nec, tincidunt placerat nunc. Sed vulputate convallis odio in hendrerit. Etiam volutpat massa sit amet purus fringilla, id facilisis urna semper. Mauris malesuada, velit ac consequat egestas, nisl lacus mollis turpis, at interdum augue mi eget dolor. Praesent et elit porttitor, ultrices orci id, faucibus lorem. Sed risus quam, finibus dapibus vehicula et, accumsan vel dolor. Vestibulum gravida sem sit amet diam auctor placerat. Donec molestie diam dui, at finibus orci ornare ut. Vivamus pretium felis dui, et condimentum tellus tincidunt et.</p>
     </div>
+    <button onclick="instance.destroy()">Destory instance</button>
     <script src="../dist/indicate.js"></script>
     <script>
-      let instance = new Indicate.default(document.getElementById('target'))
-
-      setInterval(function() {
-        instance.update({color: '#FF0000'})
-      }, 2000)
+      const instance = new Indicate.default(document.getElementById('target'))
     </script>
   </body>
 </html>
