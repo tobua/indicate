@@ -39,7 +39,7 @@ Download the files from the `/dist` folder and include them in your page.
     ...
     <script src="indicate.min.js"></script>
     <script>
-      var instance = new Indicate.default(document.getElementById('target'));
+      var instance = new Indicate(document.getElementById('target'));
     </script>
   </body>
 </html>
@@ -80,6 +80,28 @@ Where the horizontal arrows should be positioned (start, end), default is center
 
 ```
 new Indicate({arrowPosition: 'start'});
+```
+
+## Plugins
+
+### jQuery
+
+indicate itself does not require jQuery but there is a plugin to use it with jQuery.
+
+```
+<link rel="stylesheet" type="text/css" href="indicate.css">
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="dist/indicate.min.js"></script>
+<script src="plugins/indicate.jquery.js"></script>
+<script>
+
+// Initialize indicate on all table elements.
+$('table').indicate()
+
+// and options can be passed.
+$('table').indicate({arrows: true});
+</script>
 ```
 
 ## Development

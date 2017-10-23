@@ -28,7 +28,7 @@
     </div>
     <script src="../dist/indicate.js"></script>
     <script>
-      let instance = new Indicate.default(document.getElementById('target'))
+      let instance = new Indicate(document.getElementById('target'))
 
       setInterval(function() {
         instance.update({color: '#FF0000'})
