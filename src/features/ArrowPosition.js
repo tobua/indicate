@@ -1,9 +1,9 @@
-import Feature from './Feature'
+import Arrow from './Arrow'
 
 /**
  * Sets a special arrow position, default is center.
  **/
-export default class ArrowPosition extends Feature {
+export default class ArrowPosition extends Arrow {
   static check (options) {
     return options.arrowPosition !== 'center'
   }
@@ -14,17 +14,5 @@ export default class ArrowPosition extends Feature {
 
   update (instance) {
     this.setArrowPosition(instance)
-  }
-
-  setArrowPosition (instance) {
-    const arrowPosition = this.options.arrowPosition
-
-    instance.directions.map(direction => {
-      // This feature only applies horizontally
-      if (direction === 'left' || direction === 'right') {
-        instance.arrows[direction].style.display = 'flex'
-        instance.arrows[direction].style.alignItems = `flex-${arrowPosition}`
-      }
-    })
   }
 }

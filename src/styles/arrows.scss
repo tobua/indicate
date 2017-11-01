@@ -23,6 +23,11 @@
   content: '›';
 }
 
+/// Used for arrowUrl and arrowMarkup option
+[class^="idc-arrow-"].idc-no-before::before {
+  content: '';
+}
+
 .idc-arrow-top,
 .idc-arrow-bottom {
   height: 20px;
