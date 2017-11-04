@@ -1,9 +1,9 @@
-import Regular from './Regular'
+import Block from './Block'
 import addClass from './helpers/addClass'
 import ClassNames from './constants/classNames'
 import './styles/table.scss'
 
-export default class Table extends Regular {
+export default class Table extends Block {
   makeElementResponsive () {
     const parentElement = this.element.parentElement
     const tagName = parentElement.tagName

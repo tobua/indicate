@@ -3,17 +3,22 @@ import removeClass from './helpers/removeClass'
 import getOffset from './helpers/getOffset'
 import getSize from './helpers/getSize'
 import ClassNames from './constants/classNames'
+import './styles/common.scss'
 import './styles/fades.scss'
 import './styles/arrows.scss'
-import './styles/regular.scss'
 
-export default class Regular {
+export default class Common {
   constructor (element, options) {
     this.element = element
     this.options = options
     this.resizeFunction = () => this.resize()
     this.scrollFunction = () => this.scroll()
+  }
 
+  /**
+   * To be called from descendants, once ready.
+   **/
+  init () {
     this.create()
     this.resize()
   }
@@ -47,7 +52,6 @@ export default class Regular {
    * Cleans up the instance.
    **/
   destroy () {
-    this.scrollableElement.removeEventListener('scroll', this.scrollFunction)
     window.removeEventListener('resize', this.resizeFunction)
   }
 
@@ -56,14 +60,12 @@ export default class Regular {
    **/
   makeElementResponsive () {
     this.parent = this.element.parentElement
-    this.scrollableElement = this.element
   }
 
   /**
    * Register the scorll, resize and arrow click listeners.
    **/
   registerListeners () {
-    this.scrollableElement.addEventListener('scroll', this.scrollFunction)
     window.addEventListener('resize', this.resizeFunction)
 
     this.directions.map(direction => {
@@ -90,38 +92,6 @@ export default class Regular {
   }
 
   /**
-   * Scroll left of right after a click.
-   **/
-  clickHorizontal (direction) {
-    const scrollLeft = this.scrollableElement.scrollLeft
-    const containerLength = this.elementVisibleWidth
-
-    const scrollLength = containerLength / this.options.scrollDenominator
-
-    if (direction === 'right') {
-      this.scrollableElement.scrollLeft = scrollLeft + scrollLength
-    } else {
-      this.scrollableElement.scrollLeft = scrollLeft - scrollLength
-    }
-  }
-
-  /**
-   * Scroll to top or bottom after a click.
-   **/
-  clickVertical (direction) {
-    const scrollTop = this.element.scrollTop
-    const containerLength = this.elementVisibleHeight
-
-    const scrollLength = containerLength / this.options.scrollDenominator
-
-    if (direction === 'bottom') {
-      this.element.scrollTop = scrollTop + scrollLength
-    } else {
-      this.element.scrollTop = scrollTop - scrollLength
-    }
-  }
-
-  /**
    * Adapt elements after a scroll.
    **/
   scroll () {
@@ -137,38 +107,34 @@ export default class Regular {
   /**
    * Adapts the visibility of the horizontal elements after a scroll.
    **/
-  scrollHorizontal () {
-    const scrollLeft = this.scrollableElement.scrollLeft
+  scrollHorizontal (atStart, atEnd) {
+    if (atStart) {
+      this.hide('left')
+    } else {
+      this.show('left')
+    }
 
-    if (this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth) {
+    if (atEnd) {
       this.hide('right')
     } else {
       this.show('right')
-    }
-
-    if (scrollLeft > this.options.fadeOffset) {
-      this.show('left')
-    } else {
-      this.hide('left')
     }
   }
 
   /**
    * Adapts the visibility of the vertical elements after a scroll.
    **/
-  scrollVertical () {
-    const scrollTop = this.scrollableElement.scrollTop
-
-    if (this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight) {
+  scrollVertical (atStart, atEnd) {
+    if (atEnd) {
       this.hide('bottom')
     } else {
       this.show('bottom')
     }
 
-    if (scrollTop > this.options.fadeOffset) {
-      this.show('top')
-    } else {
+    if (atStart) {
       this.hide('top')
+    } else {
+      this.show('top')
     }
   }
 
@@ -178,9 +144,6 @@ export default class Regular {
   resize () {
     const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
     const scrollElementSize = getSize(this.scrollableElement)
-
-    this.elementFullWidth = Math.max(scrollElementBounds.width, this.scrollableElement.scrollWidth)
-    this.elementFullHeight = Math.max(scrollElementBounds.height, this.scrollableElement.scrollHeight)
 
     // Probably unneeded check if needed for browser compatibility
     this.elementVisibleWidth = Math.max(this.scrollableElement.clientWidth, scrollElementBounds.width)

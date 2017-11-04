@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Indicate Plugin - Basic Example</title>
+    <title>Indicate Plugin - iframe Example</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
     <style>
@@ -14,7 +14,7 @@
   </head>
   <body>
     <h1>Indicate Plugin - iframe Example</h1>
-    <iframe src="/iframe-content.html" id="target"></iframe>
+    <iframe src="/iframe-content.html" id="target" frameBorder="0"></iframe>
     <script src="../dist/indicate.js"></script>
     <script>
       const instance = new Indicate(document.getElementById('target'))

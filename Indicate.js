@@ -1,13 +1,14 @@
 import Options from './src/Options'
-import Regular from './src/Regular'
+import Block from './src/Block'
 import IFrame from './src/IFrame'
 import Table from './src/Table'
 
 /**
- * indicate - jQuery Scroll Indicator Plugin
+ * indicate - Scroll Indicator Plugin
  *
- * Adds horizontal fade effect to tables and iframes.
- * Intended to let the user know that there is more content so see than currently fits.
+ * Adds horizontal fade effect to block elements, tables and iframes.
+ * Intended to let the user know that there is more content so see than
+ * currently fits into the visible part.
  *
  * @author Matthias Giger <matthias.giger@namics.com>
  */
@@ -65,7 +66,7 @@ export default class Indicate {
         this.instances.push(new Table(element, this.options))
         break
       default:
-        this.instances.push(new Regular(element, this.options))
+        this.instances.push(new Block(element, this.options))
     }
   }
 }
