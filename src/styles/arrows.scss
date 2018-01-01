@@ -6,17 +6,16 @@
   font-family: Arial, sans-serif;
   font-size: 30px;
   overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .hide[class^="idc-arrow-"] {
   opacity: 0;
   transition: opacity 300ms linear;
-}
-
-[class^="idc-arrow-"] {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  pointer-events: none;
 }
 
 [class^="idc-arrow-"]::before {

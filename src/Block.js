@@ -1,10 +1,35 @@
 import Common from './Common'
+import getSize from './helpers/getSize'
 import './styles/block.scss'
 
 export default class Block extends Common {
   constructor (element, options) {
     super(element, options)
     this.init()
+  }
+
+  shouldInitHorizontal () {
+    const scrollElementSize = getSize(this.scrollableElement)
+
+    this.elementWidth = scrollElementSize.width
+
+    this.elementFullWidth = this.element.scrollWidth
+
+    if (this.options.horizontal) {
+      return this.elementFullWidth > this.elementWidth
+    }
+  }
+
+  shouldInitVertical () {
+    const scrollElementSize = getSize(this.element)
+
+    this.elementHeight = scrollElementSize.height
+
+    this.elementFullHeight = this.element.scrollHeight
+
+    if (this.options.vertical) {
+      return this.elementFullHeight > this.elementHeight
+    }
   }
 
   destroy () {

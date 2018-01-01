@@ -9,6 +9,7 @@
 .hide[class^="idc-fade-"] {
   opacity: 0;
   transition: opacity 300ms linear;
+  pointer-events: none;
 }
 
 .idc-fade-top,

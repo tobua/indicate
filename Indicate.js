@@ -1,7 +1,9 @@
 import Options from './src/Options'
 import Block from './src/Block'
 import IFrame from './src/IFrame'
+import IFrameCrossOrigin from './src/IFrameCrossOrigin'
 import Table from './src/Table'
+import isCrossOriginIframe from './src/helpers/is-cross-origin-iframe'
 
 /**
  * indicate - Scroll Indicator Plugin
@@ -60,7 +62,7 @@ export default class Indicate {
 
     switch (tagName) {
       case 'iframe':
-        this.instances.push(new IFrame(element, this.options))
+        this.instances.push(this.getIframeInstance(element))
         break
       case 'table':
         this.instances.push(new Table(element, this.options))
@@ -68,5 +70,17 @@ export default class Indicate {
       default:
         this.instances.push(new Block(element, this.options))
     }
+  }
+
+  /**
+   * Checks if the iframe is same or cross origin and returns the appropriate
+   * instance.
+   **/
+  getIframeInstance (element) {
+    if (isCrossOriginIframe(element)) {
+      return new IFrameCrossOrigin(element, this.options)
+    }
+
+    return new IFrame(element, this.options)
   }
 }

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/naminho/indicate/master/logo.png?sanitize=true" alt="Indicate Scroll Plugin">
+</p>
+
 # indicate - Scroll Indicator Plugin
 Fade effect and arrows for responsive tables and iframes with no dependencies.
 

@@ -11,6 +11,7 @@ export default class Common {
   constructor (element, options) {
     this.element = element
     this.options = options
+    this.initFunction = () => this.init()
     this.resizeFunction = () => this.resize()
     this.scrollFunction = () => this.scroll()
   }
@@ -19,15 +20,41 @@ export default class Common {
    * To be called from descendants, once ready.
    **/
   init () {
-    this.create()
-    this.resize()
+    this.makeElementResponsive()
+
+    const shouldInitHorizontal = this.shouldInitHorizontal()
+    const shouldInitVertical = this.shouldInitVertical()
+
+    if (
+      (this.options.horizontal && !shouldInitHorizontal) ||
+      (this.options.vertical && !shouldInitVertical)
+    ) {
+      if (!this.initEventAdded) {
+        this.initEventAdded = true
+        window.addEventListener('resize', this.initFunction)
+      }
+    }
+
+    if (
+      (this.options.horizontal && this.initHorizontal) ||
+      (this.options.vertical && this.initVertical)
+    ) {
+      window.removeEventListener('resize', this.initFunction)
+    }
+
+    if (
+      (this.options.horizontal && shouldInitHorizontal && !this.initHorizontal) ||
+      (this.options.vertical && shouldInitVertical && !this.initVertical)
+    ) {
+      this.create()
+      this.resize()
+    }
   }
 
   /**
    * Creates an instance.
    **/
   create () {
-    this.makeElementResponsive()
     this.element.className += ` ${ClassNames.elementClass}`
     this.setDirections()
     this.insertFadeElements()
@@ -46,6 +73,8 @@ export default class Common {
     this.setDirections()
 
     this.hook('update')
+
+    this.resize()
   }
 
   /**
@@ -53,6 +82,7 @@ export default class Common {
    **/
   destroy () {
     window.removeEventListener('resize', this.resizeFunction)
+    window.removeEventListener('resize', this.initFunction)
   }
 
   /**
@@ -95,11 +125,11 @@ export default class Common {
    * Adapt elements after a scroll.
    **/
   scroll () {
-    if (this.options.horizontal) {
+    if (this.options.horizontal && this.fades.left) {
       this.scrollHorizontal()
     }
 
-    if (this.options.vertical) {
+    if (this.options.vertical && this.fades.top) {
       this.scrollVertical()
     }
   }
@@ -177,8 +207,12 @@ export default class Common {
    * resize and scroll we hide them immediately.
    **/
   hideInitial () {
-    this.hide('top')
-    this.hide('left')
+    if (this.fades.top) {
+      this.hide('top')
+    }
+    if (this.fades.left) {
+      this.hide('left')
+    }
   }
 
   /**
@@ -233,7 +267,7 @@ export default class Common {
   updateElementPositions () {
     const elementOffset = getOffset(this.scrollableElement)
 
-    if (this.options.horizontal) {
+    if (this.options.horizontal && this.fades.left) {
       this.setElementPositionHorizontal(this.fades.left, elementOffset, false)
       this.setElementPositionHorizontal(this.fades.right, elementOffset, true)
 
@@ -243,7 +277,7 @@ export default class Common {
       }
     }
 
-    if (this.options.vertical) {
+    if (this.options.vertical && this.fades.top) {
       this.setElementPositionVertical(this.fades.top, elementOffset, false)
       this.setElementPositionVertical(this.fades.bottom, elementOffset, true)
 
@@ -276,11 +310,13 @@ export default class Common {
   setDirections () {
     this.directions = []
 
-    if (this.options.horizontal) {
+    if (this.options.horizontal && this.shouldInitHorizontal()) {
+      this.initHorizontal = true
       this.directions.push('left', 'right')
     }
 
-    if (this.options.vertical) {
+    if (this.options.vertical && this.shouldInitVertical()) {
+      this.initVertical = true
       this.directions.push('top', 'bottom')
     }
   }

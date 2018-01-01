@@ -8,7 +8,7 @@ export default class Table extends Block {
     const parentElement = this.element.parentElement
     const tagName = parentElement.tagName
 
-    if (tagName !== 'div') {
+    if (tagName.toLowerCase() !== 'div') {
       this.addWrapper(parentElement)
     } else {
       addClass(parentElement, ClassNames.tableWrapper)

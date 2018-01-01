@@ -2,22 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Indicate Plugin - Update Example</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicate - Update</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
-    <style>
-      div {
-        overflow: scroll;
-        width: 50%;
-        height: 50vh;
-      }
-      p {
-        width: 200%;
-      }
-    </style>
+    <link rel="stylesheet" href="examples-styles.css">
   </head>
   <body>
-    <h1>Indicate Plugin - Update Example</h1>
+    <h1>Update</h1>
     <span>Two seconds after the plugin was first initialized, it's initialized again which will only trigger an update.</span>
     <div id="target">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed aliquam dolor eget justo tincidunt fermentum. Nulla facilisi. Aenean a nibh id ex dictum tempor. Pellentesque rutrum, velit pellentesque hendrerit dictum, erat ex dictum augue, et sagittis risus neque id nulla. Suspendisse molestie elit vitae nulla luctus, et tristique enim varius. Ut eu dolor ullamcorper, finibus ipsum ac, tristique tellus. Aliquam erat volutpat. Duis sed sapien ac turpis posuere condimentum. Vivamus vitae est a felis volutpat vehicula in eget lacus.</p>
@@ -31,7 +22,8 @@
       let instance = new Indicate(document.getElementById('target'))
 
       setInterval(function() {
-        instance.update({color: '#FF0000'})
+        document.getElementById('target').classList.add('colored')
+        instance.update({color: '#0000FF'})
       }, 2000)
     </script>
   </body>
