@@ -688,6 +688,10 @@ exports.default = function (element) {
   bounds.width -= parseInt(computedStyles.marginLeft) + parseInt(computedStyles.marginRight);
   bounds.height -= parseInt(computedStyles.marginTop) + parseInt(computedStyles.marginBottom);
 
+  // Round, since other browser functions will round too.
+  bounds.width = Math.ceil(bounds.width);
+  bounds.height = Math.ceil(bounds.height);
+
   return bounds;
 };
 
