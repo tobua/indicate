@@ -10,8 +10,8 @@
      height: boundingClientRect.height
    }
 
-   bounds.width -= parseInt(computedStyles.marginLeft) + parseInt(computedStyles.marginRight)
-   bounds.height -= parseInt(computedStyles.marginTop) + parseInt(computedStyles.marginBottom)
+   bounds.width -= parseInt(computedStyles.borderLeft) + parseInt(computedStyles.borderRight)
+   bounds.height -= parseInt(computedStyles.borderTop) + parseInt(computedStyles.borderBottom)
 
    // Round, since other browser functions will round too.
    bounds.width = Math.ceil(bounds.width)

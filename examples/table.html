@@ -258,11 +258,122 @@
         </tr>
       </tbody>
     </table>
+    <style>
+    .static-example.idc-table-wrapper {
+      overflow-x: auto;
+      margin-left: 100px;
+      width: calc(100% - 100px);
+    }
+
+    .left-offset-col {
+      position: absolute;
+      left: 0;
+      width: 100px;
+    }
+    </style>
+    <h2>Static Left Column</h2>
+    <div class="static-example">
+      <table id="static-left-column">
+        <tr>
+          <th class="left-offset-col">
+            Header 1
+          </th>
+          <th>
+            Header 2
+          </th>
+          <th>
+            Header 3
+          </th>
+          <th>
+            Header 4
+          </th>
+          <th>
+            Header 5
+          </th>
+          <th>
+            Header 6
+          </th>
+          <th>
+            Header 7
+          </th>
+        </tr>
+        <tr>
+          <td class="left-offset-col">
+            Col 1
+          </td>
+          <td>
+            Col 2
+          </td>
+          <td>
+            Col 3
+          </td>
+          <td>
+            Col 4
+          </td>
+          <td>
+            Col 5
+          </td>
+          <td>
+            Col 6
+          </td>
+          <td>
+            Col 7
+          </td>
+        </tr>
+        <tr>
+          <td class="left-offset-col">
+            Col 1
+          </td>
+          <td>
+            Col 2
+          </td>
+          <td>
+            Col 3
+          </td>
+          <td>
+            Col 4
+          </td>
+          <td>
+            Col 5
+          </td>
+          <td>
+            Col 6
+          </td>
+          <td>
+            Col 7
+          </td>
+        </tr>
+        <tr>
+          <td class="left-offset-col">
+            Col 1
+          </td>
+          <td>
+            Col 2
+          </td>
+          <td>
+            Col 3
+          </td>
+          <td>
+            Col 4
+          </td>
+          <td>
+            Col 5
+          </td>
+          <td>
+            Col 6
+          </td>
+          <td>
+            Col 7
+          </td>
+        </tr>
+      </table>
+    </div>
     <script src="../dist/indicate.js"></script>
     <script>
       const instance = new Indicate(document.getElementById('target'), {arrowPosition: 'start'})
       const instanceWrapper = new Indicate(document.getElementById('targetWrapper'), {arrowPosition: 'start'})
       const fixedInstance = new Indicate(document.getElementById('scrollable-columns'))
+      const staticInstance = new Indicate(document.getElementById('static-left-column'), {arrowPosition: 'start'})
     </script>
   </body>
 </html>
