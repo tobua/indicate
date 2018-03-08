@@ -1,19 +1,18 @@
 const path = require('path')
-const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
-const EmptyPlugin = () => {}
 
 module.exports = function (env) {
   const isProduction = env === 'production'
   return {
+    mode: env,
     entry: './Indicate.js',
     output: {
       library: 'Indicate',
       libraryExport: 'default',
       libraryTarget: 'umd',
       umdNamedDefine: true,
-      filename: `dist/indicate${isProduction ? '.min' : ''}.js`
+      path: path.resolve(__dirname, 'dist'),
+      filename: `indicate${isProduction ? '.min' : ''}.js`
     },
     module: {
       rules: [
@@ -40,11 +39,17 @@ module.exports = function (env) {
       ]
     },
     plugins: [
-      new ExtractTextPlugin('dist/indicate.css'),
-      isProduction ? new webpack.optimize.UglifyJsPlugin() : EmptyPlugin
+      new ExtractTextPlugin('indicate.css')
     ],
+    optimization: {
+      minimize: env === 'production'
+    },
     devServer: {
-      contentBase: [path.join(__dirname, 'examples'), path.join(__dirname, 'dist')],
+      publicPath: '/dist/',
+      contentBase: [
+        path.join(__dirname, 'examples'),
+        path.join(__dirname, 'dist')
+      ],
       compress: true,
       port: 3000,
       open: true

@@ -10,7 +10,7 @@ const extractSubdomain = (domain) => {
 
 // Extracts the domain name of a subdomain.
 const extractDomainName = (subdomain) => {
-    // TODO does not work for ip addresses
+  // TODO does not work for ip addresses
   const arr = subdomain.split('.')
   return arr[arr.length - 2] + '.' + arr[arr.length - 1]
 }

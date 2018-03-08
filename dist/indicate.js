@@ -7,7 +7,7 @@
 		exports["Indicate"] = factory();
 	else
 		root["Indicate"] = factory();
-})(typeof self !== 'undefined' ? self : this, function() {
+})(window, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -54,6 +54,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		}
 /******/ 	};
 /******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -69,2224 +74,378 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
 /******/
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = "./Indicate.js");
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
+/******/ ({
+
+/***/ "./Indicate.js":
+/*!*********************!*\
+  !*** ./Indicate.js ***!
+  \*********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Feature = function () {
-  function Feature(options) {
-    _classCallCheck(this, Feature);
-
-    this.options = options;
-  }
-
-  /**
-   * Check if the feature is needed. Returns true if feature is applicable.
-   **/
-
-
-  _createClass(Feature, null, [{
-    key: "check",
-    value: function check(options) {
-      return false;
-    }
-  }]);
-
-  return Feature;
-}();
-
-exports.default = Feature;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _typeof = typeof Symbol === \"function\" && typeof Symbol.iterator === \"symbol\" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === \"function\" && obj.constructor === Symbol && obj !== Symbol.prototype ? \"symbol\" : typeof obj; };\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Options = __webpack_require__(/*! ./src/Options */ \"./src/Options.js\");\n\nvar _Options2 = _interopRequireDefault(_Options);\n\nvar _Block = __webpack_require__(/*! ./src/Block */ \"./src/Block.js\");\n\nvar _Block2 = _interopRequireDefault(_Block);\n\nvar _IFrame = __webpack_require__(/*! ./src/IFrame */ \"./src/IFrame.js\");\n\nvar _IFrame2 = _interopRequireDefault(_IFrame);\n\nvar _IFrameCrossOrigin = __webpack_require__(/*! ./src/IFrameCrossOrigin */ \"./src/IFrameCrossOrigin.js\");\n\nvar _IFrameCrossOrigin2 = _interopRequireDefault(_IFrameCrossOrigin);\n\nvar _Table = __webpack_require__(/*! ./src/Table */ \"./src/Table.js\");\n\nvar _Table2 = _interopRequireDefault(_Table);\n\nvar _isCrossOriginIframe = __webpack_require__(/*! ./src/helpers/is-cross-origin-iframe */ \"./src/helpers/is-cross-origin-iframe.js\");\n\nvar _isCrossOriginIframe2 = _interopRequireDefault(_isCrossOriginIframe);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\n/**\n * indicate - Scroll Indicator Plugin\n *\n * Adds horizontal fade effect to block elements, tables and iframes.\n * Intended to let the user know that there is more content so see than\n * currently fits into the visible part.\n *\n * @author Matthias Giger <matthias.giger@namics.com>\n */\nvar Indicate = function () {\n  function Indicate(targetElements, options) {\n    _classCallCheck(this, Indicate);\n\n    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object') {\n      options = {};\n    }\n\n    this.targetElements = targetElements;\n    this.instances = [];\n    this.options = new _Options2.default(options);\n\n    this.init();\n  }\n\n  /**\n   * Initializes the instances depending on whether it's a single element or\n   * an array of nodes.\n   */\n\n\n  _createClass(Indicate, [{\n    key: 'init',\n    value: function init() {\n      var _this = this;\n\n      var elements = this.targetElements;\n\n      if (elements) {\n        if (elements.length) {\n          [].map.call(elements, function (element) {\n            return _this.createInstanceForElement(element);\n          });\n        } else {\n          this.createInstanceForElement(elements);\n        }\n      }\n    }\n  }, {\n    key: 'update',\n    value: function update(newOptions) {\n      var _this2 = this;\n\n      this.options.update(newOptions);\n      this.instances.forEach(function (instance) {\n        return instance.update(_this2.options);\n      });\n    }\n  }, {\n    key: 'destroy',\n    value: function destroy() {\n      this.instances.forEach(function (instance) {\n        return instance.destroy();\n      });\n    }\n\n    /**\n     * Creates an instance of the appropriate class depending on the elements tag.\n     */\n\n  }, {\n    key: 'createInstanceForElement',\n    value: function createInstanceForElement(element) {\n      var tagName = String(element.tagName).toLowerCase();\n\n      switch (tagName) {\n        case 'iframe':\n          this.instances.push(this.getIframeInstance(element));\n          break;\n        case 'table':\n          this.instances.push(new _Table2.default(element, this.options));\n          break;\n        default:\n          this.instances.push(new _Block2.default(element, this.options));\n      }\n    }\n\n    /**\n     * Checks if the iframe is same or cross origin and returns the appropriate\n     * instance.\n     **/\n\n  }, {\n    key: 'getIframeInstance',\n    value: function getIframeInstance(element) {\n      if ((0, _isCrossOriginIframe2.default)(element)) {\n        return new _IFrameCrossOrigin2.default(element, this.options);\n      }\n\n      return new _IFrame2.default(element, this.options);\n    }\n  }]);\n\n  return Indicate;\n}();\n\nexports.default = Indicate;\n\n//# sourceURL=webpack://Indicate/./Indicate.js?");
 
 /***/ }),
-/* 1 */
+
+/***/ "./node_modules/es6-object-assign/index.js":
+/*!*************************************************!*\
+  !*** ./node_modules/es6-object-assign/index.js ***!
+  \*************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-/**
- * Adds a class to an element.
- * If there is already a space at the end, none will be added.
- **/
-exports.default = function (element, selector) {
-  if (element.className[element.className.length - 1] !== ' ') {
-    element.className += ' ' + selector;
-  } else {
-    element.className += selector;
-  }
-};
+eval("/**\n * Code refactored from Mozilla Developer Network:\n * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign\n */\n\n\n\nfunction assign(target, firstSource) {\n  if (target === undefined || target === null) {\n    throw new TypeError('Cannot convert first argument to object');\n  }\n\n  var to = Object(target);\n  for (var i = 1; i < arguments.length; i++) {\n    var nextSource = arguments[i];\n    if (nextSource === undefined || nextSource === null) {\n      continue;\n    }\n\n    var keysArray = Object.keys(Object(nextSource));\n    for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {\n      var nextKey = keysArray[nextIndex];\n      var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);\n      if (desc !== undefined && desc.enumerable) {\n        to[nextKey] = nextSource[nextKey];\n      }\n    }\n  }\n  return to;\n}\n\nfunction polyfill() {\n  if (!Object.assign) {\n    Object.defineProperty(Object, 'assign', {\n      enumerable: false,\n      configurable: true,\n      writable: true,\n      value: assign\n    });\n  }\n}\n\nmodule.exports = {\n  assign: assign,\n  polyfill: polyfill\n};\n\n//# sourceURL=webpack://Indicate/./node_modules/es6-object-assign/index.js?");
 
 /***/ }),
-/* 2 */
+
+/***/ "./src/Block.js":
+/*!**********************!*\
+  !*** ./src/Block.js ***!
+  \**********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Feature2 = __webpack_require__(0);
-
-var _Feature3 = _interopRequireDefault(_Feature2);
-
-var _addClass = __webpack_require__(1);
-
-var _addClass2 = _interopRequireDefault(_addClass);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Abstract class to provide arrow related functionality.
- **/
-var Arrow = function (_Feature) {
-  _inherits(Arrow, _Feature);
-
-  function Arrow() {
-    _classCallCheck(this, Arrow);
-
-    return _possibleConstructorReturn(this, (Arrow.__proto__ || Object.getPrototypeOf(Arrow)).apply(this, arguments));
-  }
-
-  _createClass(Arrow, [{
-    key: 'setArrowRotation',
-    value: function setArrowRotation(arrow, direction) {
-      if (direction === 'top') {
-        arrow.style.transform = 'rotate(90deg)';
-      }
-      if (direction === 'right') {
-        arrow.style.transform = 'rotate(180deg)';
-      }
-      if (direction === 'bottom') {
-        arrow.style.transform = 'rotate(270deg)';
-      }
-    }
-  }, {
-    key: 'setArrowPosition',
-    value: function setArrowPosition(instance) {
-      var arrowPosition = this.options.arrowPosition;
-
-      instance.directions.map(function (direction) {
-        // This feature only applies horizontally
-        if (direction === 'left' || direction === 'right') {
-          instance.arrows[direction].style.display = 'flex';
-          instance.arrows[direction].style.alignItems = 'flex-' + arrowPosition;
-        }
-      });
-    }
-  }, {
-    key: 'hideDefaultArrows',
-    value: function hideDefaultArrows(arrow) {
-      // Removes the default before element.
-      (0, _addClass2.default)(arrow, 'idc-no-before');
-    }
-  }]);
-
-  return Arrow;
-}(_Feature3.default);
-
-exports.default = Arrow;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if (\"value\" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };\n\nvar _Common2 = __webpack_require__(/*! ./Common */ \"./src/Common.js\");\n\nvar _Common3 = _interopRequireDefault(_Common2);\n\nvar _getSize = __webpack_require__(/*! ./helpers/getSize */ \"./src/helpers/getSize.js\");\n\nvar _getSize2 = _interopRequireDefault(_getSize);\n\n__webpack_require__(/*! ./styles/block.scss */ \"./src/styles/block.scss\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Block = function (_Common) {\n  _inherits(Block, _Common);\n\n  function Block(element, options) {\n    _classCallCheck(this, Block);\n\n    var _this = _possibleConstructorReturn(this, (Block.__proto__ || Object.getPrototypeOf(Block)).call(this, element, options));\n\n    _this.init();\n    return _this;\n  }\n\n  _createClass(Block, [{\n    key: 'shouldInitHorizontal',\n    value: function shouldInitHorizontal() {\n      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);\n\n      this.elementWidth = scrollElementSize.width;\n\n      this.elementFullWidth = this.element.scrollWidth;\n\n      if (this.options.horizontal) {\n        return this.elementFullWidth > this.elementWidth;\n      }\n    }\n  }, {\n    key: 'shouldInitVertical',\n    value: function shouldInitVertical() {\n      var scrollElementSize = (0, _getSize2.default)(this.element);\n\n      this.elementHeight = scrollElementSize.height;\n\n      this.elementFullHeight = this.element.scrollHeight;\n\n      if (this.options.vertical) {\n        return this.elementFullHeight > this.elementHeight;\n      }\n    }\n  }, {\n    key: 'destroy',\n    value: function destroy() {\n      this.scrollableElement.removeEventListener('scroll', this.scrollFunction);\n      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'destroy', this).call(this);\n    }\n  }, {\n    key: 'makeElementResponsive',\n    value: function makeElementResponsive() {\n      this.scrollableElement = this.element;\n      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'makeElementResponsive', this).call(this);\n    }\n  }, {\n    key: 'registerListeners',\n    value: function registerListeners() {\n      this.scrollableElement.addEventListener('scroll', this.scrollFunction);\n      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'registerListeners', this).call(this);\n    }\n\n    /**\n     * Scroll left of right after a click.\n     **/\n\n  }, {\n    key: 'clickHorizontal',\n    value: function clickHorizontal(direction) {\n      var scrollLeft = this.scrollableElement.scrollLeft;\n      var containerLength = this.elementVisibleWidth;\n\n      var scrollLength = containerLength / this.options.scrollDenominator;\n\n      if (direction === 'right') {\n        this.scrollableElement.scrollLeft = scrollLeft + scrollLength;\n      } else {\n        this.scrollableElement.scrollLeft = scrollLeft - scrollLength;\n      }\n    }\n\n    /**\n     * Scroll to top or bottom after a click.\n     **/\n\n  }, {\n    key: 'clickVertical',\n    value: function clickVertical(direction) {\n      var scrollTop = this.element.scrollTop;\n      var containerLength = this.elementVisibleHeight;\n\n      var scrollLength = containerLength / this.options.scrollDenominator;\n\n      if (direction === 'bottom') {\n        this.element.scrollTop = scrollTop + scrollLength;\n      } else {\n        this.element.scrollTop = scrollTop - scrollLength;\n      }\n    }\n\n    /**\n     * Adapts the visibility of the horizontal elements after a scroll.\n     **/\n\n  }, {\n    key: 'scrollHorizontal',\n    value: function scrollHorizontal() {\n      var scrollLeft = this.scrollableElement.scrollLeft;\n      var atStart = scrollLeft < this.options.fadeOffset;\n      var atEnd = this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth;\n\n      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'scrollHorizontal', this).call(this, atStart, atEnd);\n    }\n\n    /**\n     * Adapts the visibility of the vertical elements after a scroll.\n     **/\n\n  }, {\n    key: 'scrollVertical',\n    value: function scrollVertical() {\n      var scrollTop = this.scrollableElement.scrollTop;\n      var atStart = scrollTop < this.options.fadeOffset;\n      var atEnd = this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight;\n\n      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'scrollVertical', this).call(this, atStart, atEnd);\n    }\n\n    /**\n     * On page resize we need to adapt the container measurements.\n     **/\n\n  }, {\n    key: 'resize',\n    value: function resize() {\n      var scrollElementBounds = this.scrollableElement.getBoundingClientRect();\n\n      this.elementFullWidth = Math.max(scrollElementBounds.width, this.scrollableElement.scrollWidth);\n      this.elementFullHeight = Math.max(scrollElementBounds.height, this.scrollableElement.scrollHeight);\n\n      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'resize', this).call(this);\n    }\n  }]);\n\n  return Block;\n}(_Common3.default);\n\nexports.default = Block;\n\n//# sourceURL=webpack://Indicate/./src/Block.js?");
 
 /***/ }),
-/* 3 */
+
+/***/ "./src/Common.js":
+/*!***********************!*\
+  !*** ./src/Common.js ***!
+  \***********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _addClass = __webpack_require__(1);
-
-var _addClass2 = _interopRequireDefault(_addClass);
-
-var _removeClass = __webpack_require__(18);
-
-var _removeClass2 = _interopRequireDefault(_removeClass);
-
-var _getOffset = __webpack_require__(19);
-
-var _getOffset2 = _interopRequireDefault(_getOffset);
-
-var _getSize = __webpack_require__(4);
-
-var _getSize2 = _interopRequireDefault(_getSize);
-
-var _classNames = __webpack_require__(7);
-
-var _classNames2 = _interopRequireDefault(_classNames);
-
-__webpack_require__(20);
-
-__webpack_require__(21);
-
-__webpack_require__(22);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Common = function () {
-  function Common(element, options) {
-    var _this = this;
-
-    _classCallCheck(this, Common);
-
-    this.element = element;
-    this.options = options;
-    this.initFunction = function () {
-      return _this.init();
-    };
-    this.resizeFunction = function () {
-      return _this.resize();
-    };
-    this.scrollFunction = function () {
-      return _this.scroll();
-    };
-  }
-
-  /**
-   * To be called from descendants, once ready.
-   **/
-
-
-  _createClass(Common, [{
-    key: 'init',
-    value: function init() {
-      this.makeElementResponsive();
-
-      var shouldInitHorizontal = this.shouldInitHorizontal();
-      var shouldInitVertical = this.shouldInitVertical();
-
-      if (this.options.horizontal && !shouldInitHorizontal || this.options.vertical && !shouldInitVertical) {
-        if (!this.initEventAdded) {
-          this.initEventAdded = true;
-          window.addEventListener('resize', this.initFunction);
-        }
-      }
-
-      if (this.options.horizontal && this.initHorizontal || this.options.vertical && this.initVertical) {
-        window.removeEventListener('resize', this.initFunction);
-      }
-
-      if (this.options.horizontal && shouldInitHorizontal && !this.initHorizontal || this.options.vertical && shouldInitVertical && !this.initVertical) {
-        this.create();
-        this.resize();
-      }
-    }
-
-    /**
-     * Creates an instance.
-     **/
-
-  }, {
-    key: 'create',
-    value: function create() {
-      this.element.className += ' ' + _classNames2.default.elementClass;
-      this.setDirections();
-      this.insertFadeElements();
-      this.insertArrows();
-      this.registerListeners();
-      this.hideInitial();
-
-      this.hook('create');
-    }
-
-    /**
-     * Updates an exising instance when new options are received.
-     **/
-
-  }, {
-    key: 'update',
-    value: function update(options) {
-      this.options = options;
-      this.setDirections();
-
-      this.hook('update');
-
-      this.resize();
-    }
-
-    /**
-     * Cleans up the instance.
-     **/
-
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      window.removeEventListener('resize', this.resizeFunction);
-      window.removeEventListener('resize', this.initFunction);
-    }
-
-    /**
-     * For regular elements no wrapper is needed.
-     **/
-
-  }, {
-    key: 'makeElementResponsive',
-    value: function makeElementResponsive() {
-      this.parent = this.element.parentElement;
-    }
-
-    /**
-     * Register the scorll, resize and arrow click listeners.
-     **/
-
-  }, {
-    key: 'registerListeners',
-    value: function registerListeners() {
-      var _this2 = this;
-
-      window.addEventListener('resize', this.resizeFunction);
-
-      this.directions.map(function (direction) {
-        var element = _this2.arrows ? _this2.arrows[direction] : _this2.fades[direction];
-        // Note that listeners on hidden elements will not be working.
-        element.addEventListener('click', function (event) {
-          return _this2.handleClick(event);
-        });
-      });
-    }
-
-    /**
-     * Adapts the scroll position after a click on a direction (arrow/fade) has
-     * happened.
-     **/
-
-  }, {
-    key: 'handleClick',
-    value: function handleClick(event) {
-      var direction = event.target.className.match(/[\w]*($|\s)/)[0].trim();
-
-      if (direction === 'left' || direction === 'right') {
-        return this.clickHorizontal(direction);
-      }
-
-      if (direction === 'top' || direction === 'bottom') {
-        return this.clickVertical(direction);
-      }
-    }
-
-    /**
-     * Adapt elements after a scroll.
-     **/
-
-  }, {
-    key: 'scroll',
-    value: function scroll() {
-      if (this.options.horizontal && this.fades.left) {
-        this.scrollHorizontal();
-      }
-
-      if (this.options.vertical && this.fades.top) {
-        this.scrollVertical();
-      }
-    }
-
-    /**
-     * Adapts the visibility of the horizontal elements after a scroll.
-     **/
-
-  }, {
-    key: 'scrollHorizontal',
-    value: function scrollHorizontal(atStart, atEnd) {
-      if (atStart) {
-        this.hide('left');
-      } else {
-        this.show('left');
-      }
-
-      if (atEnd) {
-        this.hide('right');
-      } else {
-        this.show('right');
-      }
-    }
-
-    /**
-     * Adapts the visibility of the vertical elements after a scroll.
-     **/
-
-  }, {
-    key: 'scrollVertical',
-    value: function scrollVertical(atStart, atEnd) {
-      if (atEnd) {
-        this.hide('bottom');
-      } else {
-        this.show('bottom');
-      }
-
-      if (atStart) {
-        this.hide('top');
-      } else {
-        this.show('top');
-      }
-    }
-
-    /**
-     * On page resize we need to adapt the container measurements.
-     **/
-
-  }, {
-    key: 'resize',
-    value: function resize() {
-      var _this3 = this;
-
-      var scrollElementBounds = this.scrollableElement.getBoundingClientRect();
-      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);
-
-      // Probably unneeded check if needed for browser compatibility
-      this.elementVisibleWidth = Math.max(this.scrollableElement.clientWidth, scrollElementBounds.width);
-      this.elementVisibleHeight = Math.max(this.scrollableElement.clientHeight, scrollElementBounds.height);
-
-      this.elementWidth = scrollElementSize.width;
-      this.elementHeight = scrollElementSize.height;
-
-      window.requestAnimationFrame(function () {
-        return _this3.updateElementPositions();
-      });
-
-      this.scroll();
-    }
-
-    /**
-     * Hides the fades and arrows if they're not yet hidden.
-     **/
-
-  }, {
-    key: 'hide',
-    value: function hide(direction) {
-      var hidePropertyName = 'is' + direction + 'Hidden';
-
-      if (!this[hidePropertyName]) {
-        this[hidePropertyName] = true;
-        (0, _addClass2.default)(this.fades[direction], 'hide');
-        if (this.arrows) {
-          (0, _addClass2.default)(this.arrows[direction], 'hide');
-        }
-      }
-    }
-
-    /**
-     * Top and left should be hidden in every case. Since this is faster than
-     * resize and scroll we hide them immediately.
-     **/
-
-  }, {
-    key: 'hideInitial',
-    value: function hideInitial() {
-      if (this.fades.top) {
-        this.hide('top');
-      }
-      if (this.fades.left) {
-        this.hide('left');
-      }
-    }
-
-    /**
-     * Shows the fades and arrows if they're hidden.
-     **/
-
-  }, {
-    key: 'show',
-    value: function show(direction) {
-      var hidePropertyName = 'is' + direction + 'Hidden';
-
-      if (this[hidePropertyName]) {
-        this[hidePropertyName] = false;
-        (0, _removeClass2.default)(this.fades[direction], 'hide');
-        if (this.arrows) {
-          (0, _removeClass2.default)(this.arrows[direction], 'hide');
-        }
-      }
-    }
-
-    /**
-     * Inserts the fade elements for all the directions provided.
-     **/
-
-  }, {
-    key: 'insertFadeElements',
-    value: function insertFadeElements() {
-      var _this4 = this;
-
-      this.fades = {};
-
-      this.directions.map(function (direction, index) {
-        _this4.fades[direction] = document.createElement('div');
-        _this4.fades[direction].className = _classNames2.default['fade-' + direction];
-        _this4.parent.appendChild(_this4.fades[direction]);
-      });
-    }
-
-    /**
-     * Inserts the arrows for all the directions provided.
-     **/
-
-  }, {
-    key: 'insertArrows',
-    value: function insertArrows() {
-      var _this5 = this;
-
-      if (!this.options.arrows) {
-        return;
-      }
-
-      this.arrows = {};
-
-      this.directions.map(function (direction) {
-        _this5.arrows[direction] = document.createElement('div');
-        _this5.arrows[direction].className = _classNames2.default['arrow-' + direction];
-        _this5.parent.appendChild(_this5.arrows[direction]);
-      });
-    }
-
-    /**
-     * Updates the fade and arrow element positions. This is only needed on
-     * create and if the position or size of the container changes. Not on scroll.
-     **/
-
-  }, {
-    key: 'updateElementPositions',
-    value: function updateElementPositions() {
-      var elementOffset = (0, _getOffset2.default)(this.scrollableElement);
-
-      if (this.options.horizontal && this.fades.left) {
-        this.setElementPositionHorizontal(this.fades.left, elementOffset, false);
-        this.setElementPositionHorizontal(this.fades.right, elementOffset, true);
-
-        if (this.arrows) {
-          this.setElementPositionHorizontal(this.arrows.left, elementOffset, false);
-          this.setElementPositionHorizontal(this.arrows.right, elementOffset, true);
-        }
-      }
-
-      if (this.options.vertical && this.fades.top) {
-        this.setElementPositionVertical(this.fades.top, elementOffset, false);
-        this.setElementPositionVertical(this.fades.bottom, elementOffset, true);
-
-        if (this.arrows) {
-          this.setElementPositionVertical(this.arrows.top, elementOffset, false);
-          this.setElementPositionVertical(this.arrows.bottom, elementOffset, true);
-        }
-      }
-    }
-  }, {
-    key: 'setElementPositionHorizontal',
-    value: function setElementPositionHorizontal(element, elementOffset, includeOffset) {
-      var offset = includeOffset ? this.elementWidth + 'px - ' + this.options.fadeWidth : '0px';
-
-      element.style.left = 'calc(' + elementOffset.left + 'px + ' + offset + ')';
-      element.style.top = elementOffset.top + 'px';
-      element.style.height = this.elementHeight + 'px';
-    }
-  }, {
-    key: 'setElementPositionVertical',
-    value: function setElementPositionVertical(element, elementOffset, includeOffset) {
-      var offset = includeOffset ? this.elementHeight + 'px - ' + this.options.fadeWidth : '0px';
-
-      element.style.left = elementOffset.left + 'px';
-      element.style.top = 'calc(' + elementOffset.top + 'px + ' + offset + ')';
-      element.style.width = this.elementWidth + 'px';
-    }
-
-    /**
-     * Add the directions (top, right, bottom, left) which match the options.
-     **/
-
-  }, {
-    key: 'setDirections',
-    value: function setDirections() {
-      this.directions = [];
-
-      if (this.options.horizontal && this.shouldInitHorizontal()) {
-        this.initHorizontal = true;
-        this.directions.push('left', 'right');
-      }
-
-      if (this.options.vertical && this.shouldInitVertical()) {
-        this.initVertical = true;
-        this.directions.push('top', 'bottom');
-      }
-    }
-
-    /**
-     * Calls the feature hooks for the supplied lifecycle method.
-     **/
-
-  }, {
-    key: 'hook',
-    value: function hook(method) {
-      var _this6 = this;
-
-      this.options.features.forEach(function (feature) {
-        return feature[method] ? feature[method](_this6) : 0;
-      });
-    }
-  }]);
-
-  return Common;
-}();
-
-exports.default = Common;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _addClass = __webpack_require__(/*! ./helpers/addClass */ \"./src/helpers/addClass.js\");\n\nvar _addClass2 = _interopRequireDefault(_addClass);\n\nvar _removeClass = __webpack_require__(/*! ./helpers/removeClass */ \"./src/helpers/removeClass.js\");\n\nvar _removeClass2 = _interopRequireDefault(_removeClass);\n\nvar _getOffset = __webpack_require__(/*! ./helpers/getOffset */ \"./src/helpers/getOffset.js\");\n\nvar _getOffset2 = _interopRequireDefault(_getOffset);\n\nvar _getSize = __webpack_require__(/*! ./helpers/getSize */ \"./src/helpers/getSize.js\");\n\nvar _getSize2 = _interopRequireDefault(_getSize);\n\nvar _classNames = __webpack_require__(/*! ./constants/classNames */ \"./src/constants/classNames.js\");\n\nvar _classNames2 = _interopRequireDefault(_classNames);\n\n__webpack_require__(/*! ./styles/common.scss */ \"./src/styles/common.scss\");\n\n__webpack_require__(/*! ./styles/fades.scss */ \"./src/styles/fades.scss\");\n\n__webpack_require__(/*! ./styles/arrows.scss */ \"./src/styles/arrows.scss\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Common = function () {\n  function Common(element, options) {\n    var _this = this;\n\n    _classCallCheck(this, Common);\n\n    this.element = element;\n    this.options = options;\n    this.initFunction = function () {\n      return _this.init();\n    };\n    this.resizeFunction = function () {\n      return _this.resize();\n    };\n    this.scrollFunction = function () {\n      return _this.scroll();\n    };\n  }\n\n  /**\n   * To be called from descendants, once ready.\n   **/\n\n\n  _createClass(Common, [{\n    key: 'init',\n    value: function init() {\n      this.makeElementResponsive();\n\n      var shouldInitHorizontal = this.shouldInitHorizontal();\n      var shouldInitVertical = this.shouldInitVertical();\n\n      if (this.options.horizontal && !shouldInitHorizontal || this.options.vertical && !shouldInitVertical) {\n        if (!this.initEventAdded) {\n          this.initEventAdded = true;\n          window.addEventListener('resize', this.initFunction);\n        }\n      }\n\n      if (this.options.horizontal && this.initHorizontal || this.options.vertical && this.initVertical) {\n        window.removeEventListener('resize', this.initFunction);\n      }\n\n      if (this.options.horizontal && shouldInitHorizontal && !this.initHorizontal || this.options.vertical && shouldInitVertical && !this.initVertical) {\n        this.create();\n        this.resize();\n      }\n    }\n\n    /**\n     * Creates an instance.\n     **/\n\n  }, {\n    key: 'create',\n    value: function create() {\n      this.element.className += ' ' + _classNames2.default.elementClass;\n      this.setDirections();\n      this.insertFadeElements();\n      this.insertArrows();\n      this.registerListeners();\n      this.hideInitial();\n\n      this.hook('create');\n    }\n\n    /**\n     * Updates an exising instance when new options are received.\n     **/\n\n  }, {\n    key: 'update',\n    value: function update(options) {\n      this.options = options;\n      this.setDirections();\n\n      this.hook('update');\n\n      this.resize();\n    }\n\n    /**\n     * Cleans up the instance.\n     **/\n\n  }, {\n    key: 'destroy',\n    value: function destroy() {\n      window.removeEventListener('resize', this.resizeFunction);\n      window.removeEventListener('resize', this.initFunction);\n    }\n\n    /**\n     * For regular elements no wrapper is needed.\n     **/\n\n  }, {\n    key: 'makeElementResponsive',\n    value: function makeElementResponsive() {\n      this.parent = this.element.parentElement;\n    }\n\n    /**\n     * Register the scorll, resize and arrow click listeners.\n     **/\n\n  }, {\n    key: 'registerListeners',\n    value: function registerListeners() {\n      var _this2 = this;\n\n      window.addEventListener('resize', this.resizeFunction);\n\n      this.directions.map(function (direction) {\n        var element = _this2.arrows ? _this2.arrows[direction] : _this2.fades[direction];\n        // Note that listeners on hidden elements will not be working.\n        element.addEventListener('click', function (event) {\n          return _this2.handleClick(event);\n        });\n      });\n    }\n\n    /**\n     * Adapts the scroll position after a click on a direction (arrow/fade) has\n     * happened.\n     **/\n\n  }, {\n    key: 'handleClick',\n    value: function handleClick(event) {\n      var direction = event.target.className.match(/[\\w]*($|\\s)/)[0].trim();\n\n      if (direction === 'left' || direction === 'right') {\n        return this.clickHorizontal(direction);\n      }\n\n      if (direction === 'top' || direction === 'bottom') {\n        return this.clickVertical(direction);\n      }\n    }\n\n    /**\n     * Adapt elements after a scroll.\n     **/\n\n  }, {\n    key: 'scroll',\n    value: function scroll() {\n      if (this.options.horizontal && this.fades.left) {\n        this.scrollHorizontal();\n      }\n\n      if (this.options.vertical && this.fades.top) {\n        this.scrollVertical();\n      }\n    }\n\n    /**\n     * Adapts the visibility of the horizontal elements after a scroll.\n     **/\n\n  }, {\n    key: 'scrollHorizontal',\n    value: function scrollHorizontal(atStart, atEnd) {\n      if (atStart) {\n        this.hide('left');\n      } else {\n        this.show('left');\n      }\n\n      if (atEnd) {\n        this.hide('right');\n      } else {\n        this.show('right');\n      }\n    }\n\n    /**\n     * Adapts the visibility of the vertical elements after a scroll.\n     **/\n\n  }, {\n    key: 'scrollVertical',\n    value: function scrollVertical(atStart, atEnd) {\n      if (atEnd) {\n        this.hide('bottom');\n      } else {\n        this.show('bottom');\n      }\n\n      if (atStart) {\n        this.hide('top');\n      } else {\n        this.show('top');\n      }\n    }\n\n    /**\n     * On page resize we need to adapt the container measurements.\n     **/\n\n  }, {\n    key: 'resize',\n    value: function resize() {\n      var _this3 = this;\n\n      var scrollElementBounds = this.scrollableElement.getBoundingClientRect();\n      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);\n\n      // Probably unneeded check if needed for browser compatibility\n      this.elementVisibleWidth = Math.max(this.scrollableElement.clientWidth, scrollElementBounds.width);\n      this.elementVisibleHeight = Math.max(this.scrollableElement.clientHeight, scrollElementBounds.height);\n\n      this.elementWidth = scrollElementSize.width;\n      this.elementHeight = scrollElementSize.height;\n\n      window.requestAnimationFrame(function () {\n        return _this3.updateElementPositions();\n      });\n\n      this.scroll();\n    }\n\n    /**\n     * Hides the fades and arrows if they're not yet hidden.\n     **/\n\n  }, {\n    key: 'hide',\n    value: function hide(direction) {\n      var hidePropertyName = 'is' + direction + 'Hidden';\n\n      if (!this[hidePropertyName]) {\n        this[hidePropertyName] = true;\n        (0, _addClass2.default)(this.fades[direction], 'hide');\n        if (this.arrows) {\n          (0, _addClass2.default)(this.arrows[direction], 'hide');\n        }\n      }\n    }\n\n    /**\n     * Top and left should be hidden in every case. Since this is faster than\n     * resize and scroll we hide them immediately.\n     **/\n\n  }, {\n    key: 'hideInitial',\n    value: function hideInitial() {\n      if (this.fades.top) {\n        this.hide('top');\n      }\n      if (this.fades.left) {\n        this.hide('left');\n      }\n    }\n\n    /**\n     * Shows the fades and arrows if they're hidden.\n     **/\n\n  }, {\n    key: 'show',\n    value: function show(direction) {\n      var hidePropertyName = 'is' + direction + 'Hidden';\n\n      if (this[hidePropertyName]) {\n        this[hidePropertyName] = false;\n        (0, _removeClass2.default)(this.fades[direction], 'hide');\n        if (this.arrows) {\n          (0, _removeClass2.default)(this.arrows[direction], 'hide');\n        }\n      }\n    }\n\n    /**\n     * Inserts the fade elements for all the directions provided.\n     **/\n\n  }, {\n    key: 'insertFadeElements',\n    value: function insertFadeElements() {\n      var _this4 = this;\n\n      this.fades = {};\n\n      this.directions.map(function (direction, index) {\n        _this4.fades[direction] = document.createElement('div');\n        _this4.fades[direction].className = _classNames2.default['fade-' + direction];\n        _this4.parent.appendChild(_this4.fades[direction]);\n      });\n    }\n\n    /**\n     * Inserts the arrows for all the directions provided.\n     **/\n\n  }, {\n    key: 'insertArrows',\n    value: function insertArrows() {\n      var _this5 = this;\n\n      if (!this.options.arrows) {\n        return;\n      }\n\n      this.arrows = {};\n\n      this.directions.map(function (direction) {\n        _this5.arrows[direction] = document.createElement('div');\n        _this5.arrows[direction].className = _classNames2.default['arrow-' + direction];\n        _this5.parent.appendChild(_this5.arrows[direction]);\n      });\n    }\n\n    /**\n     * Updates the fade and arrow element positions. This is only needed on\n     * create and if the position or size of the container changes. Not on scroll.\n     **/\n\n  }, {\n    key: 'updateElementPositions',\n    value: function updateElementPositions() {\n      var elementOffset = (0, _getOffset2.default)(this.scrollableElement);\n\n      if (this.options.horizontal && this.fades.left) {\n        this.setElementPositionHorizontal(this.fades.left, elementOffset, false);\n        this.setElementPositionHorizontal(this.fades.right, elementOffset, true);\n\n        if (this.arrows) {\n          this.setElementPositionHorizontal(this.arrows.left, elementOffset, false);\n          this.setElementPositionHorizontal(this.arrows.right, elementOffset, true);\n        }\n      }\n\n      if (this.options.vertical && this.fades.top) {\n        this.setElementPositionVertical(this.fades.top, elementOffset, false);\n        this.setElementPositionVertical(this.fades.bottom, elementOffset, true);\n\n        if (this.arrows) {\n          this.setElementPositionVertical(this.arrows.top, elementOffset, false);\n          this.setElementPositionVertical(this.arrows.bottom, elementOffset, true);\n        }\n      }\n    }\n  }, {\n    key: 'setElementPositionHorizontal',\n    value: function setElementPositionHorizontal(element, elementOffset, includeOffset) {\n      var offset = includeOffset ? this.elementWidth + 'px - ' + this.options.fadeWidth : '0px';\n\n      element.style.left = 'calc(' + elementOffset.left + 'px + ' + offset + ')';\n      element.style.top = elementOffset.top + 'px';\n      element.style.height = this.elementHeight + 'px';\n    }\n  }, {\n    key: 'setElementPositionVertical',\n    value: function setElementPositionVertical(element, elementOffset, includeOffset) {\n      var offset = includeOffset ? this.elementHeight + 'px - ' + this.options.fadeWidth : '0px';\n\n      element.style.left = elementOffset.left + 'px';\n      element.style.top = 'calc(' + elementOffset.top + 'px + ' + offset + ')';\n      element.style.width = this.elementWidth + 'px';\n    }\n\n    /**\n     * Add the directions (top, right, bottom, left) which match the options.\n     **/\n\n  }, {\n    key: 'setDirections',\n    value: function setDirections() {\n      this.directions = [];\n\n      if (this.options.horizontal && this.shouldInitHorizontal()) {\n        this.initHorizontal = true;\n        this.directions.push('left', 'right');\n      }\n\n      if (this.options.vertical && this.shouldInitVertical()) {\n        this.initVertical = true;\n        this.directions.push('top', 'bottom');\n      }\n    }\n\n    /**\n     * Calls the feature hooks for the supplied lifecycle method.\n     **/\n\n  }, {\n    key: 'hook',\n    value: function hook(method) {\n      var _this6 = this;\n\n      this.options.features.forEach(function (feature) {\n        return feature[method] ? feature[method](_this6) : 0;\n      });\n    }\n  }]);\n\n  return Common;\n}();\n\nexports.default = Common;\n\n//# sourceURL=webpack://Indicate/./src/Common.js?");
 
 /***/ }),
-/* 4 */
+
+/***/ "./src/IFrame.js":
+/*!***********************!*\
+  !*** ./src/IFrame.js ***!
+  \***********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-/**
- * Returns the width and height of a DOM element using getBoundingClientRect
- * and subtracting the margins.
- **/
-exports.default = function (element) {
-  var boundingClientRect = element.getBoundingClientRect();
-  var computedStyles = window.getComputedStyle(element);
-  var bounds = {
-    width: boundingClientRect.width,
-    height: boundingClientRect.height
-  };
-
-  bounds.width -= parseInt(computedStyles.marginLeft) + parseInt(computedStyles.marginRight);
-  bounds.height -= parseInt(computedStyles.marginTop) + parseInt(computedStyles.marginBottom);
-
-  // Round, since other browser functions will round too.
-  bounds.width = Math.ceil(bounds.width);
-  bounds.height = Math.ceil(bounds.height);
-
-  return bounds;
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if (\"value\" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };\n\nvar _Common2 = __webpack_require__(/*! ./Common */ \"./src/Common.js\");\n\nvar _Common3 = _interopRequireDefault(_Common2);\n\nvar _getSize = __webpack_require__(/*! ./helpers/getSize */ \"./src/helpers/getSize.js\");\n\nvar _getSize2 = _interopRequireDefault(_getSize);\n\nvar _getIframeScrollPosition = __webpack_require__(/*! ./helpers/get-iframe-scroll-position */ \"./src/helpers/get-iframe-scroll-position.js\");\n\nvar _getIframeScrollPosition2 = _interopRequireDefault(_getIframeScrollPosition);\n\nvar _getIframeContentDocument = __webpack_require__(/*! ./helpers/get-iframe-content-document */ \"./src/helpers/get-iframe-content-document.js\");\n\nvar _getIframeContentDocument2 = _interopRequireDefault(_getIframeContentDocument);\n\n__webpack_require__(/*! ./styles/iframe.scss */ \"./src/styles/iframe.scss\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar IFrame = function (_Common) {\n  _inherits(IFrame, _Common);\n\n  function IFrame(element, options) {\n    _classCallCheck(this, IFrame);\n\n    var _this = _possibleConstructorReturn(this, (IFrame.__proto__ || Object.getPrototypeOf(IFrame)).call(this, element, options));\n\n    _this.connectIframe();\n    return _this;\n  }\n\n  _createClass(IFrame, [{\n    key: 'connectIframe',\n    value: function connectIframe() {\n      this.scrollableElement = this.element;\n      this.checkIfIframeContentsAvailable();\n    }\n  }, {\n    key: 'shouldInitHorizontal',\n    value: function shouldInitHorizontal() {\n      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);\n\n      this.elementWidth = scrollElementSize.width;\n      this.elementFullWidth = this.contentDocument.body.scrollWidth;\n\n      if (this.options.horizontal) {\n        return this.elementFullWidth > this.elementWidth;\n      }\n    }\n  }, {\n    key: 'shouldInitVertical',\n    value: function shouldInitVertical() {\n      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);\n\n      this.elementWidth = scrollElementSize.height;\n      this.elementFullHeight = this.contentDocument.body.scrollHeight;\n\n      if (this.options.vertical) {\n        return this.elementFullHeight > this.elementHeight;\n      }\n    }\n\n    /**\n     * In order to get the actual parameters of the iframe contents we have to\n     * check if it has already finished loading.\n     **/\n\n  }, {\n    key: 'checkIfIframeContentsAvailable',\n    value: function checkIfIframeContentsAvailable() {\n      this.contentDocument = (0, _getIframeContentDocument2.default)(this);\n\n      if (!this.contentDocument.readyState !== 'complete') {\n        return this.delayUntilContentsAreLoaded();\n      }\n\n      this.setIframeReferences();\n    }\n\n    /**\n     * Delays execution until the contentLoaded listener is called.\n     **/\n\n  }, {\n    key: 'delayUntilContentsAreLoaded',\n    value: function delayUntilContentsAreLoaded(callback) {\n      var _this2 = this;\n\n      if (this.contentDocument.readyState !== 'complete') {\n        return setTimeout(function () {\n          return _this2.delayUntilContentsAreLoaded();\n        }, 300);\n      }\n\n      this.setIframeReferences();\n    }\n\n    /**\n     * Sets a reference to the iframe content element, once it's loaded.\n     **/\n\n  }, {\n    key: 'setIframeReferences',\n    value: function setIframeReferences() {\n      this.contentDocument = (0, _getIframeContentDocument2.default)(this);\n      this.init();\n    }\n  }, {\n    key: 'registerListeners',\n    value: function registerListeners() {\n      this.contentDocument.addEventListener('scroll', this.scrollFunction);\n      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'registerListeners', this).call(this);\n    }\n  }, {\n    key: 'resize',\n    value: function resize() {\n      this.elementFullWidth = this.contentDocument.body.scrollWidth;\n      this.elementFullHeight = this.contentDocument.body.scrollHeight;\n\n      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'resize', this).call(this);\n    }\n  }, {\n    key: 'scrollHorizontal',\n    value: function scrollHorizontal() {\n      var scrollLeft = (0, _getIframeScrollPosition2.default)(this.contentDocument, 'scrollLeft');\n      var atStart = scrollLeft < this.options.fadeOffset;\n      var atEnd = this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth;\n\n      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'scrollHorizontal', this).call(this, atStart, atEnd);\n    }\n  }, {\n    key: 'scrollVertical',\n    value: function scrollVertical() {\n      var scrollTop = (0, _getIframeScrollPosition2.default)(this.contentDocument, 'scrollTop');\n      var atStart = scrollTop < this.options.fadeOffset;\n      var atEnd = this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight;\n\n      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'scrollVertical', this).call(this, atStart, atEnd);\n    }\n  }, {\n    key: 'clickHorizontal',\n    value: function clickHorizontal() {\n      //\n    }\n  }, {\n    key: 'clickVertical',\n    value: function clickVertical() {\n      //\n    }\n  }]);\n\n  return IFrame;\n}(_Common3.default);\n\nexports.default = IFrame;\n\n//# sourceURL=webpack://Indicate/./src/IFrame.js?");
 
 /***/ }),
-/* 5 */
+
+/***/ "./src/IFrameCrossOrigin.js":
+/*!**********************************!*\
+  !*** ./src/IFrameCrossOrigin.js ***!
+  \**********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Block2 = __webpack_require__(6);
-
-var _Block3 = _interopRequireDefault(_Block2);
-
-var _addClass = __webpack_require__(1);
-
-var _addClass2 = _interopRequireDefault(_addClass);
-
-var _classNames = __webpack_require__(7);
-
-var _classNames2 = _interopRequireDefault(_classNames);
-
-__webpack_require__(24);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Table = function (_Block) {
-  _inherits(Table, _Block);
-
-  function Table() {
-    _classCallCheck(this, Table);
-
-    return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).apply(this, arguments));
-  }
-
-  _createClass(Table, [{
-    key: 'makeElementResponsive',
-    value: function makeElementResponsive() {
-      var parentElement = this.element.parentElement;
-      var tagName = parentElement.tagName;
-
-      if (tagName.toLowerCase() !== 'div') {
-        this.addWrapper(parentElement);
-      } else {
-        (0, _addClass2.default)(parentElement, _classNames2.default.tableWrapper);
-        this.scrollableElement = parentElement;
-        this.parent = parentElement.parentElement;
-      }
-    }
-  }, {
-    key: 'addWrapper',
-    value: function addWrapper(parentElement) {
-      var wrapper = document.createElement('div');
-      parentElement.replaceChild(wrapper, this.element);
-      wrapper.className = _classNames2.default.tableWrapper;
-      wrapper.appendChild(this.element);
-      this.scrollableElement = wrapper;
-      this.parent = wrapper.parentElement;
-    }
-  }]);
-
-  return Table;
-}(_Block3.default);
-
-exports.default = Table;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if (\"value\" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };\n\nvar _Common2 = __webpack_require__(/*! ./Common */ \"./src/Common.js\");\n\nvar _Common3 = _interopRequireDefault(_Common2);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar IFrameCrossOrigin = function (_Common) {\n  _inherits(IFrameCrossOrigin, _Common);\n\n  function IFrameCrossOrigin(element, options) {\n    _classCallCheck(this, IFrameCrossOrigin);\n\n    var _this = _possibleConstructorReturn(this, (IFrameCrossOrigin.__proto__ || Object.getPrototypeOf(IFrameCrossOrigin)).call(this, element, options));\n\n    _this.scrollableElement = _this.element;\n    _this.registerPostMessageListener();\n    return _this;\n  }\n\n  _createClass(IFrameCrossOrigin, [{\n    key: 'shouldInitHorizontal',\n    value: function shouldInitHorizontal() {\n      return this.elementFullWidth > this.elementVisibleWidth;\n    }\n  }, {\n    key: 'shouldInitVertical',\n    value: function shouldInitVertical() {\n      return this.elementFullHeight > this.elementVisibleHeight;\n    }\n  }, {\n    key: 'registerPostMessageListener',\n    value: function registerPostMessageListener() {\n      var _this2 = this;\n\n      window.addEventListener('message', function (event) {\n        if (!event.data || !event.data.indicate) {\n          return;\n        }\n        _this2.getIframeMessage(event);\n      }, false);\n    }\n  }, {\n    key: 'getIframeMessage',\n    value: function getIframeMessage(event) {\n      var data = event.data;\n\n      this.elementFullWidth = data.width;\n      this.elementFullHeight = data.height;\n      this.scrollLeft = data.offsetLeft;\n      this.scrollTop = data.offsetTop;\n\n      if (!data.initialized) {\n        this.init();\n      } else {\n        this.scroll();\n      }\n    }\n  }, {\n    key: 'scrollHorizontal',\n    value: function scrollHorizontal() {\n      var atStart = this.scrollLeft < this.options.fadeOffset;\n      var atEnd = this.elementVisibleWidth + this.scrollLeft + this.options.fadeOffset > this.elementFullWidth;\n\n      _get(IFrameCrossOrigin.prototype.__proto__ || Object.getPrototypeOf(IFrameCrossOrigin.prototype), 'scrollHorizontal', this).call(this, atStart, atEnd);\n    }\n  }, {\n    key: 'scrollVertical',\n    value: function scrollVertical() {\n      var atStart = this.scrollTop < this.options.fadeOffset;\n      var atEnd = this.elementVisibleHeight + this.scrollTop + this.options.fadeOffset > this.elementFullHeight;\n\n      _get(IFrameCrossOrigin.prototype.__proto__ || Object.getPrototypeOf(IFrameCrossOrigin.prototype), 'scrollVertical', this).call(this, atStart, atEnd);\n    }\n  }, {\n    key: 'clickHorizontal',\n    value: function clickHorizontal() {\n      //\n    }\n  }, {\n    key: 'clickVertial',\n    value: function clickVertial() {\n      //\n    }\n  }]);\n\n  return IFrameCrossOrigin;\n}(_Common3.default);\n\nexports.default = IFrameCrossOrigin;\n\n//# sourceURL=webpack://Indicate/./src/IFrameCrossOrigin.js?");
 
 /***/ }),
-/* 6 */
+
+/***/ "./src/Options.js":
+/*!************************!*\
+  !*** ./src/Options.js ***!
+  \************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _Common2 = __webpack_require__(3);
-
-var _Common3 = _interopRequireDefault(_Common2);
-
-var _getSize = __webpack_require__(4);
-
-var _getSize2 = _interopRequireDefault(_getSize);
-
-__webpack_require__(23);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Block = function (_Common) {
-  _inherits(Block, _Common);
-
-  function Block(element, options) {
-    _classCallCheck(this, Block);
-
-    var _this = _possibleConstructorReturn(this, (Block.__proto__ || Object.getPrototypeOf(Block)).call(this, element, options));
-
-    _this.init();
-    return _this;
-  }
-
-  _createClass(Block, [{
-    key: 'shouldInitHorizontal',
-    value: function shouldInitHorizontal() {
-      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);
-
-      this.elementWidth = scrollElementSize.width;
-
-      this.elementFullWidth = this.element.scrollWidth;
-
-      if (this.options.horizontal) {
-        return this.elementFullWidth > this.elementWidth;
-      }
-    }
-  }, {
-    key: 'shouldInitVertical',
-    value: function shouldInitVertical() {
-      var scrollElementSize = (0, _getSize2.default)(this.element);
-
-      this.elementHeight = scrollElementSize.height;
-
-      this.elementFullHeight = this.element.scrollHeight;
-
-      if (this.options.vertical) {
-        return this.elementFullHeight > this.elementHeight;
-      }
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      this.scrollableElement.removeEventListener('scroll', this.scrollFunction);
-      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'destroy', this).call(this);
-    }
-  }, {
-    key: 'makeElementResponsive',
-    value: function makeElementResponsive() {
-      this.scrollableElement = this.element;
-      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'makeElementResponsive', this).call(this);
-    }
-  }, {
-    key: 'registerListeners',
-    value: function registerListeners() {
-      this.scrollableElement.addEventListener('scroll', this.scrollFunction);
-      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'registerListeners', this).call(this);
-    }
-
-    /**
-     * Scroll left of right after a click.
-     **/
-
-  }, {
-    key: 'clickHorizontal',
-    value: function clickHorizontal(direction) {
-      var scrollLeft = this.scrollableElement.scrollLeft;
-      var containerLength = this.elementVisibleWidth;
-
-      var scrollLength = containerLength / this.options.scrollDenominator;
-
-      if (direction === 'right') {
-        this.scrollableElement.scrollLeft = scrollLeft + scrollLength;
-      } else {
-        this.scrollableElement.scrollLeft = scrollLeft - scrollLength;
-      }
-    }
-
-    /**
-     * Scroll to top or bottom after a click.
-     **/
-
-  }, {
-    key: 'clickVertical',
-    value: function clickVertical(direction) {
-      var scrollTop = this.element.scrollTop;
-      var containerLength = this.elementVisibleHeight;
-
-      var scrollLength = containerLength / this.options.scrollDenominator;
-
-      if (direction === 'bottom') {
-        this.element.scrollTop = scrollTop + scrollLength;
-      } else {
-        this.element.scrollTop = scrollTop - scrollLength;
-      }
-    }
-
-    /**
-     * Adapts the visibility of the horizontal elements after a scroll.
-     **/
-
-  }, {
-    key: 'scrollHorizontal',
-    value: function scrollHorizontal() {
-      var scrollLeft = this.scrollableElement.scrollLeft;
-      var atStart = scrollLeft < this.options.fadeOffset;
-      var atEnd = this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth;
-
-      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'scrollHorizontal', this).call(this, atStart, atEnd);
-    }
-
-    /**
-     * Adapts the visibility of the vertical elements after a scroll.
-     **/
-
-  }, {
-    key: 'scrollVertical',
-    value: function scrollVertical() {
-      var scrollTop = this.scrollableElement.scrollTop;
-      var atStart = scrollTop < this.options.fadeOffset;
-      var atEnd = this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight;
-
-      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'scrollVertical', this).call(this, atStart, atEnd);
-    }
-
-    /**
-     * On page resize we need to adapt the container measurements.
-     **/
-
-  }, {
-    key: 'resize',
-    value: function resize() {
-      var scrollElementBounds = this.scrollableElement.getBoundingClientRect();
-
-      this.elementFullWidth = Math.max(scrollElementBounds.width, this.scrollableElement.scrollWidth);
-      this.elementFullHeight = Math.max(scrollElementBounds.height, this.scrollableElement.scrollHeight);
-
-      _get(Block.prototype.__proto__ || Object.getPrototypeOf(Block.prototype), 'resize', this).call(this);
-    }
-  }]);
-
-  return Block;
-}(_Common3.default);
-
-exports.default = Block;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _es6ObjectAssign = __webpack_require__(/*! es6-object-assign */ \"./node_modules/es6-object-assign/index.js\");\n\nvar _index = __webpack_require__(/*! ./features/index */ \"./src/features/index.js\");\n\nvar features = _interopRequireWildcard(_index);\n\nfunction _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar defaultOptions = {\n  // Clicking on the arrow will scroll (1 / value) of the currently visible width.\n  scrollDenominator: 2,\n  // The fade effect color.\n  color: '#FFFFFF',\n  // Should arrows be show.\n  arrows: true,\n  // Defines where the arrows should be positioned inside the fade effect.\n  // Can be set to 'cetner', 'start' or 'end'.\n  arrowPosition: 'center',\n  // The face effec's width.\n  fadeWidth: '20px',\n  // This far away from the scroll end the effect will be removed.\n  fadeOffset: 5,\n  // By default horizontal scrollling is enabled.\n  horizontal: true,\n  // Additionally the effect can also be applied vertically.\n  vertical: true,\n  // Set the max-height of the wrapper.\n  maxHeight: 'none'\n};\n\nvar Options = function () {\n  function Options(options) {\n    _classCallCheck(this, Options);\n\n    (0, _es6ObjectAssign.assign)(this, (0, _es6ObjectAssign.assign)({}, defaultOptions, options));\n    this.checkFeatures();\n    this.initializeFeatures();\n  }\n\n  _createClass(Options, [{\n    key: 'update',\n    value: function update(newOptions) {\n      (0, _es6ObjectAssign.assign)(this, (0, _es6ObjectAssign.assign)({}, this, newOptions));\n      this.checkFeatures();\n      this.initializeFeatures();\n    }\n\n    /**\n     * Checks which features are applicable and returns only those.\n     **/\n\n  }, {\n    key: 'checkFeatures',\n    value: function checkFeatures() {\n      var _this = this;\n\n      var featuresArray = Object.keys(features).map(function (key) {\n        return features[key];\n      });\n      this.features = featuresArray.filter(function (feature) {\n        return feature.check(_this);\n      });\n    }\n\n    /**\n     * Initializes the feature inststances.\n     **/\n\n  }, {\n    key: 'initializeFeatures',\n    value: function initializeFeatures() {\n      var _this2 = this;\n\n      this.features = this.features.map(function (Feature) {\n        return new Feature(_this2);\n      });\n    }\n  }]);\n\n  return Options;\n}();\n\nexports.default = Options;\n\n//# sourceURL=webpack://Indicate/./src/Options.js?");
 
 /***/ }),
-/* 7 */
+
+/***/ "./src/Table.js":
+/*!**********************!*\
+  !*** ./src/Table.js ***!
+  \**********************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  classPrefix: 'idc-',
-  elementClass: 'idc-element',
-  'fade-top': 'idc-fade-top',
-  'fade-right': 'idc-fade-right',
-  'fade-bottom': 'idc-fade-bottom',
-  'fade-left': 'idc-fade-left',
-  'arrow-top': 'idc-arrow-top',
-  'arrow-right': 'idc-arrow-right',
-  'arrow-bottom': 'idc-arrow-bottom',
-  'arrow-left': 'idc-arrow-left',
-  tableWrapper: 'idc-table-wrapper'
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Block2 = __webpack_require__(/*! ./Block */ \"./src/Block.js\");\n\nvar _Block3 = _interopRequireDefault(_Block2);\n\nvar _addClass = __webpack_require__(/*! ./helpers/addClass */ \"./src/helpers/addClass.js\");\n\nvar _addClass2 = _interopRequireDefault(_addClass);\n\nvar _classNames = __webpack_require__(/*! ./constants/classNames */ \"./src/constants/classNames.js\");\n\nvar _classNames2 = _interopRequireDefault(_classNames);\n\n__webpack_require__(/*! ./styles/table.scss */ \"./src/styles/table.scss\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\nvar Table = function (_Block) {\n  _inherits(Table, _Block);\n\n  function Table() {\n    _classCallCheck(this, Table);\n\n    return _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).apply(this, arguments));\n  }\n\n  _createClass(Table, [{\n    key: 'makeElementResponsive',\n    value: function makeElementResponsive() {\n      var parentElement = this.element.parentElement;\n      var tagName = parentElement.tagName;\n\n      if (tagName.toLowerCase() !== 'div') {\n        this.addWrapper(parentElement);\n      } else {\n        (0, _addClass2.default)(parentElement, _classNames2.default.tableWrapper);\n        this.scrollableElement = parentElement;\n        this.parent = parentElement.parentElement;\n      }\n    }\n  }, {\n    key: 'addWrapper',\n    value: function addWrapper(parentElement) {\n      var wrapper = document.createElement('div');\n      parentElement.replaceChild(wrapper, this.element);\n      wrapper.className = _classNames2.default.tableWrapper;\n      wrapper.appendChild(this.element);\n      this.scrollableElement = wrapper;\n      this.parent = wrapper.parentElement;\n    }\n  }]);\n\n  return Table;\n}(_Block3.default);\n\nexports.default = Table;\n\n//# sourceURL=webpack://Indicate/./src/Table.js?");
 
 /***/ }),
-/* 8 */
+
+/***/ "./src/constants/classNames.js":
+/*!*************************************!*\
+  !*** ./src/constants/classNames.js ***!
+  \*************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Options = __webpack_require__(9);
-
-var _Options2 = _interopRequireDefault(_Options);
-
-var _Block = __webpack_require__(6);
-
-var _Block2 = _interopRequireDefault(_Block);
-
-var _IFrame = __webpack_require__(25);
-
-var _IFrame2 = _interopRequireDefault(_IFrame);
-
-var _IFrameCrossOrigin = __webpack_require__(29);
-
-var _IFrameCrossOrigin2 = _interopRequireDefault(_IFrameCrossOrigin);
-
-var _Table = __webpack_require__(5);
-
-var _Table2 = _interopRequireDefault(_Table);
-
-var _isCrossOriginIframe = __webpack_require__(30);
-
-var _isCrossOriginIframe2 = _interopRequireDefault(_isCrossOriginIframe);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * indicate - Scroll Indicator Plugin
- *
- * Adds horizontal fade effect to block elements, tables and iframes.
- * Intended to let the user know that there is more content so see than
- * currently fits into the visible part.
- *
- * @author Matthias Giger <matthias.giger@namics.com>
- */
-var Indicate = function () {
-  function Indicate(targetElements, options) {
-    _classCallCheck(this, Indicate);
-
-    if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) !== 'object') {
-      options = {};
-    }
-
-    this.targetElements = targetElements;
-    this.instances = [];
-    this.options = new _Options2.default(options);
-
-    this.init();
-  }
-
-  /**
-   * Initializes the instances depending on whether it's a single element or
-   * an array of nodes.
-   */
-
-
-  _createClass(Indicate, [{
-    key: 'init',
-    value: function init() {
-      var _this = this;
-
-      var elements = this.targetElements;
-
-      if (elements) {
-        if (elements.length) {
-          [].map.call(elements, function (element) {
-            return _this.createInstanceForElement(element);
-          });
-        } else {
-          this.createInstanceForElement(elements);
-        }
-      }
-    }
-  }, {
-    key: 'update',
-    value: function update(newOptions) {
-      var _this2 = this;
-
-      this.options.update(newOptions);
-      this.instances.forEach(function (instance) {
-        return instance.update(_this2.options);
-      });
-    }
-  }, {
-    key: 'destroy',
-    value: function destroy() {
-      this.instances.forEach(function (instance) {
-        return instance.destroy();
-      });
-    }
-
-    /**
-     * Creates an instance of the appropriate class depending on the elements tag.
-     */
-
-  }, {
-    key: 'createInstanceForElement',
-    value: function createInstanceForElement(element) {
-      var tagName = String(element.tagName).toLowerCase();
-
-      switch (tagName) {
-        case 'iframe':
-          this.instances.push(this.getIframeInstance(element));
-          break;
-        case 'table':
-          this.instances.push(new _Table2.default(element, this.options));
-          break;
-        default:
-          this.instances.push(new _Block2.default(element, this.options));
-      }
-    }
-
-    /**
-     * Checks if the iframe is same or cross origin and returns the appropriate
-     * instance.
-     **/
-
-  }, {
-    key: 'getIframeInstance',
-    value: function getIframeInstance(element) {
-      if ((0, _isCrossOriginIframe2.default)(element)) {
-        return new _IFrameCrossOrigin2.default(element, this.options);
-      }
-
-      return new _IFrame2.default(element, this.options);
-    }
-  }]);
-
-  return Indicate;
-}();
-
-exports.default = Indicate;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = {\n  classPrefix: 'idc-',\n  elementClass: 'idc-element',\n  'fade-top': 'idc-fade-top',\n  'fade-right': 'idc-fade-right',\n  'fade-bottom': 'idc-fade-bottom',\n  'fade-left': 'idc-fade-left',\n  'arrow-top': 'idc-arrow-top',\n  'arrow-right': 'idc-arrow-right',\n  'arrow-bottom': 'idc-arrow-bottom',\n  'arrow-left': 'idc-arrow-left',\n  tableWrapper: 'idc-table-wrapper'\n};\n\n//# sourceURL=webpack://Indicate/./src/constants/classNames.js?");
 
 /***/ }),
-/* 9 */
+
+/***/ "./src/features/Arrow.js":
+/*!*******************************!*\
+  !*** ./src/features/Arrow.js ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _es6ObjectAssign = __webpack_require__(10);
-
-var _index = __webpack_require__(11);
-
-var features = _interopRequireWildcard(_index);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var defaultOptions = {
-  // Clicking on the arrow will scroll (1 / value) of the currently visible width.
-  scrollDenominator: 2,
-  // The fade effect color.
-  color: '#FFFFFF',
-  // Should arrows be show.
-  arrows: true,
-  // Defines where the arrows should be positioned inside the fade effect.
-  // Can be set to 'cetner', 'start' or 'end'.
-  arrowPosition: 'center',
-  // The face effec's width.
-  fadeWidth: '20px',
-  // This far away from the scroll end the effect will be removed.
-  fadeOffset: 5,
-  // By default horizontal scrollling is enabled.
-  horizontal: true,
-  // Additionally the effect can also be applied vertically.
-  vertical: true,
-  // Set the max-height of the wrapper.
-  maxHeight: 'none'
-};
-
-var Options = function () {
-  function Options(options) {
-    _classCallCheck(this, Options);
-
-    (0, _es6ObjectAssign.assign)(this, (0, _es6ObjectAssign.assign)({}, defaultOptions, options));
-    this.checkFeatures();
-    this.initializeFeatures();
-  }
-
-  _createClass(Options, [{
-    key: 'update',
-    value: function update(newOptions) {
-      (0, _es6ObjectAssign.assign)(this, (0, _es6ObjectAssign.assign)({}, this, newOptions));
-      this.checkFeatures();
-      this.initializeFeatures();
-    }
-
-    /**
-     * Checks which features are applicable and returns only those.
-     **/
-
-  }, {
-    key: 'checkFeatures',
-    value: function checkFeatures() {
-      var _this = this;
-
-      var featuresArray = Object.keys(features).map(function (key) {
-        return features[key];
-      });
-      this.features = featuresArray.filter(function (feature) {
-        return feature.check(_this);
-      });
-    }
-
-    /**
-     * Initializes the feature inststances.
-     **/
-
-  }, {
-    key: 'initializeFeatures',
-    value: function initializeFeatures() {
-      var _this2 = this;
-
-      this.features = this.features.map(function (Feature) {
-        return new Feature(_this2);
-      });
-    }
-  }]);
-
-  return Options;
-}();
-
-exports.default = Options;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Feature2 = __webpack_require__(/*! ./Feature */ \"./src/features/Feature.js\");\n\nvar _Feature3 = _interopRequireDefault(_Feature2);\n\nvar _addClass = __webpack_require__(/*! ./../helpers/addClass */ \"./src/helpers/addClass.js\");\n\nvar _addClass2 = _interopRequireDefault(_addClass);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n * Abstract class to provide arrow related functionality.\n **/\nvar Arrow = function (_Feature) {\n  _inherits(Arrow, _Feature);\n\n  function Arrow() {\n    _classCallCheck(this, Arrow);\n\n    return _possibleConstructorReturn(this, (Arrow.__proto__ || Object.getPrototypeOf(Arrow)).apply(this, arguments));\n  }\n\n  _createClass(Arrow, [{\n    key: 'setArrowRotation',\n    value: function setArrowRotation(arrow, direction) {\n      if (direction === 'top') {\n        arrow.style.transform = 'rotate(90deg)';\n      }\n      if (direction === 'right') {\n        arrow.style.transform = 'rotate(180deg)';\n      }\n      if (direction === 'bottom') {\n        arrow.style.transform = 'rotate(270deg)';\n      }\n    }\n  }, {\n    key: 'setArrowPosition',\n    value: function setArrowPosition(instance) {\n      var arrowPosition = this.options.arrowPosition;\n\n      instance.directions.map(function (direction) {\n        // This feature only applies horizontally\n        if (direction === 'left' || direction === 'right') {\n          instance.arrows[direction].style.display = 'flex';\n          instance.arrows[direction].style.alignItems = 'flex-' + arrowPosition;\n        }\n      });\n    }\n  }, {\n    key: 'hideDefaultArrows',\n    value: function hideDefaultArrows(arrow) {\n      // Removes the default before element.\n      (0, _addClass2.default)(arrow, 'idc-no-before');\n    }\n  }]);\n\n  return Arrow;\n}(_Feature3.default);\n\nexports.default = Arrow;\n\n//# sourceURL=webpack://Indicate/./src/features/Arrow.js?");
 
 /***/ }),
-/* 10 */
+
+/***/ "./src/features/ArrowMarkup.js":
+/*!*************************************!*\
+  !*** ./src/features/ArrowMarkup.js ***!
+  \*************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/**
- * Code refactored from Mozilla Developer Network:
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
- */
-
-
-
-function assign(target, firstSource) {
-  if (target === undefined || target === null) {
-    throw new TypeError('Cannot convert first argument to object');
-  }
-
-  var to = Object(target);
-  for (var i = 1; i < arguments.length; i++) {
-    var nextSource = arguments[i];
-    if (nextSource === undefined || nextSource === null) {
-      continue;
-    }
-
-    var keysArray = Object.keys(Object(nextSource));
-    for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-      var nextKey = keysArray[nextIndex];
-      var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-      if (desc !== undefined && desc.enumerable) {
-        to[nextKey] = nextSource[nextKey];
-      }
-    }
-  }
-  return to;
-}
-
-function polyfill() {
-  if (!Object.assign) {
-    Object.defineProperty(Object, 'assign', {
-      enumerable: false,
-      configurable: true,
-      writable: true,
-      value: assign
-    });
-  }
-}
-
-module.exports = {
-  assign: assign,
-  polyfill: polyfill
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Arrow2 = __webpack_require__(/*! ./Arrow */ \"./src/features/Arrow.js\");\n\nvar _Arrow3 = _interopRequireDefault(_Arrow2);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n* Uses the provided markup as the image for the arrows.\n* The left one is expected, the others will be generated by rotation.\n **/\nvar ArrowMarkup = function (_Arrow) {\n  _inherits(ArrowMarkup, _Arrow);\n\n  function ArrowMarkup() {\n    _classCallCheck(this, ArrowMarkup);\n\n    return _possibleConstructorReturn(this, (ArrowMarkup.__proto__ || Object.getPrototypeOf(ArrowMarkup)).apply(this, arguments));\n  }\n\n  _createClass(ArrowMarkup, [{\n    key: 'create',\n    value: function create(instance) {\n      this.setArrowMarkup(instance);\n    }\n  }, {\n    key: 'update',\n    value: function update(instance) {\n      this.setArrowMarkup(instance);\n    }\n  }, {\n    key: 'setArrowMarkup',\n    value: function setArrowMarkup(instance) {\n      var _this2 = this;\n\n      var arrowMarkup = this.options.arrowMarkup;\n\n      instance.directions.map(function (direction) {\n        var arrow = instance.arrows[direction];\n\n        arrow.innerHTML = arrowMarkup;\n\n        var markupNode = arrow.childNodes[0];\n\n        _this2.setArrowRotation(markupNode, direction);\n        _this2.setMarkupSize(markupNode);\n        _this2.hideDefaultArrows(arrow);\n      });\n\n      this.setArrowPosition(instance);\n    }\n  }, {\n    key: 'setMarkupSize',\n    value: function setMarkupSize(markupNode) {\n      var fadeWidth = this.options.fadeWidth;\n\n      markupNode.style.width = fadeWidth;\n      markupNode.style.height = fadeWidth;\n    }\n  }], [{\n    key: 'check',\n    value: function check(options) {\n      return Boolean(options.arrowMarkup);\n    }\n  }]);\n\n  return ArrowMarkup;\n}(_Arrow3.default);\n\nexports.default = ArrowMarkup;\n\n//# sourceURL=webpack://Indicate/./src/features/ArrowMarkup.js?");
 
 /***/ }),
-/* 11 */
+
+/***/ "./src/features/ArrowPosition.js":
+/*!***************************************!*\
+  !*** ./src/features/ArrowPosition.js ***!
+  \***************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _Color = __webpack_require__(12);
-
-Object.defineProperty(exports, 'Color', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_Color).default;
-  }
-});
-
-var _ArrowPosition = __webpack_require__(13);
-
-Object.defineProperty(exports, 'ArrowPosition', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_ArrowPosition).default;
-  }
-});
-
-var _ArrowUrl = __webpack_require__(14);
-
-Object.defineProperty(exports, 'ArrowUrl', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_ArrowUrl).default;
-  }
-});
-
-var _ArrowMarkup = __webpack_require__(15);
-
-Object.defineProperty(exports, 'ArrowMarkup', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_ArrowMarkup).default;
-  }
-});
-
-var _FadeWidth = __webpack_require__(16);
-
-Object.defineProperty(exports, 'FadeWidth', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_FadeWidth).default;
-  }
-});
-
-var _MaxHeight = __webpack_require__(17);
-
-Object.defineProperty(exports, 'MaxHeight', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_MaxHeight).default;
-  }
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Arrow2 = __webpack_require__(/*! ./Arrow */ \"./src/features/Arrow.js\");\n\nvar _Arrow3 = _interopRequireDefault(_Arrow2);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n * Sets a special arrow position, default is center.\n **/\nvar ArrowPosition = function (_Arrow) {\n  _inherits(ArrowPosition, _Arrow);\n\n  function ArrowPosition() {\n    _classCallCheck(this, ArrowPosition);\n\n    return _possibleConstructorReturn(this, (ArrowPosition.__proto__ || Object.getPrototypeOf(ArrowPosition)).apply(this, arguments));\n  }\n\n  _createClass(ArrowPosition, [{\n    key: 'create',\n    value: function create(instance) {\n      this.setArrowPosition(instance);\n    }\n  }, {\n    key: 'update',\n    value: function update(instance) {\n      this.setArrowPosition(instance);\n    }\n  }], [{\n    key: 'check',\n    value: function check(options) {\n      return options.arrowPosition !== 'center';\n    }\n  }]);\n\n  return ArrowPosition;\n}(_Arrow3.default);\n\nexports.default = ArrowPosition;\n\n//# sourceURL=webpack://Indicate/./src/features/ArrowPosition.js?");
 
 /***/ }),
-/* 12 */
+
+/***/ "./src/features/ArrowUrl.js":
+/*!**********************************!*\
+  !*** ./src/features/ArrowUrl.js ***!
+  \**********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Feature2 = __webpack_require__(0);
-
-var _Feature3 = _interopRequireDefault(_Feature2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Sets the fade color.
- **/
-var Color = function (_Feature) {
-  _inherits(Color, _Feature);
-
-  function Color() {
-    _classCallCheck(this, Color);
-
-    return _possibleConstructorReturn(this, (Color.__proto__ || Object.getPrototypeOf(Color)).apply(this, arguments));
-  }
-
-  _createClass(Color, [{
-    key: 'create',
-    value: function create(instance) {
-      this.setFadeColor(instance);
-    }
-  }, {
-    key: 'update',
-    value: function update(instance) {
-      this.setFadeColor(instance);
-    }
-  }, {
-    key: 'setFadeColor',
-    value: function setFadeColor(instance) {
-      var color = this.options.color;
-
-      instance.directions.map(function (direction) {
-        instance.fades[direction].style.background = 'linear-gradient(to ' + direction + ', rgba(255,255,255,0) 0%, ' + color + ' 100%)';
-      });
-    }
-  }], [{
-    key: 'check',
-    value: function check(options) {
-      return options.color !== '#FFFFFF';
-    }
-  }]);
-
-  return Color;
-}(_Feature3.default);
-
-exports.default = Color;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Arrow2 = __webpack_require__(/*! ./Arrow */ \"./src/features/Arrow.js\");\n\nvar _Arrow3 = _interopRequireDefault(_Arrow2);\n\nvar _addClass = __webpack_require__(/*! ./../helpers/addClass */ \"./src/helpers/addClass.js\");\n\nvar _addClass2 = _interopRequireDefault(_addClass);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n * Uses the provided url as a background image for the arrows.\n * The left one is expected, the others will be generated by rotation.\n **/\nvar ArrowUrl = function (_Arrow) {\n  _inherits(ArrowUrl, _Arrow);\n\n  function ArrowUrl() {\n    _classCallCheck(this, ArrowUrl);\n\n    return _possibleConstructorReturn(this, (ArrowUrl.__proto__ || Object.getPrototypeOf(ArrowUrl)).apply(this, arguments));\n  }\n\n  _createClass(ArrowUrl, [{\n    key: 'create',\n    value: function create(instance) {\n      this.setArrowUrl(instance);\n    }\n  }, {\n    key: 'update',\n    value: function update(instance) {\n      this.setArrowUrl(instance);\n    }\n  }, {\n    key: 'setArrowUrl',\n    value: function setArrowUrl(instance) {\n      var _this2 = this;\n\n      var arrowUrl = this.options.arrowUrl;\n\n      instance.directions.map(function (direction) {\n        var arrow = instance.arrows[direction];\n        arrow.style.backgroundImage = 'url(' + arrowUrl + ')';\n        arrow.style.backgroundRepeat = 'no-repeat';\n        arrow.style.backgroundSize = 'contain';\n\n        _this2.setArrowRotation(arrow, direction);\n        _this2.setArrowBackgroundPosition(arrow, direction);\n\n        // This will remove the default before element.\n        (0, _addClass2.default)(arrow, 'idc-no-before');\n      });\n    }\n\n    // Arrow position for vertical direction is always center.\n\n  }, {\n    key: 'setArrowBackgroundPosition',\n    value: function setArrowBackgroundPosition(arrow, direction) {\n      var arrowPosition = this.options.arrowPosition;\n\n      if (arrowPosition === 'center' || direction === 'top' || direction === 'bottom') {\n        arrow.style.backgroundPosition = 'center';\n        return;\n      }\n\n      if (arrowPosition === 'start' || arrowPosition === 'top') {\n        if (direction === 'left') {\n          arrow.style.backgroundPosition = 'top';\n          return;\n        }\n        // Because arrows are generated by rotation these have to be switched for right\n        arrow.style.backgroundPosition = 'bottom';\n        return;\n      }\n\n      if (arrowPosition === 'end' || arrowPosition === 'bottom') {\n        if (direction === 'left') {\n          arrow.style.backgroundPosition = 'bottom';\n          return;\n        }\n        arrow.style.backgroundPosition = 'top';\n      }\n    }\n  }], [{\n    key: 'check',\n    value: function check(options) {\n      return Boolean(options.arrowUrl);\n    }\n  }]);\n\n  return ArrowUrl;\n}(_Arrow3.default);\n\nexports.default = ArrowUrl;\n\n//# sourceURL=webpack://Indicate/./src/features/ArrowUrl.js?");
 
 /***/ }),
-/* 13 */
+
+/***/ "./src/features/Color.js":
+/*!*******************************!*\
+  !*** ./src/features/Color.js ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Arrow2 = __webpack_require__(2);
-
-var _Arrow3 = _interopRequireDefault(_Arrow2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Sets a special arrow position, default is center.
- **/
-var ArrowPosition = function (_Arrow) {
-  _inherits(ArrowPosition, _Arrow);
-
-  function ArrowPosition() {
-    _classCallCheck(this, ArrowPosition);
-
-    return _possibleConstructorReturn(this, (ArrowPosition.__proto__ || Object.getPrototypeOf(ArrowPosition)).apply(this, arguments));
-  }
-
-  _createClass(ArrowPosition, [{
-    key: 'create',
-    value: function create(instance) {
-      this.setArrowPosition(instance);
-    }
-  }, {
-    key: 'update',
-    value: function update(instance) {
-      this.setArrowPosition(instance);
-    }
-  }], [{
-    key: 'check',
-    value: function check(options) {
-      return options.arrowPosition !== 'center';
-    }
-  }]);
-
-  return ArrowPosition;
-}(_Arrow3.default);
-
-exports.default = ArrowPosition;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Feature2 = __webpack_require__(/*! ./Feature */ \"./src/features/Feature.js\");\n\nvar _Feature3 = _interopRequireDefault(_Feature2);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n * Sets the fade color.\n **/\nvar Color = function (_Feature) {\n  _inherits(Color, _Feature);\n\n  function Color() {\n    _classCallCheck(this, Color);\n\n    return _possibleConstructorReturn(this, (Color.__proto__ || Object.getPrototypeOf(Color)).apply(this, arguments));\n  }\n\n  _createClass(Color, [{\n    key: 'create',\n    value: function create(instance) {\n      this.setFadeColor(instance);\n    }\n  }, {\n    key: 'update',\n    value: function update(instance) {\n      this.setFadeColor(instance);\n    }\n  }, {\n    key: 'setFadeColor',\n    value: function setFadeColor(instance) {\n      var color = this.options.color;\n\n      instance.directions.map(function (direction) {\n        instance.fades[direction].style.background = 'linear-gradient(to ' + direction + ', rgba(255,255,255,0) 0%, ' + color + ' 100%)';\n      });\n    }\n  }], [{\n    key: 'check',\n    value: function check(options) {\n      return options.color !== '#FFFFFF';\n    }\n  }]);\n\n  return Color;\n}(_Feature3.default);\n\nexports.default = Color;\n\n//# sourceURL=webpack://Indicate/./src/features/Color.js?");
 
 /***/ }),
-/* 14 */
+
+/***/ "./src/features/FadeWidth.js":
+/*!***********************************!*\
+  !*** ./src/features/FadeWidth.js ***!
+  \***********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Arrow2 = __webpack_require__(2);
-
-var _Arrow3 = _interopRequireDefault(_Arrow2);
-
-var _addClass = __webpack_require__(1);
-
-var _addClass2 = _interopRequireDefault(_addClass);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Uses the provided url as a background image for the arrows.
- * The left one is expected, the others will be generated by rotation.
- **/
-var ArrowUrl = function (_Arrow) {
-  _inherits(ArrowUrl, _Arrow);
-
-  function ArrowUrl() {
-    _classCallCheck(this, ArrowUrl);
-
-    return _possibleConstructorReturn(this, (ArrowUrl.__proto__ || Object.getPrototypeOf(ArrowUrl)).apply(this, arguments));
-  }
-
-  _createClass(ArrowUrl, [{
-    key: 'create',
-    value: function create(instance) {
-      this.setArrowUrl(instance);
-    }
-  }, {
-    key: 'update',
-    value: function update(instance) {
-      this.setArrowUrl(instance);
-    }
-  }, {
-    key: 'setArrowUrl',
-    value: function setArrowUrl(instance) {
-      var _this2 = this;
-
-      var arrowUrl = this.options.arrowUrl;
-
-      instance.directions.map(function (direction) {
-        var arrow = instance.arrows[direction];
-        arrow.style.backgroundImage = 'url(' + arrowUrl + ')';
-        arrow.style.backgroundRepeat = 'no-repeat';
-        arrow.style.backgroundSize = 'contain';
-
-        _this2.setArrowRotation(arrow, direction);
-        _this2.setArrowBackgroundPosition(arrow, direction);
-
-        // This will remove the default before element.
-        (0, _addClass2.default)(arrow, 'idc-no-before');
-      });
-    }
-
-    // Arrow position for vertical direction is always center.
-
-  }, {
-    key: 'setArrowBackgroundPosition',
-    value: function setArrowBackgroundPosition(arrow, direction) {
-      var arrowPosition = this.options.arrowPosition;
-
-      if (arrowPosition === 'center' || direction === 'top' || direction === 'bottom') {
-        arrow.style.backgroundPosition = 'center';
-        return;
-      }
-
-      if (arrowPosition === 'start' || arrowPosition === 'top') {
-        if (direction === 'left') {
-          arrow.style.backgroundPosition = 'top';
-          return;
-        }
-        // Because arrows are generated by rotation these have to be switched for right
-        arrow.style.backgroundPosition = 'bottom';
-        return;
-      }
-
-      if (arrowPosition === 'end' || arrowPosition === 'bottom') {
-        if (direction === 'left') {
-          arrow.style.backgroundPosition = 'bottom';
-          return;
-        }
-        arrow.style.backgroundPosition = 'top';
-      }
-    }
-  }], [{
-    key: 'check',
-    value: function check(options) {
-      return Boolean(options.arrowUrl);
-    }
-  }]);
-
-  return ArrowUrl;
-}(_Arrow3.default);
-
-exports.default = ArrowUrl;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Feature2 = __webpack_require__(/*! ./Feature */ \"./src/features/Feature.js\");\n\nvar _Feature3 = _interopRequireDefault(_Feature2);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n * Adapts the fade width.\n **/\nvar FadeWidth = function (_Feature) {\n  _inherits(FadeWidth, _Feature);\n\n  function FadeWidth() {\n    _classCallCheck(this, FadeWidth);\n\n    return _possibleConstructorReturn(this, (FadeWidth.__proto__ || Object.getPrototypeOf(FadeWidth)).apply(this, arguments));\n  }\n\n  _createClass(FadeWidth, [{\n    key: 'create',\n    value: function create(instance) {\n      this.setFadeWidth(instance);\n    }\n  }, {\n    key: 'update',\n    value: function update(instance) {\n      this.setFadeWidth(instance);\n    }\n  }, {\n    key: 'setFadeWidth',\n    value: function setFadeWidth(instance) {\n      var _this2 = this;\n\n      instance.directions.map(function (direction) {\n        if (direction === 'left' || direction === 'right') {\n          instance.fades[direction].style.width = _this2.options.fadeWidth;\n          if (instance.arrows) {\n            instance.arrows[direction].style.width = _this2.options.fadeWidth;\n          }\n        }\n        if (direction === 'top' || direction === 'bottom') {\n          instance.fades[direction].style.height = _this2.options.fadeWidth;\n          if (instance.arrows) {\n            instance.arrows[direction].style.height = _this2.options.fadeWidth;\n          }\n        }\n      });\n    }\n  }], [{\n    key: 'check',\n    value: function check(options) {\n      return options.fadeWidth !== '20px';\n    }\n  }]);\n\n  return FadeWidth;\n}(_Feature3.default);\n\nexports.default = FadeWidth;\n\n//# sourceURL=webpack://Indicate/./src/features/FadeWidth.js?");
 
 /***/ }),
-/* 15 */
+
+/***/ "./src/features/Feature.js":
+/*!*********************************!*\
+  !*** ./src/features/Feature.js ***!
+  \*********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Arrow2 = __webpack_require__(2);
-
-var _Arrow3 = _interopRequireDefault(_Arrow2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
-* Uses the provided markup as the image for the arrows.
-* The left one is expected, the others will be generated by rotation.
- **/
-var ArrowMarkup = function (_Arrow) {
-  _inherits(ArrowMarkup, _Arrow);
-
-  function ArrowMarkup() {
-    _classCallCheck(this, ArrowMarkup);
-
-    return _possibleConstructorReturn(this, (ArrowMarkup.__proto__ || Object.getPrototypeOf(ArrowMarkup)).apply(this, arguments));
-  }
-
-  _createClass(ArrowMarkup, [{
-    key: 'create',
-    value: function create(instance) {
-      this.setArrowMarkup(instance);
-    }
-  }, {
-    key: 'update',
-    value: function update(instance) {
-      this.setArrowMarkup(instance);
-    }
-  }, {
-    key: 'setArrowMarkup',
-    value: function setArrowMarkup(instance) {
-      var _this2 = this;
-
-      var arrowMarkup = this.options.arrowMarkup;
-
-      instance.directions.map(function (direction) {
-        var arrow = instance.arrows[direction];
-
-        arrow.innerHTML = arrowMarkup;
-
-        var markupNode = arrow.childNodes[0];
-
-        _this2.setArrowRotation(markupNode, direction);
-        _this2.setMarkupSize(markupNode);
-        _this2.hideDefaultArrows(arrow);
-      });
-
-      this.setArrowPosition(instance);
-    }
-  }, {
-    key: 'setMarkupSize',
-    value: function setMarkupSize(markupNode) {
-      var fadeWidth = this.options.fadeWidth;
-
-      markupNode.style.width = fadeWidth;
-      markupNode.style.height = fadeWidth;
-    }
-  }], [{
-    key: 'check',
-    value: function check(options) {
-      return Boolean(options.arrowMarkup);
-    }
-  }]);
-
-  return ArrowMarkup;
-}(_Arrow3.default);
-
-exports.default = ArrowMarkup;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nvar Feature = function () {\n  function Feature(options) {\n    _classCallCheck(this, Feature);\n\n    this.options = options;\n  }\n\n  /**\n   * Check if the feature is needed. Returns true if feature is applicable.\n   **/\n\n\n  _createClass(Feature, null, [{\n    key: \"check\",\n    value: function check(options) {\n      return false;\n    }\n  }]);\n\n  return Feature;\n}();\n\nexports.default = Feature;\n\n//# sourceURL=webpack://Indicate/./src/features/Feature.js?");
 
 /***/ }),
-/* 16 */
+
+/***/ "./src/features/MaxHeight.js":
+/*!***********************************!*\
+  !*** ./src/features/MaxHeight.js ***!
+  \***********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Feature2 = __webpack_require__(0);
-
-var _Feature3 = _interopRequireDefault(_Feature2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Adapts the fade width.
- **/
-var FadeWidth = function (_Feature) {
-  _inherits(FadeWidth, _Feature);
-
-  function FadeWidth() {
-    _classCallCheck(this, FadeWidth);
-
-    return _possibleConstructorReturn(this, (FadeWidth.__proto__ || Object.getPrototypeOf(FadeWidth)).apply(this, arguments));
-  }
-
-  _createClass(FadeWidth, [{
-    key: 'create',
-    value: function create(instance) {
-      this.setFadeWidth(instance);
-    }
-  }, {
-    key: 'update',
-    value: function update(instance) {
-      this.setFadeWidth(instance);
-    }
-  }, {
-    key: 'setFadeWidth',
-    value: function setFadeWidth(instance) {
-      var _this2 = this;
-
-      instance.directions.map(function (direction) {
-        if (direction === 'left' || direction === 'right') {
-          instance.fades[direction].style.width = _this2.options.fadeWidth;
-          if (instance.arrows) {
-            instance.arrows[direction].style.width = _this2.options.fadeWidth;
-          }
-        }
-        if (direction === 'top' || direction === 'bottom') {
-          instance.fades[direction].style.height = _this2.options.fadeWidth;
-          if (instance.arrows) {
-            instance.arrows[direction].style.height = _this2.options.fadeWidth;
-          }
-        }
-      });
-    }
-  }], [{
-    key: 'check',
-    value: function check(options) {
-      return options.fadeWidth !== '20px';
-    }
-  }]);
-
-  return FadeWidth;
-}(_Feature3.default);
-
-exports.default = FadeWidth;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _Feature2 = __webpack_require__(/*! ./Feature */ \"./src/features/Feature.js\");\n\nvar _Feature3 = _interopRequireDefault(_Feature2);\n\nvar _Table = __webpack_require__(/*! ./../Table */ \"./src/Table.js\");\n\nvar _Table2 = _interopRequireDefault(_Table);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n/**\n * Sets the max height for a table wrapper.\n **/\nvar MaxHeight = function (_Feature) {\n  _inherits(MaxHeight, _Feature);\n\n  function MaxHeight() {\n    _classCallCheck(this, MaxHeight);\n\n    return _possibleConstructorReturn(this, (MaxHeight.__proto__ || Object.getPrototypeOf(MaxHeight)).apply(this, arguments));\n  }\n\n  _createClass(MaxHeight, [{\n    key: 'create',\n    value: function create(instance) {\n      this.setMaxHeight(instance);\n    }\n  }, {\n    key: 'update',\n    value: function update(instance) {\n      this.setMaxHeight(instance);\n    }\n  }, {\n    key: 'setMaxHeight',\n    value: function setMaxHeight(instance) {\n      if (instance instanceof _Table2.default) {\n        instance.scrollableElement.style.maxHeight = this.options.maxHeight;\n      }\n    }\n  }], [{\n    key: 'check',\n    value: function check(options) {\n      return options.maxHeight !== 'none';\n    }\n  }]);\n\n  return MaxHeight;\n}(_Feature3.default);\n\nexports.default = MaxHeight;\n\n//# sourceURL=webpack://Indicate/./src/features/MaxHeight.js?");
 
 /***/ }),
-/* 17 */
+
+/***/ "./src/features/index.js":
+/*!*******************************!*\
+  !*** ./src/features/index.js ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Feature2 = __webpack_require__(0);
-
-var _Feature3 = _interopRequireDefault(_Feature2);
-
-var _Table = __webpack_require__(5);
-
-var _Table2 = _interopRequireDefault(_Table);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Sets the max height for a table wrapper.
- **/
-var MaxHeight = function (_Feature) {
-  _inherits(MaxHeight, _Feature);
-
-  function MaxHeight() {
-    _classCallCheck(this, MaxHeight);
-
-    return _possibleConstructorReturn(this, (MaxHeight.__proto__ || Object.getPrototypeOf(MaxHeight)).apply(this, arguments));
-  }
-
-  _createClass(MaxHeight, [{
-    key: 'create',
-    value: function create(instance) {
-      this.setMaxHeight(instance);
-    }
-  }, {
-    key: 'update',
-    value: function update(instance) {
-      this.setMaxHeight(instance);
-    }
-  }, {
-    key: 'setMaxHeight',
-    value: function setMaxHeight(instance) {
-      if (instance instanceof _Table2.default) {
-        instance.scrollableElement.style.maxHeight = this.options.maxHeight;
-      }
-    }
-  }], [{
-    key: 'check',
-    value: function check(options) {
-      return options.maxHeight !== 'none';
-    }
-  }]);
-
-  return MaxHeight;
-}(_Feature3.default);
-
-exports.default = MaxHeight;
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _Color = __webpack_require__(/*! ./Color */ \"./src/features/Color.js\");\n\nObject.defineProperty(exports, 'Color', {\n  enumerable: true,\n  get: function get() {\n    return _interopRequireDefault(_Color).default;\n  }\n});\n\nvar _ArrowPosition = __webpack_require__(/*! ./ArrowPosition */ \"./src/features/ArrowPosition.js\");\n\nObject.defineProperty(exports, 'ArrowPosition', {\n  enumerable: true,\n  get: function get() {\n    return _interopRequireDefault(_ArrowPosition).default;\n  }\n});\n\nvar _ArrowUrl = __webpack_require__(/*! ./ArrowUrl */ \"./src/features/ArrowUrl.js\");\n\nObject.defineProperty(exports, 'ArrowUrl', {\n  enumerable: true,\n  get: function get() {\n    return _interopRequireDefault(_ArrowUrl).default;\n  }\n});\n\nvar _ArrowMarkup = __webpack_require__(/*! ./ArrowMarkup */ \"./src/features/ArrowMarkup.js\");\n\nObject.defineProperty(exports, 'ArrowMarkup', {\n  enumerable: true,\n  get: function get() {\n    return _interopRequireDefault(_ArrowMarkup).default;\n  }\n});\n\nvar _FadeWidth = __webpack_require__(/*! ./FadeWidth */ \"./src/features/FadeWidth.js\");\n\nObject.defineProperty(exports, 'FadeWidth', {\n  enumerable: true,\n  get: function get() {\n    return _interopRequireDefault(_FadeWidth).default;\n  }\n});\n\nvar _MaxHeight = __webpack_require__(/*! ./MaxHeight */ \"./src/features/MaxHeight.js\");\n\nObject.defineProperty(exports, 'MaxHeight', {\n  enumerable: true,\n  get: function get() {\n    return _interopRequireDefault(_MaxHeight).default;\n  }\n});\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\n//# sourceURL=webpack://Indicate/./src/features/index.js?");
 
 /***/ }),
-/* 18 */
+
+/***/ "./src/helpers/addClass.js":
+/*!*********************************!*\
+  !*** ./src/helpers/addClass.js ***!
+  \*********************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-exports.default = function (element, selector) {
-  element.className = element.className.replace(new RegExp('(?:^|\\s)' + selector + '(?:\\s|$)'), ' ');
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\n/**\n * Adds a class to an element.\n * If there is already a space at the end, none will be added.\n **/\nexports.default = function (element, selector) {\n  if (element.className[element.className.length - 1] !== ' ') {\n    element.className += ' ' + selector;\n  } else {\n    element.className += selector;\n  }\n};\n\n//# sourceURL=webpack://Indicate/./src/helpers/addClass.js?");
 
 /***/ }),
-/* 19 */
+
+/***/ "./src/helpers/get-iframe-content-document.js":
+/*!****************************************************!*\
+  !*** ./src/helpers/get-iframe-content-document.js ***!
+  \****************************************************/
+/*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-/**
- * Gets the absolute position of the element.
- * Margins will be subtracted.
- **/
-exports.default = function (element) {
-  var oTop = element.offsetTop + parseInt(window.getComputedStyle(element).marginTop);
-  var oLeft = element.offsetLeft + parseInt(window.getComputedStyle(element).marginLeft);
-
-  var _x = 0;
-  var _y = 0;
-  while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {
-    _x += element.offsetLeft + parseInt(window.getComputedStyle(element).marginLeft);
-    _y += element.offsetTop + parseInt(window.getComputedStyle(element).marginTop);
-    element = element.offsetParent;
-  }
-
-  if (oTop !== _y || oLeft !== _x) {
-    return {
-      top: oTop,
-      left: oLeft
-    };
-  }
-
-  return { top: _y, left: _x };
-};
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = getContentDocument;\nfunction getContentDocument(instance) {\n  return instance.element.contentDocument;\n}\n\n//# sourceURL=webpack://Indicate/./src/helpers/get-iframe-content-document.js?");
 
 /***/ }),
-/* 20 */
+
+/***/ "./src/helpers/get-iframe-scroll-position.js":
+/*!***************************************************!*\
+  !*** ./src/helpers/get-iframe-scroll-position.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = getScrollPosition;\n/**\n * Returns the scroll position. Both properties are available, but the first\n * one is correct on Chrome and Firefox, while the second one matches\n * Safari.\n **/\nfunction getScrollPosition(contentDocument, property) {\n  return Math.max(contentDocument.documentElement[property], contentDocument.body[property]);\n}\n\n//# sourceURL=webpack://Indicate/./src/helpers/get-iframe-scroll-position.js?");
+
+/***/ }),
+
+/***/ "./src/helpers/getOffset.js":
+/*!**********************************!*\
+  !*** ./src/helpers/getOffset.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\n/**\n * Gets the absolute position of the element.\n * Borders will be subtracted.\n **/\nexports.default = function (element) {\n  var oTop = element.offsetTop + parseInt(window.getComputedStyle(element).borderTop);\n  var oLeft = element.offsetLeft + parseInt(window.getComputedStyle(element).borderLeft);\n\n  var _x = 0;\n  var _y = 0;\n  while (element && !isNaN(element.offsetLeft) && !isNaN(element.offsetTop)) {\n    _x += element.offsetLeft + parseInt(window.getComputedStyle(element).borderLeft);\n    _y += element.offsetTop + parseInt(window.getComputedStyle(element).borderTop);\n    element = element.offsetParent;\n  }\n\n  if (oTop !== _y || oLeft !== _x) {\n    return {\n      top: oTop,\n      left: oLeft\n    };\n  }\n\n  return { top: _y, left: _x };\n};\n\n//# sourceURL=webpack://Indicate/./src/helpers/getOffset.js?");
+
+/***/ }),
+
+/***/ "./src/helpers/getSize.js":
+/*!********************************!*\
+  !*** ./src/helpers/getSize.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\n/**\n * Returns the width and height of a DOM element using getBoundingClientRect\n * and subtracting the margins.\n **/\nexports.default = function (element) {\n  var boundingClientRect = element.getBoundingClientRect();\n  var computedStyles = window.getComputedStyle(element);\n  var bounds = {\n    width: boundingClientRect.width,\n    height: boundingClientRect.height\n  };\n\n  bounds.width -= parseInt(computedStyles.borderLeft) + parseInt(computedStyles.borderRight);\n  bounds.height -= parseInt(computedStyles.borderTop) + parseInt(computedStyles.borderBottom);\n\n  // Round, since other browser functions will round too.\n  bounds.width = Math.ceil(bounds.width);\n  bounds.height = Math.ceil(bounds.height);\n\n  return bounds;\n};\n\n//# sourceURL=webpack://Indicate/./src/helpers/getSize.js?");
+
+/***/ }),
+
+/***/ "./src/helpers/is-cross-origin-iframe.js":
+/*!***********************************************!*\
+  !*** ./src/helpers/is-cross-origin-iframe.js ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n// Returns the protocol of a domain.\nvar extractProtocol = function extractProtocol(domain) {\n  return domain.split('/')[0];\n};\n\n// Returns the subdomain of a domain.\nvar extractSubdomain = function extractSubdomain(domain) {\n  return domain.split('/')[2];\n};\n\n// Extracts the domain name of a subdomain.\nvar extractDomainName = function extractDomainName(subdomain) {\n  // TODO does not work for ip addresses\n  var arr = subdomain.split('.');\n  return arr[arr.length - 2] + '.' + arr[arr.length - 1];\n};\n\nvar isExternal = function isExternal(subdomainIframe) {\n  var domainName = extractDomainName(subdomainIframe);\n\n  if (document.domain !== domainName) {\n    // Not a subdomain\n    return true;\n  }\n\n  // It's a subdomain, adapt domain to allow accessing contents\n  document.domain = domainName;\n  return false;\n};\n\nvar isDifferentDomain = function isDifferentDomain(url) {\n  var protocolIframe = extractProtocol(url);\n  var subdomainIframe = extractSubdomain(url);\n\n  if (window.location.protocol !== protocolIframe || window.location.host !== subdomainIframe) {\n    return isExternal(subdomainIframe);\n  }\n\n  return false;\n};\n\nexports.default = function (element) {\n  var url = element.getAttribute('src');\n  return isDifferentDomain(url);\n};\n\n//# sourceURL=webpack://Indicate/./src/helpers/is-cross-origin-iframe.js?");
+
+/***/ }),
+
+/***/ "./src/helpers/removeClass.js":
+/*!************************************!*\
+  !*** ./src/helpers/removeClass.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nexports.default = function (element, selector) {\n  element.className = element.className.replace(new RegExp('(?:^|\\\\s)' + selector + '(?:\\\\s|$)'), ' ');\n};\n\n//# sourceURL=webpack://Indicate/./src/helpers/removeClass.js?");
+
+/***/ }),
+
+/***/ "./src/styles/arrows.scss":
+/*!********************************!*\
+  !*** ./src/styles/arrows.scss ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://Indicate/./src/styles/arrows.scss?");
 
 /***/ }),
-/* 21 */
+
+/***/ "./src/styles/block.scss":
+/*!*******************************!*\
+  !*** ./src/styles/block.scss ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://Indicate/./src/styles/block.scss?");
 
 /***/ }),
-/* 22 */
+
+/***/ "./src/styles/common.scss":
+/*!********************************!*\
+  !*** ./src/styles/common.scss ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://Indicate/./src/styles/common.scss?");
 
 /***/ }),
-/* 23 */
+
+/***/ "./src/styles/fades.scss":
+/*!*******************************!*\
+  !*** ./src/styles/fades.scss ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://Indicate/./src/styles/fades.scss?");
 
 /***/ }),
-/* 24 */
+
+/***/ "./src/styles/iframe.scss":
+/*!********************************!*\
+  !*** ./src/styles/iframe.scss ***!
+  \********************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://Indicate/./src/styles/iframe.scss?");
 
 /***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _Common2 = __webpack_require__(3);
-
-var _Common3 = _interopRequireDefault(_Common2);
-
-var _getSize = __webpack_require__(4);
-
-var _getSize2 = _interopRequireDefault(_getSize);
-
-var _getIframeScrollPosition = __webpack_require__(26);
-
-var _getIframeScrollPosition2 = _interopRequireDefault(_getIframeScrollPosition);
-
-var _getIframeContentDocument = __webpack_require__(27);
-
-var _getIframeContentDocument2 = _interopRequireDefault(_getIframeContentDocument);
-
-__webpack_require__(28);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var IFrame = function (_Common) {
-  _inherits(IFrame, _Common);
-
-  function IFrame(element, options) {
-    _classCallCheck(this, IFrame);
-
-    var _this = _possibleConstructorReturn(this, (IFrame.__proto__ || Object.getPrototypeOf(IFrame)).call(this, element, options));
-
-    _this.connectIframe();
-    return _this;
-  }
-
-  _createClass(IFrame, [{
-    key: 'connectIframe',
-    value: function connectIframe() {
-      this.scrollableElement = this.element;
-      this.checkIfIframeContentsAvailable();
-    }
-  }, {
-    key: 'shouldInitHorizontal',
-    value: function shouldInitHorizontal() {
-      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);
-
-      this.elementWidth = scrollElementSize.width;
-      this.elementFullWidth = this.contentDocument.body.scrollWidth;
-
-      if (this.options.horizontal) {
-        return this.elementFullWidth > this.elementWidth;
-      }
-    }
-  }, {
-    key: 'shouldInitVertical',
-    value: function shouldInitVertical() {
-      var scrollElementSize = (0, _getSize2.default)(this.scrollableElement);
-
-      this.elementWidth = scrollElementSize.height;
-      this.elementFullHeight = this.contentDocument.body.scrollHeight;
-
-      if (this.options.vertical) {
-        return this.elementFullHeight > this.elementHeight;
-      }
-    }
-
-    /**
-     * In order to get the actual parameters of the iframe contents we have to
-     * check if it has already finished loading.
-     **/
-
-  }, {
-    key: 'checkIfIframeContentsAvailable',
-    value: function checkIfIframeContentsAvailable() {
-      this.contentDocument = (0, _getIframeContentDocument2.default)(this);
-
-      if (!this.contentDocument.readyState !== 'complete') {
-        return this.delayUntilContentsAreLoaded();
-      }
-
-      this.setIframeReferences();
-    }
-
-    /**
-     * Delays execution until the contentLoaded listener is called.
-     **/
-
-  }, {
-    key: 'delayUntilContentsAreLoaded',
-    value: function delayUntilContentsAreLoaded(callback) {
-      var _this2 = this;
-
-      if (this.contentDocument.readyState !== 'complete') {
-        return setTimeout(function () {
-          return _this2.delayUntilContentsAreLoaded();
-        }, 300);
-      }
-
-      this.setIframeReferences();
-    }
-
-    /**
-     * Sets a reference to the iframe content element, once it's loaded.
-     **/
-
-  }, {
-    key: 'setIframeReferences',
-    value: function setIframeReferences() {
-      this.contentDocument = (0, _getIframeContentDocument2.default)(this);
-      this.init();
-    }
-  }, {
-    key: 'registerListeners',
-    value: function registerListeners() {
-      this.contentDocument.addEventListener('scroll', this.scrollFunction);
-      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'registerListeners', this).call(this);
-    }
-  }, {
-    key: 'resize',
-    value: function resize() {
-      this.elementFullWidth = this.contentDocument.body.scrollWidth;
-      this.elementFullHeight = this.contentDocument.body.scrollHeight;
-
-      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'resize', this).call(this);
-    }
-  }, {
-    key: 'scrollHorizontal',
-    value: function scrollHorizontal() {
-      var scrollLeft = (0, _getIframeScrollPosition2.default)(this.contentDocument, 'scrollLeft');
-      var atStart = scrollLeft < this.options.fadeOffset;
-      var atEnd = this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth;
-
-      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'scrollHorizontal', this).call(this, atStart, atEnd);
-    }
-  }, {
-    key: 'scrollVertical',
-    value: function scrollVertical() {
-      var scrollTop = (0, _getIframeScrollPosition2.default)(this.contentDocument, 'scrollTop');
-      var atStart = scrollTop < this.options.fadeOffset;
-      var atEnd = this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight;
-
-      _get(IFrame.prototype.__proto__ || Object.getPrototypeOf(IFrame.prototype), 'scrollVertical', this).call(this, atStart, atEnd);
-    }
-  }, {
-    key: 'clickHorizontal',
-    value: function clickHorizontal() {
-      //
-    }
-  }, {
-    key: 'clickVertical',
-    value: function clickVertical() {
-      //
-    }
-  }]);
-
-  return IFrame;
-}(_Common3.default);
-
-exports.default = IFrame;
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = getScrollPosition;
-/**
- * Returns the scroll position. Both properties are available, but the first
- * one is correct on Chrome and Firefox, while the second one matches
- * Safari.
- **/
-function getScrollPosition(contentDocument, property) {
-  return Math.max(contentDocument.documentElement[property], contentDocument.body[property]);
-}
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = getContentDocument;
-function getContentDocument(instance) {
-  return instance.element.contentDocument;
-}
-
-/***/ }),
-/* 28 */
+/***/ "./src/styles/table.scss":
+/*!*******************************!*\
+  !*** ./src/styles/table.scss ***!
+  \*******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _Common2 = __webpack_require__(3);
-
-var _Common3 = _interopRequireDefault(_Common2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var IFrameCrossOrigin = function (_Common) {
-  _inherits(IFrameCrossOrigin, _Common);
-
-  function IFrameCrossOrigin(element, options) {
-    _classCallCheck(this, IFrameCrossOrigin);
-
-    var _this = _possibleConstructorReturn(this, (IFrameCrossOrigin.__proto__ || Object.getPrototypeOf(IFrameCrossOrigin)).call(this, element, options));
-
-    _this.scrollableElement = _this.element;
-    _this.registerPostMessageListener();
-    return _this;
-  }
-
-  _createClass(IFrameCrossOrigin, [{
-    key: 'shouldInitHorizontal',
-    value: function shouldInitHorizontal() {
-      return this.elementFullWidth > this.elementVisibleWidth;
-    }
-  }, {
-    key: 'shouldInitVertical',
-    value: function shouldInitVertical() {
-      return this.elementFullHeight > this.elementVisibleHeight;
-    }
-  }, {
-    key: 'registerPostMessageListener',
-    value: function registerPostMessageListener() {
-      var _this2 = this;
-
-      window.addEventListener('message', function (event) {
-        if (!event.data || !event.data.indicate) {
-          return;
-        }
-        _this2.getIframeMessage(event);
-      }, false);
-    }
-  }, {
-    key: 'getIframeMessage',
-    value: function getIframeMessage(event) {
-      var data = event.data;
-
-      this.elementFullWidth = data.width;
-      this.elementFullHeight = data.height;
-      this.scrollLeft = data.offsetLeft;
-      this.scrollTop = data.offsetTop;
-
-      if (!data.initialized) {
-        this.init();
-      } else {
-        this.scroll();
-      }
-    }
-  }, {
-    key: 'scrollHorizontal',
-    value: function scrollHorizontal() {
-      var atStart = this.scrollLeft < this.options.fadeOffset;
-      var atEnd = this.elementVisibleWidth + this.scrollLeft + this.options.fadeOffset > this.elementFullWidth;
-
-      _get(IFrameCrossOrigin.prototype.__proto__ || Object.getPrototypeOf(IFrameCrossOrigin.prototype), 'scrollHorizontal', this).call(this, atStart, atEnd);
-    }
-  }, {
-    key: 'scrollVertical',
-    value: function scrollVertical() {
-      var atStart = this.scrollTop < this.options.fadeOffset;
-      var atEnd = this.elementVisibleHeight + this.scrollTop + this.options.fadeOffset > this.elementFullHeight;
-
-      _get(IFrameCrossOrigin.prototype.__proto__ || Object.getPrototypeOf(IFrameCrossOrigin.prototype), 'scrollVertical', this).call(this, atStart, atEnd);
-    }
-  }, {
-    key: 'clickHorizontal',
-    value: function clickHorizontal() {
-      //
-    }
-  }, {
-    key: 'clickVertial',
-    value: function clickVertial() {
-      //
-    }
-  }]);
-
-  return IFrameCrossOrigin;
-}(_Common3.default);
-
-exports.default = IFrameCrossOrigin;
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// Returns the protocol of a domain.
-var extractProtocol = function extractProtocol(domain) {
-  return domain.split('/')[0];
-};
-
-// Returns the subdomain of a domain.
-var extractSubdomain = function extractSubdomain(domain) {
-  return domain.split('/')[2];
-};
-
-// Extracts the domain name of a subdomain.
-var extractDomainName = function extractDomainName(subdomain) {
-  // TODO does not work for ip addresses
-  var arr = subdomain.split('.');
-  return arr[arr.length - 2] + '.' + arr[arr.length - 1];
-};
-
-var isExternal = function isExternal(subdomainIframe) {
-  var domainName = extractDomainName(subdomainIframe);
-
-  if (document.domain !== domainName) {
-    // Not a subdomain
-    return true;
-  }
-
-  // It's a subdomain, adapt domain to allow accessing contents
-  document.domain = domainName;
-  return false;
-};
-
-var isDifferentDomain = function isDifferentDomain(url) {
-  var protocolIframe = extractProtocol(url);
-  var subdomainIframe = extractSubdomain(url);
-
-  if (window.location.protocol !== protocolIframe || window.location.host !== subdomainIframe) {
-    return isExternal(subdomainIframe);
-  }
-
-  return false;
-};
-
-exports.default = function (element) {
-  var url = element.getAttribute('src');
-  return isDifferentDomain(url);
-};
+eval("// removed by extract-text-webpack-plugin\n\n//# sourceURL=webpack://Indicate/./src/styles/table.scss?");
 
 /***/ })
-/******/ ])["default"];
+
+/******/ })["default"];
 });
