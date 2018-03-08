@@ -1,6 +1,6 @@
 {
   "name": "indicate",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "Indicate Plugin",
   "main": "dist/indicate.min.js",
   "repository": "https://github.com/naminho/indicate",
