@@ -19,7 +19,7 @@ export default class MaxHeight extends Feature {
 
   setMaxHeight (instance) {
     if (instance instanceof Table) {
-      instance.scrollableElement.style.maxHeight = this.options.maxHeight
+      instance.container.style.maxHeight = this.options.maxHeight
     }
   }
 }

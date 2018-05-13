@@ -1,5 +1,4 @@
 import Common from './Common'
-import getSize from './helpers/getSize'
 import './styles/block.scss'
 
 export default class Block extends Common {
@@ -8,58 +7,40 @@ export default class Block extends Common {
     this.init()
   }
 
+  /**
+   * Only if there is overflow the fades need to be initialized.
+   **/
   shouldInitHorizontal () {
-    const scrollElementSize = getSize(this.scrollableElement)
-
-    this.elementWidth = scrollElementSize.width
-
-    this.elementFullWidth = this.element.scrollWidth
-
-    if (this.options.horizontal) {
-      return this.elementFullWidth > this.elementWidth
+    // Should only init if option given and not yet initialized
+    if (this.options.horizontal && !this.isHorizontal()) {
+      return this.contentWidth() > this.elementWidth()
     }
   }
 
   shouldInitVertical () {
-    const scrollElementSize = getSize(this.element)
-
-    this.elementHeight = scrollElementSize.height
-
-    this.elementFullHeight = this.element.scrollHeight
-
-    if (this.options.vertical) {
-      return this.elementFullHeight > this.elementHeight
+    if (this.options.vertical && !this.isVertical()) {
+      return this.contentHeight() > this.elementHeight()
     }
   }
 
   destroy () {
-    this.scrollableElement.removeEventListener('scroll', this.scrollFunction)
+    this.container.removeEventListener('scroll', this.scrollFunction)
     super.destroy()
-  }
-
-  makeElementResponsive () {
-    this.scrollableElement = this.element
-    super.makeElementResponsive()
-  }
-
-  registerListeners () {
-    this.scrollableElement.addEventListener('scroll', this.scrollFunction)
-    super.registerListeners()
   }
 
   /**
    * Scroll left of right after a click.
    **/
   clickHorizontal (direction) {
-    const scrollLeft = this.scrollableElement.scrollLeft
-    const containerLength = this.elementVisibleWidth
+    const scrollLeft = this.container.scrollLeft
+    const containerLength = this.elementWidth()
 
     const scrollLength = containerLength / this.options.scrollDenominator
 
     if (direction === 'right') {
-      this.scrollableElement.scrollLeft = scrollLeft + scrollLength
+      this.container.scrollLeft = scrollLeft + scrollLength
     } else {
-      this.scrollableElement.scrollLeft = scrollLeft - scrollLength
+      this.container.scrollLeft = scrollLeft - scrollLength
     }
   }
 
@@ -68,7 +49,7 @@ export default class Block extends Common {
    **/
   clickVertical (direction) {
     const scrollTop = this.element.scrollTop
-    const containerLength = this.elementVisibleHeight
+    const containerLength = this.elementHeight
 
     const scrollLength = containerLength / this.options.scrollDenominator
 
@@ -83,9 +64,16 @@ export default class Block extends Common {
    * Adapts the visibility of the horizontal elements after a scroll.
    **/
   scrollHorizontal () {
-    const scrollLeft = this.scrollableElement.scrollLeft
+    const scrollLeft = this.element.scrollLeft
     const atStart = scrollLeft < this.options.fadeOffset
-    const atEnd = this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth
+    let atEnd = this.elementWidth() + scrollLeft + this.options.fadeOffset > this.contentWidth()
+
+    // If no scrolling has happend and there is some space inside the fade
+    // offset, still show the fade indicator, so the user knows that scrolling
+    // is possible
+    if (scrollLeft === 0 && atEnd && this.contentWidth() > this.elementWidth()) {
+      atEnd = false
+    }
 
     super.scrollHorizontal(atStart, atEnd)
   }
@@ -94,9 +82,9 @@ export default class Block extends Common {
    * Adapts the visibility of the vertical elements after a scroll.
    **/
   scrollVertical () {
-    const scrollTop = this.scrollableElement.scrollTop
+    const scrollTop = this.element.scrollTop
     const atStart = scrollTop < this.options.fadeOffset
-    const atEnd = this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight
+    const atEnd = this.elementHeight() + scrollTop + this.options.fadeOffset > this.contentHeight()
 
     super.scrollVertical(atStart, atEnd)
   }
@@ -105,11 +93,6 @@ export default class Block extends Common {
    * On page resize we need to adapt the container measurements.
    **/
   resize () {
-    const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
-
-    this.elementFullWidth = Math.max(scrollElementBounds.width, this.scrollableElement.scrollWidth)
-    this.elementFullHeight = Math.max(scrollElementBounds.height, this.scrollableElement.scrollHeight)
-
     super.resize()
   }
 }

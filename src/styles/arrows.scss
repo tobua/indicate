@@ -12,7 +12,7 @@
   align-items: center;
 }
 
-.hide[class^="idc-arrow-"] {
+.idc-hide[class^="idc-arrow-"] {
   opacity: 0;
   transition: opacity 300ms linear;
   pointer-events: none;
@@ -52,4 +52,25 @@
 
 .idc-arrow-left::before {
   transform: rotate(180deg);
+}
+
+.idc-container:not(.idc-absolute) {
+  .idc-arrow-top {
+    top: 0;
+    width: 100%;
+  }
+
+  .idc-arrow-right {
+    right: 0;
+  }
+
+  .idc-arrow-bottom {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .idc-arrow-left {
+    left: 0;
+  }
 }

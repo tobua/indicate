@@ -1,8 +1,12 @@
-import addClass from './helpers/addClass'
-import removeClass from './helpers/removeClass'
-import getOffset from './helpers/getOffset'
-import getSize from './helpers/getSize'
-import ClassNames from './constants/classNames'
+import addClass from './helpers/add-class'
+import hasClass from './helpers/has-class'
+import removeClass from './helpers/remove-class'
+import getSize from './helpers/get-size'
+import ClassNames from './constants/class-names'
+
+import './helpers/node-remove-polyfill'
+import assign from 'object-assign'
+
 import './styles/common.scss'
 import './styles/fades.scss'
 import './styles/arrows.scss'
@@ -10,71 +14,73 @@ import './styles/arrows.scss'
 export default class Common {
   constructor (element, options) {
     this.element = element
+    this.container = element
     this.options = options
+    this.directions = []
+    this.fades = {}
+    this.arrows = {}
+    this.id = Math.random() * (999 - 1) + 1
+    addClass(this.element, ClassNames.element)
+
     this.initFunction = () => this.init()
     this.resizeFunction = () => this.resize()
     this.scrollFunction = () => this.scroll()
+
+    this.hook('setup')
   }
 
   /**
    * To be called from descendants, once ready.
    **/
   init () {
-    this.makeElementResponsive()
+    this.hook('init')
 
     const shouldInitHorizontal = this.shouldInitHorizontal()
     const shouldInitVertical = this.shouldInitVertical()
 
-    if (
-      (this.options.horizontal && !shouldInitHorizontal) ||
-      (this.options.vertical && !shouldInitVertical)
-    ) {
-      if (!this.initEventAdded) {
-        this.initEventAdded = true
-        window.addEventListener('resize', this.initFunction)
-      }
-    }
+    // Listen again to this function, removed in create if possible
+    window.addEventListener('resize', this.initFunction)
 
-    if (
-      (this.options.horizontal && this.initHorizontal) ||
-      (this.options.vertical && this.initVertical)
-    ) {
-      window.removeEventListener('resize', this.initFunction)
-    }
-
-    if (
-      (this.options.horizontal && shouldInitHorizontal && !this.initHorizontal) ||
-      (this.options.vertical && shouldInitVertical && !this.initVertical)
-    ) {
+    if (shouldInitHorizontal || shouldInitVertical) {
+      // Initialize the plugin, as at least one direction missing.
       this.create()
       this.resize()
     }
   }
 
   /**
-   * Creates an instance.
+   * Adds all the things necessary for the effect.
    **/
   create () {
-    this.element.className += ` ${ClassNames.elementClass}`
     this.setDirections()
-    this.insertFadeElements()
-    this.insertArrows()
-    this.registerListeners()
+    this.updateFadeElements()
+    this.updateArrows()
+    this.addListeners()
     this.hideInitial()
 
     this.hook('create')
+
+    if (
+      (this.isHorizontal() || !this.options.horizontal) &&
+      (this.isVertical() || !this.options.vertical)
+    ) {
+      // No more listening to the init event necessary
+      window.removeEventListener('resize', this.initFunction)
+    }
   }
 
   /**
    * Updates an exising instance when new options are received.
    **/
   update (options) {
-    this.options = options
+    this.options = assign(this.options, options)
     this.setDirections()
+    this.updateFadeElements()
+    this.updateArrows()
 
     this.hook('update')
 
-    this.resize()
+    this.resize() // Resize after hook (max-height change)
   }
 
   /**
@@ -83,46 +89,14 @@ export default class Common {
   destroy () {
     window.removeEventListener('resize', this.resizeFunction)
     window.removeEventListener('resize', this.initFunction)
+    this.container.removeEventListener('scroll', this.scrollFunction)
+    this.removeFadeElements(this.directions)
+    this.removeArrows(true)
+    removeClass(this.element, ClassNames.element)
   }
 
   /**
-   * For regular elements no wrapper is needed.
-   **/
-  makeElementResponsive () {
-    this.parent = this.element.parentElement
-  }
-
-  /**
-   * Register the scorll, resize and arrow click listeners.
-   **/
-  registerListeners () {
-    window.addEventListener('resize', this.resizeFunction)
-
-    this.directions.map(direction => {
-      const element = this.arrows ? this.arrows[direction] : this.fades[direction]
-      // Note that listeners on hidden elements will not be working.
-      element.addEventListener('click', (event) => this.handleClick(event))
-    })
-  }
-
-  /**
-   * Adapts the scroll position after a click on a direction (arrow/fade) has
-   * happened.
-   **/
-  handleClick (event) {
-    const direction = event.target.className.match(/[\w]*($|\s)/)[0].trim()
-
-    if (direction === 'left' || direction === 'right') {
-      return this.clickHorizontal(direction)
-    }
-
-    if (direction === 'top' || direction === 'bottom') {
-      return this.clickVertical(direction)
-    }
-  }
-
-  /**
-   * Adapt elements after a scroll.
+   * Adapts element states (shown/hidden) after the scroll position has changed.
    **/
   scroll () {
     if (this.options.horizontal && this.fades.left) {
@@ -136,6 +110,8 @@ export default class Common {
 
   /**
    * Adapts the visibility of the horizontal elements after a scroll.
+   *
+   * NOTE to be called by descendant via super.scrollHorizontal
    **/
   scrollHorizontal (atStart, atEnd) {
     if (atStart) {
@@ -153,6 +129,8 @@ export default class Common {
 
   /**
    * Adapts the visibility of the vertical elements after a scroll.
+   *
+   * NOTE to be called by descendant via super.scrollVertical
    **/
   scrollVertical (atStart, atEnd) {
     if (atEnd) {
@@ -169,19 +147,9 @@ export default class Common {
   }
 
   /**
-   * On page resize we need to adapt the container measurements.
+   * Adapt container measurements on resize.
    **/
   resize () {
-    const scrollElementBounds = this.scrollableElement.getBoundingClientRect()
-    const scrollElementSize = getSize(this.scrollableElement)
-
-    // Probably unneeded check if needed for browser compatibility
-    this.elementVisibleWidth = Math.max(this.scrollableElement.clientWidth, scrollElementBounds.width)
-    this.elementVisibleHeight = Math.max(this.scrollableElement.clientHeight, scrollElementBounds.height)
-
-    this.elementWidth = scrollElementSize.width
-    this.elementHeight = scrollElementSize.height
-
     window.requestAnimationFrame(() => this.updateElementPositions())
 
     this.scroll()
@@ -191,14 +159,14 @@ export default class Common {
    * Hides the fades and arrows if they're not yet hidden.
    **/
   hide (direction) {
-    const hidePropertyName = `is${direction}Hidden`
+    if (!hasClass(this.fades[direction], ClassNames.hide)) {
+      addClass(this.fades[direction], ClassNames.hide)
+    }
 
-    if (!this[hidePropertyName]) {
-      this[hidePropertyName] = true
-      addClass(this.fades[direction], 'hide')
-      if (this.arrows) {
-        addClass(this.arrows[direction], 'hide')
-      }
+    const arrow = this.arrows[direction]
+
+    if (arrow && !hasClass(arrow, ClassNames.hide)) {
+      addClass(arrow, ClassNames.hide)
     }
   }
 
@@ -219,89 +187,99 @@ export default class Common {
    * Shows the fades and arrows if they're hidden.
    **/
   show (direction) {
-    const hidePropertyName = `is${direction}Hidden`
+    if (hasClass(this.fades[direction], ClassNames.hide)) {
+      removeClass(this.fades[direction], ClassNames.hide)
+    }
 
-    if (this[hidePropertyName]) {
-      this[hidePropertyName] = false
-      removeClass(this.fades[direction], 'hide')
-      if (this.arrows) {
-        removeClass(this.arrows[direction], 'hide')
-      }
+    const arrow = this.arrows[direction]
+
+    if (arrow && hasClass(arrow, ClassNames.hide)) {
+      removeClass(arrow, ClassNames.hide)
     }
   }
 
   /**
    * Inserts the fade elements for all the directions provided.
    **/
-  insertFadeElements () {
-    this.fades = {}
+  updateFadeElements () {
+    this.removeUnnecessaryFadeElements()
 
-    this.directions.map((direction, index) => {
+    this.directions.forEach((direction, index) => {
+      if (this.fades[direction]) {
+        return
+      }
       this.fades[direction] = document.createElement('div')
       this.fades[direction].className = ClassNames[`fade-${direction}`]
-      this.parent.appendChild(this.fades[direction])
+      this.container.appendChild(this.fades[direction])
+    })
+  }
+
+  /**
+   * Removes fade elements that are not needed anymore.
+   **/
+  removeUnnecessaryFadeElements () {
+    if (!this.options.horizontal && this.isHorizontal()) {
+      this.removeFadeElements(['left', 'right'])
+    }
+
+    if (!this.options.vertical && this.isVertical()) {
+      this.removeFadeElements(['top', 'bottom'])
+    }
+  }
+
+  /**
+   * Removes the fade elements for the given directions.
+   **/
+  removeFadeElements (directions) {
+    directions.forEach(direction => {
+      this.fades[direction].remove()
+      delete this.fades[direction]
     })
   }
 
   /**
    * Inserts the arrows for all the directions provided.
    **/
-  insertArrows () {
-    if (!this.options.arrows) {
-      return
-    }
-
-    this.arrows = {}
-
-    this.directions.map(direction => {
+  updateArrows () {
+    this.directions.forEach(direction => {
+      if (this.arrows[direction]) {
+        return
+      }
       this.arrows[direction] = document.createElement('div')
       this.arrows[direction].className = ClassNames[`arrow-${direction}`]
-      this.parent.appendChild(this.arrows[direction])
+      this.container.appendChild(this.arrows[direction])
+    })
+
+    this.removeArrows(false)
+  }
+
+  /**
+   * Removes arrow nodes. Node removed if either removeAll, direction does not
+   * apply or arrows are deactivated.
+   **/
+  removeArrows (removeAll) {
+    Object.keys(this.arrows).forEach(key => {
+      const directionMissing = this.directions.indexOf(key) === -1
+      if (removeAll || directionMissing || !this.options.arrows) {
+        this.arrows[key].remove()
+        delete this.arrows[key]
+      }
     })
   }
 
   /**
-   * Updates the fade and arrow element positions. This is only needed on
-   * create and if the position or size of the container changes. Not on scroll.
+   * Adds the listeners for resize and scroll.
+   **/
+  addListeners () {
+    window.addEventListener('resize', this.resizeFunction)
+    this.element.addEventListener('scroll', this.scrollFunction)
+  }
+
+  /**
+   * Update the position of the fade elements.
    **/
   updateElementPositions () {
-    const elementOffset = getOffset(this.scrollableElement)
-
-    if (this.options.horizontal && this.fades.left) {
-      this.setElementPositionHorizontal(this.fades.left, elementOffset, false)
-      this.setElementPositionHorizontal(this.fades.right, elementOffset, true)
-
-      if (this.arrows) {
-        this.setElementPositionHorizontal(this.arrows.left, elementOffset, false)
-        this.setElementPositionHorizontal(this.arrows.right, elementOffset, true)
-      }
-    }
-
-    if (this.options.vertical && this.fades.top) {
-      this.setElementPositionVertical(this.fades.top, elementOffset, false)
-      this.setElementPositionVertical(this.fades.bottom, elementOffset, true)
-
-      if (this.arrows) {
-        this.setElementPositionVertical(this.arrows.top, elementOffset, false)
-        this.setElementPositionVertical(this.arrows.bottom, elementOffset, true)
-      }
-    }
-  }
-
-  setElementPositionHorizontal (element, elementOffset, includeOffset) {
-    const offset = includeOffset ? `${this.elementWidth}px - ${this.options.fadeWidth}` : '0px'
-
-    element.style.left = `calc(${elementOffset.left}px + ${offset})`
-    element.style.top = `${elementOffset.top}px`
-    element.style.height = `${this.elementHeight}px`
-  }
-
-  setElementPositionVertical (element, elementOffset, includeOffset) {
-    const offset = includeOffset ? `${this.elementHeight}px - ${this.options.fadeWidth}` : '0px'
-
-    element.style.left = `${elementOffset.left}px`
-    element.style.top = `calc(${elementOffset.top}px + ${offset})`
-    element.style.width = `${this.elementWidth}px`
+    this.hook('updateElementPositions')
   }
 
   /**
@@ -310,15 +288,27 @@ export default class Common {
   setDirections () {
     this.directions = []
 
-    if (this.options.horizontal && this.shouldInitHorizontal()) {
-      this.initHorizontal = true
+    if (this.options.horizontal) {
       this.directions.push('left', 'right')
     }
 
-    if (this.options.vertical && this.shouldInitVertical()) {
-      this.initVertical = true
+    if (this.options.vertical) {
       this.directions.push('top', 'bottom')
     }
+  }
+
+  /**
+   * Is the instance currently initialized horizontally.
+   **/
+  isHorizontal () {
+    return Boolean(this.fades['left'])
+  }
+
+  /**
+   * Is the instance currently initialized vertically.
+   **/
+  isVertical () {
+    return Boolean(this.fades['top'])
   }
 
   /**
@@ -326,5 +316,35 @@ export default class Common {
    **/
   hook (method) {
     this.options.features.forEach((feature) => feature[method] ? feature[method](this) : 0)
+  }
+
+  /**
+   * Returns the width of the scrollable element on screen (not the content).
+   **/
+  elementWidth () {
+    return getSize(this.element).width
+  }
+
+  /**
+   * Returns the full width of the scrollable element, including parts not
+   * visible without scrolling.
+   **/
+  contentWidth () {
+    return this.element.scrollWidth
+  }
+
+  /**
+   * Returns the width of the scrollable element on screen (not the content).
+   **/
+  elementHeight () {
+    return getSize(this.element).height
+  }
+
+  /**
+   * Returns the full width of the scrollable element, including parts not
+   * visible without scrolling.
+   **/
+  contentHeight () {
+    return this.element.scrollHeight
   }
 }

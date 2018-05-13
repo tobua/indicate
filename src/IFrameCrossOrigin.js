@@ -3,16 +3,16 @@ import Common from './Common'
 export default class IFrameCrossOrigin extends Common {
   constructor (element, options) {
     super(element, options)
-    this.scrollableElement = this.element
+    this.container = this.element
     this.registerPostMessageListener()
   }
 
   shouldInitHorizontal () {
-    return this.elementFullWidth > this.elementVisibleWidth
+    return this.contentWidth() > this.elementWidth()
   }
 
   shouldInitVertical () {
-    return this.elementFullHeight > this.elementVisibleHeight
+    return this.contentHeight() > this.elementHeight()
   }
 
   registerPostMessageListener () {
@@ -27,8 +27,8 @@ export default class IFrameCrossOrigin extends Common {
   getIframeMessage (event) {
     const data = event.data
 
-    this.elementFullWidth = data.width
-    this.elementFullHeight = data.height
+    this.contentWidth = data.width
+    this.contentHeight = data.height
     this.scrollLeft = data.offsetLeft
     this.scrollTop = data.offsetTop
 
@@ -41,14 +41,14 @@ export default class IFrameCrossOrigin extends Common {
 
   scrollHorizontal () {
     const atStart = this.scrollLeft < this.options.fadeOffset
-    const atEnd = this.elementVisibleWidth + this.scrollLeft + this.options.fadeOffset > this.elementFullWidth
+    const atEnd = this.elementWidth() + this.scrollLeft + this.options.fadeOffset > this.contentWidth()
 
     super.scrollHorizontal(atStart, atEnd)
   }
 
   scrollVertical () {
     const atStart = this.scrollTop < this.options.fadeOffset
-    const atEnd = this.elementVisibleHeight + this.scrollTop + this.options.fadeOffset > this.elementFullHeight
+    const atEnd = this.elementHeight + this.scrollTop + this.options.fadeOffset > this.contentHeight
 
     super.scrollVertical(atStart, atEnd)
   }

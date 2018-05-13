@@ -1,28 +1,25 @@
 import Block from './Block'
-import addClass from './helpers/addClass'
-import ClassNames from './constants/classNames'
-import './styles/table.scss'
+import getSize from './helpers/get-size'
 
+/**
+ * The only thing special for Tables is that they always need a wrapper. This
+ * case is handled in the Wrapper Feature.
+ **/
 export default class Table extends Block {
-  makeElementResponsive () {
-    const parentElement = this.element.parentElement
-    const tagName = parentElement.tagName
-
-    if (tagName.toLowerCase() !== 'div') {
-      this.addWrapper(parentElement)
-    } else {
-      addClass(parentElement, ClassNames.tableWrapper)
-      this.scrollableElement = parentElement
-      this.parent = parentElement.parentElement
-    }
+  constructor (element, options) {
+    super(element, options)
+    this.element = element.parentElement
+    this.container = this.element.parentElement
   }
 
-  addWrapper (parentElement) {
-    const wrapper = document.createElement('div')
-    parentElement.replaceChild(wrapper, this.element)
-    wrapper.className = ClassNames.tableWrapper
-    wrapper.appendChild(this.element)
-    this.scrollableElement = wrapper
-    this.parent = wrapper.parentElement
+  elementWidth () {
+    return getSize(this.container).width
+  }
+
+  /**
+   * Returns the width of the scrollable element on screen (not the content).
+   **/
+  elementHeight () {
+    return getSize(this.container).height
   }
 }

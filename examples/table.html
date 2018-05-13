@@ -5,107 +5,14 @@
     <title>Indicate Plugin - Basic Example</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../dist/indicate.css">
+		<link rel="stylesheet" href="exmpl/styles.css">
     <link rel="stylesheet" href="examples-styles.css">
   </head>
   <body>
     <h1>Table</h1>
-    <h2>No Block Wrapper Element</h2>
-    <table id="target">
-      <tr>
-        <th>
-          Header 1
-        </th>
-        <th>
-          Header 2
-        </th>
-        <th>
-          Header 3
-        </th>
-        <th>
-          Header 4
-        </th>
-        <th>
-          Header 5
-        </th>
-        <th>
-          Header 6
-        </th>
-        <th>
-          Header 7
-        </th>
-      </tr>
-      <tr>
-        <td>
-          Col 1
-        </td>
-        <td>
-          Col 2
-        </td>
-        <td>
-          Col 3
-        </td>
-        <td>
-          Col 4
-        </td>
-        <td>
-          Col 5
-        </td>
-        <td>
-          Col 6
-        </td>
-        <td>
-          Col 7
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Col 1
-        </td>
-        <td>
-          Col 2
-        </td>
-        <td>
-          Col 3
-        </td>
-        <td>
-          Col 4
-        </td>
-        <td>
-          Col 5
-        </td>
-        <td>
-          Col 6
-        </td>
-        <td>
-          Col 7
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Col 1
-        </td>
-        <td>
-          Col 2
-        </td>
-        <td>
-          Col 3
-        </td>
-        <td>
-          Col 4
-        </td>
-        <td>
-          Col 5
-        </td>
-        <td>
-          Col 6
-        </td>
-        <td>
-          Col 7
-        </td>
-      </tr>
-    </table>
     <h2>With Block Wrapper Element</h2>
-    <div>
+    <i>Existing wrapper will be used to scroll.</i>
+    <div class="aready-existing-container">
       <table id="targetWrapper">
         <tr>
           <th>
@@ -201,6 +108,104 @@
         </tr>
       </table>
     </div>
+    <span>
+      <h2>No Block Wrapper Element</h2>
+      <i>Wrapper will be added by the plugin</i>
+      <table id="target">
+        <tr>
+          <th>
+            Header 1
+          </th>
+          <th>
+            Header 2
+          </th>
+          <th>
+            Header 3
+          </th>
+          <th>
+            Header 4
+          </th>
+          <th>
+            Header 5
+          </th>
+          <th>
+            Header 6
+          </th>
+          <th>
+            Header 7
+          </th>
+        </tr>
+        <tr>
+          <td>
+            Col 1
+          </td>
+          <td>
+            Col 2
+          </td>
+          <td>
+            Col 3
+          </td>
+          <td>
+            Col 4
+          </td>
+          <td>
+            Col 5
+          </td>
+          <td>
+            Col 6
+          </td>
+          <td>
+            Col 7
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Col 1
+          </td>
+          <td>
+            Col 2
+          </td>
+          <td>
+            Col 3
+          </td>
+          <td>
+            Col 4
+          </td>
+          <td>
+            Col 5
+          </td>
+          <td>
+            Col 6
+          </td>
+          <td>
+            Col 7
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Col 1
+          </td>
+          <td>
+            Col 2
+          </td>
+          <td>
+            Col 3
+          </td>
+          <td>
+            Col 4
+          </td>
+          <td>
+            Col 5
+          </td>
+          <td>
+            Col 6
+          </td>
+          <td>
+            Col 7
+          </td>
+        </tr>
+      </table>
+    </span>
     <h2>With Fixed Header and a bit of Flexbox</h2>
     <style>
       table.fixed-header {
@@ -258,122 +263,12 @@
         </tr>
       </tbody>
     </table>
-    <style>
-    .static-example.idc-table-wrapper {
-      overflow-x: auto;
-      margin-left: 100px;
-      width: calc(100% - 100px);
-    }
-
-    .left-offset-col {
-      position: absolute;
-      left: 0;
-      width: 100px;
-    }
-    </style>
-    <h2>Static Left Column</h2>
-    <div class="static-example">
-      <table id="static-left-column">
-        <tr>
-          <th class="left-offset-col">
-            Header 1
-          </th>
-          <th>
-            Header 2
-          </th>
-          <th>
-            Header 3
-          </th>
-          <th>
-            Header 4
-          </th>
-          <th>
-            Header 5
-          </th>
-          <th>
-            Header 6
-          </th>
-          <th>
-            Header 7
-          </th>
-        </tr>
-        <tr>
-          <td class="left-offset-col">
-            Col 1
-          </td>
-          <td>
-            Col 2
-          </td>
-          <td>
-            Col 3
-          </td>
-          <td>
-            Col 4
-          </td>
-          <td>
-            Col 5
-          </td>
-          <td>
-            Col 6
-          </td>
-          <td>
-            Col 7
-          </td>
-        </tr>
-        <tr>
-          <td class="left-offset-col">
-            Col 1
-          </td>
-          <td>
-            Col 2
-          </td>
-          <td>
-            Col 3
-          </td>
-          <td>
-            Col 4
-          </td>
-          <td>
-            Col 5
-          </td>
-          <td>
-            Col 6
-          </td>
-          <td>
-            Col 7
-          </td>
-        </tr>
-        <tr>
-          <td class="left-offset-col">
-            Col 1
-          </td>
-          <td>
-            Col 2
-          </td>
-          <td>
-            Col 3
-          </td>
-          <td>
-            Col 4
-          </td>
-          <td>
-            Col 5
-          </td>
-          <td>
-            Col 6
-          </td>
-          <td>
-            Col 7
-          </td>
-        </tr>
-      </table>
-    </div>
     <script src="../dist/indicate.js"></script>
     <script>
       const instance = new Indicate(document.getElementById('target'), {arrowPosition: 'start'})
       const instanceWrapper = new Indicate(document.getElementById('targetWrapper'), {arrowPosition: 'start'})
       const fixedInstance = new Indicate(document.getElementById('scrollable-columns'))
-      const staticInstance = new Indicate(document.getElementById('static-left-column'), {arrowPosition: 'start'})
+      const staticInstance = new Indicate(document.getElementById('static-left-column'), {arrowPosition: 'start', absolutePositioning: true})
     </script>
   </body>
 </html>

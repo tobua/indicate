@@ -9,9 +9,10 @@ const defaultOptions = {
   // Should arrows be show.
   arrows: true,
   // Defines where the arrows should be positioned inside the fade effect.
-  // Can be set to 'cetner', 'start' or 'end'.
+  // Only applies horizontally
+  // Can be set to 'center', 'start' or 'end'.
   arrowPosition: 'center',
-  // The face effec's width.
+  // The face effec's width. TODO rename to fadeSize, as it's horizontal and vertical
   fadeWidth: '20px',
   // This far away from the scroll end the effect will be removed.
   fadeOffset: 5,
@@ -19,8 +20,17 @@ const defaultOptions = {
   horizontal: true,
   // Additionally the effect can also be applied vertically.
   vertical: true,
-  // Set the max-height of the wrapper.
-  maxHeight: 'none'
+  // Set the max-height of the table wrapper.
+  maxHeight: undefined,
+  // Always creates a wrapper around table elements.
+  forceWrapper: false,
+  // Scroll when fades / arrows are clicked
+  click: true,
+  // How should the fade nodes be positioned relative to the element
+  // Default is relative where the nodes are placed inside the element
+  // Absolute positioning is useful in cases when relative positioning
+  // messes up the current styling.
+  absolutePositioning: false
 }
 
 export default class Options {

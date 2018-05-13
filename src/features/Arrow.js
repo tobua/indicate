@@ -1,5 +1,5 @@
 import Feature from './Feature'
-import addClass from './../helpers/addClass'
+import addClass from './../helpers/add-class'
 
 /**
  * Abstract class to provide arrow related functionality.

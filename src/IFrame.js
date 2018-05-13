@@ -1,5 +1,5 @@
 import Common from './Common'
-import getSize from './helpers/getSize'
+import getSize from './helpers/get-size'
 import getScrollPosition from './helpers/get-iframe-scroll-position'
 import getContentDocument from './helpers/get-iframe-content-document'
 import './styles/iframe.scss'
@@ -11,29 +11,19 @@ export default class IFrame extends Common {
   }
 
   connectIframe () {
-    this.scrollableElement = this.element
+    this.container = this.element
     this.checkIfIframeContentsAvailable()
   }
 
   shouldInitHorizontal () {
-    const scrollElementSize = getSize(this.scrollableElement)
-
-    this.elementWidth = scrollElementSize.width
-    this.elementFullWidth = this.contentDocument.body.scrollWidth
-
     if (this.options.horizontal) {
-      return this.elementFullWidth > this.elementWidth
+      return this.contentWidth() > this.elementWidth()
     }
   }
 
   shouldInitVertical () {
-    const scrollElementSize = getSize(this.scrollableElement)
-
-    this.elementWidth = scrollElementSize.height
-    this.elementFullHeight = this.contentDocument.body.scrollHeight
-
     if (this.options.vertical) {
-      return this.elementFullHeight > this.elementHeight
+      return this.contentHeight() > this.elementHeight()
     }
   }
 
@@ -76,8 +66,8 @@ export default class IFrame extends Common {
   }
 
   resize () {
-    this.elementFullWidth = this.contentDocument.body.scrollWidth
-    this.elementFullHeight = this.contentDocument.body.scrollHeight
+    this.contentWidth = this.contentDocument.body.scrollWidth
+    this.contentHeight = this.contentDocument.body.scrollHeight
 
     super.resize()
   }
@@ -85,7 +75,7 @@ export default class IFrame extends Common {
   scrollHorizontal () {
     const scrollLeft = getScrollPosition(this.contentDocument, 'scrollLeft')
     const atStart = scrollLeft < this.options.fadeOffset
-    const atEnd = this.elementVisibleWidth + scrollLeft + this.options.fadeOffset > this.elementFullWidth
+    const atEnd = this.elementWidth() + scrollLeft + this.options.fadeOffset > this.contentWidth()
 
     super.scrollHorizontal(atStart, atEnd)
   }
@@ -93,7 +83,7 @@ export default class IFrame extends Common {
   scrollVertical () {
     const scrollTop = getScrollPosition(this.contentDocument, 'scrollTop')
     const atStart = scrollTop < this.options.fadeOffset
-    const atEnd = this.elementVisibleHeight + scrollTop + this.options.fadeOffset > this.elementFullHeight
+    const atEnd = this.elementHeight() + scrollTop + this.options.fadeOffset > this.contentHeight()
 
     super.scrollVertical(atStart, atEnd)
   }
@@ -104,5 +94,35 @@ export default class IFrame extends Common {
 
   clickVertical () {
     //
+  }
+
+  /**
+   * Returns the width of the scrollable element on screen (not the content).
+   **/
+  elementWidth () {
+    return getSize(this.container).width
+  }
+
+  /**
+   * Returns the full width of the scrollable element, including parts not
+   * visible without scrolling.
+   **/
+  contentWidth () {
+    return this.contentDocument.body.scrollWidth
+  }
+
+  /**
+   * Returns the width of the scrollable element on screen (not the content).
+   **/
+  elementHeight () {
+    return getSize(this.container).height
+  }
+
+  /**
+   * Returns the full width of the scrollable element, including parts not
+   * visible without scrolling.
+   **/
+  contentHeight () {
+    return this.contentDocument.body.scrollHeight
   }
 }

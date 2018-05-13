@@ -1,8 +1,8 @@
 import Options from './src/Options'
 import Block from './src/Block'
+import Table from './src/Table'
 import IFrame from './src/IFrame'
 import IFrameCrossOrigin from './src/IFrameCrossOrigin'
-import Table from './src/Table'
 import isCrossOriginIframe from './src/helpers/is-cross-origin-iframe'
 
 /**
@@ -45,13 +45,20 @@ export default class Indicate {
     }
   }
 
+  /**
+   * Updates an existing instance by combing the current options with the new
+   * ones passed in here.
+   **/
   update (newOptions) {
     this.options.update(newOptions)
-    this.instances.forEach((instance) => instance.update(this.options))
+    this.instances.forEach(instance => instance.update(this.options))
   }
 
+  /**
+   * Removes an instance including the nodes, listeners and wrapper classes.
+   **/
   destroy () {
-    this.instances.forEach((instance) => instance.destroy())
+    this.instances.forEach(instance => instance.destroy())
   }
 
   /**

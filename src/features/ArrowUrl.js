@@ -1,5 +1,5 @@
 import Arrow from './Arrow'
-import addClass from './../helpers/addClass'
+import addClass from './../helpers/add-class'
 
 /**
  * Uses the provided url as a background image for the arrows.

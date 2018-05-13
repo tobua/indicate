@@ -4,12 +4,12 @@
   opacity: 1;
   transition: opacity 300ms linear;
   overflow: hidden;
+  pointer-events: none;
 }
 
-.hide[class^="idc-fade-"] {
+.idc-hide[class^="idc-fade-"] {
   opacity: 0;
   transition: opacity 300ms linear;
-  pointer-events: none;
 }
 
 .idc-fade-top,
@@ -36,4 +36,25 @@
 
 .idc-fade-left {
   background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, white);
+}
+
+.idc-container:not(.idc-absolute) {
+  .idc-fade-top {
+    top: 0;
+    width: 100%;
+  }
+
+  .idc-fade-right {
+    right: 0;
+  }
+
+  .idc-fade-bottom {
+    top: auto;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .idc-fade-left {
+    left: 0;
+  }
 }

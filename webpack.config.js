@@ -4,25 +4,21 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports = function (env) {
   const isProduction = env === 'production'
   return {
-    mode: env,
+    mode: env || 'development',
     entry: './Indicate.js',
     output: {
       library: 'Indicate',
       libraryExport: 'default',
       libraryTarget: 'umd',
       umdNamedDefine: true,
-      path: path.resolve(__dirname, 'dist'),
-      filename: `indicate${isProduction ? '.min' : ''}.js`
+      filename: `indicate.js`
     },
     module: {
       rules: [
         {
           test: /\.js$/,
           use: {
-            loader: 'babel-loader',
-            options: {
-              presets: ['env']
-            }
+            loader: 'babel-loader'
           }
         },
         {
@@ -47,11 +43,10 @@ module.exports = function (env) {
     devServer: {
       publicPath: '/dist/',
       contentBase: [
+        path.join(__dirname, 'node_modules'),
         path.join(__dirname, 'examples'),
         path.join(__dirname, 'dist')
       ],
-      compress: true,
-      port: 3000,
       open: true
     }
   }

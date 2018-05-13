@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>IndicateReact</title>
+    <link rel="stylesheet" href="https://unpkg.com/indicate@2/dist/indicate.css">
+		<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+		<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+		<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+		<style>
+			body {
+				font-family: sans-serif;
+				max-width: 1000px;
+				margin: 0 auto;
+				padding: 0 20px;
+			}
+			.container {
+				max-width: 75%;
+				overflow: hidden;
+			}
+
+			.container p {
+				width: 150vw;
+			}
+		</style>
+  </head>
+  <body>
+		<h1>Indicate React</h1>
+		<div id="app">Loading React...</div>
+		<script src="https://unpkg.com/indicate@2"></script>
+		<script src="dist/indicate-react.umd.js"></script>
+		<script type="text/babel">
+			ReactDOM.render(<div className="container">
+				<IndicateReact arrows={false}>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</p>
+				</IndicateReact>
+			</div>, document.getElementById('app'))
+		</script>
+  </body>
+</html>
