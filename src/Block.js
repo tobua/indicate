@@ -32,15 +32,15 @@ export default class Block extends Common {
    * Scroll left of right after a click.
    **/
   clickHorizontal (direction) {
-    const scrollLeft = this.container.scrollLeft
+    const scrollLeft = this.element.scrollLeft
     const containerLength = this.elementWidth()
 
     const scrollLength = containerLength / this.options.scrollDenominator
 
     if (direction === 'right') {
-      this.container.scrollLeft = scrollLeft + scrollLength
+      this.element.scrollLeft = scrollLeft + scrollLength
     } else {
-      this.container.scrollLeft = scrollLeft - scrollLength
+      this.element.scrollLeft = scrollLeft - scrollLength
     }
   }
 
@@ -49,7 +49,7 @@ export default class Block extends Common {
    **/
   clickVertical (direction) {
     const scrollTop = this.element.scrollTop
-    const containerLength = this.elementHeight
+    const containerLength = this.elementHeight()
 
     const scrollLength = containerLength / this.options.scrollDenominator
 
