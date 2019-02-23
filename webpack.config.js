@@ -1,5 +1,5 @@
 const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = function (env) {
   const isProduction = env === 'production'
@@ -23,19 +23,22 @@ module.exports = function (env) {
         },
         {
           test: /\.scss$/,
-          use: ExtractTextPlugin.extract([
+          use: [
             {
-              loader: 'css-loader',
-              options: { minimize: isProduction }
+              loader: MiniCssExtractPlugin.loader
+            }, {
+              loader: 'css-loader'
             }, {
               loader: 'sass-loader'
             }
-          ])
+          ]
         }
       ]
     },
     plugins: [
-      new ExtractTextPlugin('indicate.css')
+      new MiniCssExtractPlugin({
+        filename: 'indicate.css'
+      })
     ],
     optimization: {
       minimize: env === 'production'
