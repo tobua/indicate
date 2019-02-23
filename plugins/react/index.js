@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Core from 'indicate'
 
 export default class Indicate extends Component {

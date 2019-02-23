@@ -1,0 +1,14 @@
+{
+  "name": "indicate-react-demo",
+  "scripts": {
+    "start": "jetpack"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "indicate": "^2.3.2",
+    "indicate-react": "file:..",
+    "jetpack": "^0.12.2",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3"
+  }
+}

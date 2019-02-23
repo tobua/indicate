@@ -2,14 +2,16 @@
 	"name": "indicate-react",
 	"version": "1.0.0",
 	"scripts": {
-		"build": "microbundle --name IndicateReact --jsx React.createElement",
-		"watch": "microbundle watch"
+		"build": "microbundle --name IndicateReact --jsx React.createElement"
 	},
 	"peerDependencies": {
-		"indicate": "^2.2.3",
-		"react": "^16.2.0"
+		"indicate": "^2.3.2",
+		"react": "^16.8.3"
 	},
 	"devDependencies": {
-		"microbundle": "^0.4.4"
-	}
+		"microbundle": "^0.10.1"
+	},
+	"files": [
+		"dist"
+	]
 }
