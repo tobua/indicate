@@ -1,8 +1,8 @@
 {
   "name": "indicate",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Indicate Plugin",
-  "main": "dist/indicate.min.js",
+  "main": "dist/indicate.js",
   "repository": "https://github.com/naminho/indicate",
   "author": "Matthias Giger",
   "license": "MIT",

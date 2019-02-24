@@ -1,8 +1,8 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
-module.exports = function (env) {
-  const isProduction = env === 'production'
+module.exports = env => {
   return {
     mode: env || 'development',
     entry: './src/Indicate.js',
@@ -11,7 +11,7 @@ module.exports = function (env) {
       libraryExport: 'default',
       libraryTarget: 'umd',
       umdNamedDefine: true,
-      filename: `indicate.js`
+      filename: 'indicate.js'
     },
     module: {
       rules: [
@@ -35,13 +35,23 @@ module.exports = function (env) {
         }
       ]
     },
+    devtool: 'source-map',
     plugins: [
       new MiniCssExtractPlugin({
         filename: 'indicate.css'
       })
     ],
     optimization: {
-      minimize: env === 'production'
+      minimizer: env === 'production' ? [
+        new TerserPlugin({
+          sourceMap: true,
+          terserOptions: {
+            output: {
+              comments: false
+            }
+          }
+        })
+      ] : []
     },
     devServer: {
       publicPath: '/dist/',

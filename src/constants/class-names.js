@@ -1,5 +1,8 @@
 export default {
   classPrefix: 'idc-',
+  active: 'idc-active',
+  activeHorizontal: 'idc-active-horizontal',
+  activeVeritcal: 'idc-active-vertical',
   element: 'idc-element',
   container: 'idc-container',
   hide: 'idc-hide',

@@ -1,4 +1,6 @@
 import Common from './Common'
+import ClassNames from './constants/class-names'
+import setClass from './helpers/set-class'
 import './styles/block.scss'
 
 export default class Block extends Common {
@@ -93,6 +95,30 @@ export default class Block extends Common {
    * On page resize we need to adapt the container measurements.
    **/
   resize () {
+    this.setContainerActiveClass()
     super.resize()
+  }
+
+  /**
+   * Adapt the container active classes depending on whether the effect is active.
+   **/
+  setContainerActiveClass () {
+    let horizontal = false; let vertical = false
+
+    const horizontalOverflow = this.options.horizontal && (this.elementWidth() < this.contentWidth())
+
+    setClass(horizontalOverflow, this.container, ClassNames.activeHorizontal)
+    if (horizontalOverflow) {
+      horizontal = true
+    }
+
+    const verticalOverflow = this.options.vertical && (this.elementHeight() < this.contentHeight())
+
+    setClass(verticalOverflow, this.container, ClassNames.activeVeritcal)
+    if (verticalOverflow) {
+      vertical = true
+    }
+
+    setClass(horizontal || vertical, this.container, ClassNames.active)
   }
 }

@@ -123,7 +123,7 @@ indicate itself does not require jQuery but there is a plugin to use it with jQu
 <link rel="stylesheet" type="text/css" href="indicate.css">
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="dist/indicate.min.js"></script>
+<script src="dist/indicate.js"></script>
 <script src="plugins/indicate.jquery.js"></script>
 <script>
 
