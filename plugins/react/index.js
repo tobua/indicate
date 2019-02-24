@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
-import Core from 'indicate'
+import React, { Component, Children, cloneElement } from 'react'
+import Indicate from 'indicate'
 
-export default class Indicate extends Component {
+// React Wrapper Component for Scroll Indicator Plugin.
+export default class IndicateReact extends Component {
 	componentDidMount () {
-		this.instance = new Core(this.element, this.props)
+		this.instance = new Indicate(this.element, this.props)
 	}
 
 	componentDidUpdate () {
@@ -15,12 +16,9 @@ export default class Indicate extends Component {
 	}
 
 	render () {
-		// TODO access topmost node from props.children and ref that instead
-		// NOTE tried to access it but no ref available
-		return (
-			<div ref={ref => this.element = ref}>
-				{this.props.children}
-			</div>
-		)
+    const { children } = this.props
+    const child = Children.only(children)
+
+    return cloneElement(child, { ref: ref => (this.element = ref)})
 	}
 }

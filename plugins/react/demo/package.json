@@ -5,8 +5,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "indicate": "^2.3.2",
-    "indicate-react": "file:..",
+    "indicate": "^2.3.4",
+    "indicate-react": "^1.0.0",
     "jetpack": "^0.12.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3"
