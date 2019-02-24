@@ -1,9 +1,9 @@
-import Options from './src/Options'
-import Block from './src/Block'
-import Table from './src/Table'
-import IFrame from './src/IFrame'
-import IFrameCrossOrigin from './src/IFrameCrossOrigin'
-import isCrossOriginIframe from './src/helpers/is-cross-origin-iframe'
+import Options from './Options'
+import Block from './Block'
+import Table from './Table'
+import IFrame from './IFrame'
+import IFrameCrossOrigin from './IFrameCrossOrigin'
+import isCrossOriginIframe from './helpers/is-cross-origin-iframe'
 
 /**
  * indicate - Scroll Indicator Plugin

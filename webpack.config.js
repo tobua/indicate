@@ -5,7 +5,7 @@ module.exports = function (env) {
   const isProduction = env === 'production'
   return {
     mode: env || 'development',
-    entry: './Indicate.js',
+    entry: './src/Indicate.js',
     output: {
       library: 'Indicate',
       libraryExport: 'default',

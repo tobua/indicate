@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/naminho/indicate/master/indicate.png?sanitize=true" alt="Indicate Scroll Plugin">
+  <img src="https://raw.githubusercontent.com/naminho/indicate/master/logo.png?sanitize=true" alt="Indicate Scroll Plugin">
 </p>
 
 # indicate - Scroll Indicator Plugin
