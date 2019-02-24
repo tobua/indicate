@@ -5,7 +5,7 @@
 # indicate - Scroll Indicator Plugin
 Fade effect and arrows for responsive tables and iframes with no dependencies.
 
-Size: 7 kB gzipped (including 1 kB CSS)
+Size: 5 kB gzipped (including 1 kB CSS)
 
 ## Description
 Modern Browsers and especially Mobile Devices often don't show permanent scrollbars. Scrollbars on mobile devices are not necessary since the user scrolls simply by dragging. The problem with this however is that users might miss the possibility to scroll a certain window to see more. This applies mostly to `<table>` and `<iframe>` elements.
@@ -123,7 +123,7 @@ indicate itself does not require jQuery but there is a plugin to use it with jQu
 <link rel="stylesheet" type="text/css" href="indicate.css">
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="dist/indicate.js"></script>
+<script src="dist/indicate.umd.js"></script>
 <script src="plugins/indicate.jquery.js"></script>
 <script>
 

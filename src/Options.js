@@ -1,4 +1,4 @@
-import { assign } from 'es6-object-assign'
+import assign from 'object-assign'
 import * as features from './features/index'
 
 const defaultOptions = {

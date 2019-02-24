@@ -1,3 +1,4 @@
+import assign from 'object-assign'
 import addClass from './helpers/add-class'
 import hasClass from './helpers/has-class'
 import removeClass from './helpers/remove-class'
@@ -5,8 +6,6 @@ import getSize from './helpers/get-size'
 import ClassNames from './constants/class-names'
 
 import './helpers/node-remove-polyfill'
-import assign from 'object-assign'
-
 import './styles/common.scss'
 import './styles/fades.scss'
 import './styles/arrows.scss'

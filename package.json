@@ -1,36 +1,27 @@
 {
   "name": "indicate",
-  "version": "2.3.3",
-  "description": "Indicate Plugin",
-  "main": "dist/indicate.js",
+  "version": "2.3.4",
+  "description": "Fade effect and arrows for responsive tables and iframes with no dependencies.",
+  "main": "dist/indicate.umd.js",
   "repository": "https://github.com/naminho/indicate",
   "author": "Matthias Giger",
   "license": "MIT",
   "scripts": {
-    "build": "webpack --env production",
-    "watch": "webpack --watch --env development",
-    "start": "webpack-dev-server",
+    "start": "serve",
+    "build": "microbundle --format cjs,umd --name Indicate",
     "lint": "npm run jslint && npm run stylelint",
     "jslint": "standard --fix",
     "stylelint": "stylelint src/styles/*.scss"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/preset-env": "^7.3.1",
-    "babel-loader": "^8.0.5",
-    "css-loader": "^2.1.0",
-    "es6-object-assign": "^1.1.0",
-    "node-sass": "^4.9.0",
-    "exmpl": "^1.0.2",
-    "mini-css-extract-plugin": "^0.5.0",
     "object-assign": "^4.1.1",
-    "sass-loader": "^7.1.0",
+    "exmpl": "^1.0.2",
+    "microbundle": "^0.10.1",
+    "node-sass": "^4.11.0",
+    "serve": "^10.1.2",
     "standard": "^12.0.1",
     "stylelint": "^9.10.1",
-    "stylelint-config-standard": "^18.2.0",
-    "webpack": "^4.29.5",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.0"
+    "stylelint-config-standard": "^18.2.0"
   },
   "files": [
     "dist"
