@@ -300,14 +300,14 @@ export default class Common {
    * Is the instance currently initialized horizontally.
    **/
   isHorizontal () {
-    return Boolean(this.fades['left'])
+    return Boolean(this.fades.left)
   }
 
   /**
    * Is the instance currently initialized vertically.
    **/
   isVertical () {
-    return Boolean(this.fades['top'])
+    return Boolean(this.fades.top)
   }
 
   /**

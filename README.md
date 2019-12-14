@@ -1,17 +1,20 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/naminho/indicate/master/logo.png?sanitize=true" alt="Indicate Scroll Plugin">
+  <img src="https://raw.githubusercontent.com/naminho/indicate/master/logo.png" alt="Indicate Scroll Plugin">
 </p>
 
 # indicate - Scroll Indicator Plugin
+
 Fade effect and arrows for responsive tables and iframes with no dependencies.
 
 Size: 5 kB gzipped (including 1 kB CSS)
 
 ## Description
+
 Modern Browsers and especially Mobile Devices often don't show permanent scrollbars. Scrollbars on mobile devices are not necessary since the user scrolls simply by dragging. The problem with this however is that users might miss the possibility to scroll a certain window to see more. This applies mostly to `<table>` and `<iframe>` elements.
 Through a fade effect on the sides this plugin tries to indicate the possibility to scroll.
 
 ## Demo
+
 [Demo](http://naminho.ch/scroll-indicator)
 
 ## Installation
@@ -66,6 +69,7 @@ new Indicate(node, {color: #0000FF});
 ### Arrows
 
 The arrows can be hidden like this.
+
 ```
 new Indicate(node, {arrows: false});
 ```
