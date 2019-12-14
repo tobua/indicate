@@ -139,6 +139,14 @@ $('table').indicate({arrows: true});
 </script>
 ```
 
+### React
+
+See [indicate/plugins/react](https://github.com/naminho/indicate/tree/master/plugins/react) for details.
+
+### React Native
+
+See [indicate/plugins/react-native](https://github.com/naminho/indicate/tree/master/plugins/react-native) for details.
+
 ## Development
 
 ```

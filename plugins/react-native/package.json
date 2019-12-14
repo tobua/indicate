@@ -2,6 +2,7 @@
   "name": "react-native-indicate",
   "version": "1.0.0",
   "main": "src/index.js",
+  "repository": "https://github.com/naminho/indicate/tree/master/plugins/react-native",
   "scripts": {
     "test": "jest --watchAll",
     "watch": "cpx 'src/**/*' app/node_modules/react-native-indicate/src --watch",
