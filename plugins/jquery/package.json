@@ -1,7 +1,7 @@
 {
-	"name": "indicate-jquery",
-	"version": "1.0.0",
-	"peerDependencies": {
-		"indicate": "^2.2.3"
-	}
+  "name": "indicate-jquery",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "indicate": "^2.4.0"
+  }
 }

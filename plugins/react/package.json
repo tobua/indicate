@@ -1,22 +1,22 @@
 {
-	"name": "indicate-react",
-	"version": "1.0.0",
+  "name": "indicate-react",
+  "version": "1.0.1",
   "description": "React Component for indicate Scroll Fade Effect Plugin.",
   "main": "dist/indicate-react.umd.js",
-  "repository": "https://github.com/naminho/indicate",
+  "repository": "https://github.com/naminho/indicate/tree/master/plugins/react",
   "author": "Matthias Giger",
   "license": "MIT",
-	"scripts": {
-		"build": "microbundle --name IndicateReact --jsx React.createElement --format cjs,umd"
-	},
-	"peerDependencies": {
-		"indicate": "^2.3.4",
-		"react": "^16.8.3"
-	},
-	"devDependencies": {
-		"microbundle": "^0.10.1"
-	},
-	"files": [
-		"dist"
-	]
+  "scripts": {
+    "build": "microbundle --name IndicateReact --jsx React.createElement --format cjs,umd"
+  },
+  "peerDependencies": {
+    "indicate": "^2.4.0",
+    "react": "^16.12.0"
+  },
+  "devDependencies": {
+    "microbundle": "^0.11.0"
+  },
+  "files": [
+    "dist"
+  ]
 }

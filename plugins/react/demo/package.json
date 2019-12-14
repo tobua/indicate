@@ -4,11 +4,11 @@
     "start": "jetpack"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "indicate": "^2.3.4",
     "indicate-react": "^1.0.0",
-    "jetpack": "^0.12.2",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3"
-  }
+    "jetpack": "^0.17.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "browserslist": ["ie 11", "last 2 versions"]
 }
