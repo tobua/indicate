@@ -2,3 +2,7 @@
 p {
   width: 150vw;
 }
+
+.idc-element {
+  max-height: 100px;
+}

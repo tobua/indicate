@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "esModuleInterop": true,
+    "declaration": true,
+    "outDir": "dist",
+    "lib": ["DOM", "ES6"]
+  },
+  "include": ["index.ts"]
+}

@@ -4,11 +4,14 @@
     "start": "jetpack"
   },
   "dependencies": {
-    "indicate": "^2.3.4",
-    "indicate-react": "^1.0.0",
-    "jetpack": "^0.17.2",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "indicate": "^2.4.0",
+    "indicate-react": "file:..",
+    "jetpack": "^0.18.1",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0"
   },
-  "browserslist": ["ie 11", "last 2 versions"]
+  "browserslist": [
+    "ie 11",
+    "last 2 versions"
+  ]
 }
