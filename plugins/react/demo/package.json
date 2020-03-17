@@ -1,17 +1,13 @@
 {
   "name": "indicate-react-demo",
   "scripts": {
-    "start": "jetpack"
+    "start": "parcel index.html"
   },
   "dependencies": {
     "indicate": "^2.4.0",
     "indicate-react": "file:..",
-    "jetpack": "^0.18.1",
+    "parcel": "^1.12.4",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
-  },
-  "browserslist": [
-    "ie 11",
-    "last 2 versions"
-  ]
+  }
 }

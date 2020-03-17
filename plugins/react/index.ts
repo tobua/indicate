@@ -1,8 +1,24 @@
 import React, { Component, Children, cloneElement } from 'react'
 import Indicate from 'indicate'
 
+type Props = {
+  horizontal?: boolean
+  vertical?: boolean
+  arrows?: boolean
+  scrollDenominator?: number
+  color?: string
+  arrowPosition?: string
+  fadeWidth?: string
+  fadeOffset?: number
+  maxHeight?: string
+  forceWrapper?: boolean
+  click?: boolean
+  absolutePositioning?: boolean
+  children: JSX.Element
+}
+
 // React Wrapper Component for Scroll Indicator Plugin.
-export default class IndicateReact extends Component {
+export default class IndicateReact extends Component<Props> {
   private _instance: Indicate
   private _node: HTMLElement
 
