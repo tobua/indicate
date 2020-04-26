@@ -5,6 +5,8 @@ type Props = {
   horizontal?: boolean
   vertical?: boolean
   arrows?: boolean
+  arrowUrl?: string
+  arrowMarkup?: string
   scrollDenominator?: number
   color?: string
   arrowPosition?: string
