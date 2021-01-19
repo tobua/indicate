@@ -1,4 +1,8 @@
 import { wrap, addIndicators } from './style'
+import { observe } from './observer'
+import { Instance } from './types'
+
+const instances = new Map<HTMLElement, Instance>()
 
 const getDOMNodes = (element: Elements) => {
   if (typeof element === 'string') {
@@ -19,55 +23,35 @@ const getDOMNodes = (element: Elements) => {
   return false
 }
 
-type Elements = string | HTMLElement | NodeListOf<HTMLElement>
-
-interface Properties {
-  element: Elements
-}
-
 const initialize = (element: HTMLElement) => {
   const wrapper = wrap(element)
   const indicators = addIndicators(wrapper, element)
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const isLeft = entry.target === indicators.leftObserver
-        const isRight = entry.target === indicators.rightObserver
-        console.log(entry.isIntersecting, isLeft, isRight)
+  const instance = {
+    wrapper,
+    element,
+    indicators,
+    options: {},
+  }
 
-        if (isLeft) {
-          if (entry.isIntersecting) {
-            indicators.left.style.display = 'none'
-          } else {
-            indicators.left.style.display = 'block'
-          }
-        }
+  instances.set(element, instance)
 
-        if (isRight) {
-          if (entry.isIntersecting) {
-            indicators.right.style.display = 'none'
-          } else {
-            indicators.right.style.display = 'block'
-          }
-        }
-      })
-    },
-    {
-      root: element,
-      rootMargin: '0px',
-      threshold: 1.0,
-    }
-  )
+  observe(instance)
 
-  observer.observe(indicators.leftObserver)
-  observer.observe(indicators.rightObserver)
-
-  return () => remove(element)
+  return {
+    instance,
+    remove: () => remove(instance),
+  }
 }
 
-const remove = (element: HTMLElement) => {
+const remove = (instance: Instance) => {
   // remove initialized instance from element
+}
+
+type Elements = string | HTMLElement | NodeListOf<HTMLElement>
+
+interface Properties {
+  element: Elements
 }
 
 export const Indicate = ({ element }: Properties) => {
