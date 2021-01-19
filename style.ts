@@ -18,8 +18,8 @@ export const wrap = (element: HTMLElement) => {
   })
 
   // Wrap element in wrapper.
-  element.parentNode.appendChild(wrapper)
-  wrapper.appendChild(element)
+  element.parentNode.append(wrapper)
+  wrapper.append(element)
 
   return wrapper
 }
@@ -27,6 +27,7 @@ export const wrap = (element: HTMLElement) => {
 const indicator = {
   position: 'absolute',
   background: 'gray',
+  opacity: 0.6,
 }
 
 const indicatorHorizontal = {
@@ -54,10 +55,21 @@ export const addIndicators = (wrapper: HTMLElement, element: HTMLElement) => {
   const leftObserver = document.createElement('span')
   const rightObserver = document.createElement('span')
 
-  wrapper.appendChild(left)
-  wrapper.appendChild(right)
-  element.appendChild(leftObserver)
-  element.appendChild(rightObserver)
+  addStyle(leftObserver, {
+    width: '10px',
+    background: 'red',
+  })
+
+  addStyle(rightObserver, {
+    width: '10px',
+    background: 'red',
+  })
+
+  wrapper.append(left)
+  wrapper.append(right)
+
+  element.prepend(leftObserver)
+  element.append(rightObserver)
 
   return {
     left,

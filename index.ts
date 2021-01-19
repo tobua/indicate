@@ -26,9 +26,32 @@ interface Properties {
 }
 
 const initialize = (element: HTMLElement) => {
+  const wrapper = wrap(element)
+  const indicators = addIndicators(wrapper, element)
+
   const observer = new IntersectionObserver(
-    () => {
-      console.log('observer created')
+    (entries) => {
+      entries.forEach((entry) => {
+        const isLeft = entry.target === indicators.leftObserver
+        const isRight = entry.target === indicators.rightObserver
+        console.log(entry.isIntersecting, isLeft, isRight)
+
+        if (isLeft) {
+          if (entry.isIntersecting) {
+            indicators.left.style.display = 'none'
+          } else {
+            indicators.left.style.display = 'block'
+          }
+        }
+
+        if (isRight) {
+          if (entry.isIntersecting) {
+            indicators.right.style.display = 'none'
+          } else {
+            indicators.right.style.display = 'block'
+          }
+        }
+      })
     },
     {
       root: element,
@@ -37,10 +60,8 @@ const initialize = (element: HTMLElement) => {
     }
   )
 
-  const wrapper = wrap(element)
-  const indicators = addIndicators(wrapper, element)
-
-  console.log('observer', observer)
+  observer.observe(indicators.leftObserver)
+  observer.observe(indicators.rightObserver)
 
   return () => remove(element)
 }
