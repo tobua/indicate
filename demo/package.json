@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "exmpl": "^1.0.3",
+    "papua": "^0.1.12"
+  },
+  "localDependencies": {
+    "indicate": ".."
+  }
+}
