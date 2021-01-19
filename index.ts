@@ -1,6 +1,6 @@
 import { wrap, addIndicators } from './style'
 import { observe } from './observer'
-import { Instance } from './types'
+import { Instance, Elements, PluginOptions, Options } from './types'
 
 const instances = new Map<HTMLElement, Instance>()
 
@@ -23,7 +23,7 @@ const getDOMNodes = (element: Elements) => {
   return false
 }
 
-const initialize = (element: HTMLElement) => {
+const initialize = (options: Options, element: HTMLElement) => {
   const wrapper = wrap(element)
   const indicators = addIndicators(wrapper, element)
 
@@ -31,7 +31,7 @@ const initialize = (element: HTMLElement) => {
     wrapper,
     element,
     indicators,
-    options: {},
+    options,
   }
 
   instances.set(element, instance)
@@ -45,21 +45,35 @@ const initialize = (element: HTMLElement) => {
 }
 
 const remove = (instance: Instance) => {
-  // remove initialized instance from element
+  instance.indicators.left.remove()
+  instance.indicators.right.remove()
+  instance.indicators.leftObserver.remove()
+  instance.indicators.rightObserver.remove()
 }
 
-type Elements = string | HTMLElement | NodeListOf<HTMLElement>
+const defaultOptions = {
+  horizontal: true,
+  vertical: true,
+}
 
 interface Properties {
   element: Elements
+  options?: PluginOptions
 }
 
-export const Indicate = ({ element }: Properties) => {
+export const Indicate = ({ element, options = {} }: Properties) => {
   const elements = getDOMNodes(element)
+  const instanceOptions = Object.assign(options, defaultOptions)
 
   if (!elements) {
     return
   }
 
-  elements.forEach(initialize)
+  if (!IntersectionObserver) {
+    return console.warn(
+      "indicate: Browser doesn't support IntersectionObserver."
+    )
+  }
+
+  elements.forEach(initialize.bind(null, instanceOptions))
 }

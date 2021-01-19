@@ -18,7 +18,7 @@ export const wrap = (element: HTMLElement) => {
   })
 
   // Wrap element in wrapper.
-  element.parentNode.append(wrapper)
+  element.parentNode.insertBefore(wrapper, element)
   wrapper.append(element)
 
   return wrapper
