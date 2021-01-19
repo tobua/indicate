@@ -1,3 +1,5 @@
+import { wrap, addIndicators } from './style'
+
 const getDOMNodes = (element: Elements) => {
   if (typeof element === 'string') {
     return document.querySelectorAll(element)
@@ -35,7 +37,16 @@ const initialize = (element: HTMLElement) => {
     }
   )
 
+  const wrapper = wrap(element)
+  const indicators = addIndicators(wrapper, element)
+
   console.log('observer', observer)
+
+  return () => remove(element)
+}
+
+const remove = (element: HTMLElement) => {
+  // remove initialized instance from element
 }
 
 export const Indicate = ({ element }: Properties) => {

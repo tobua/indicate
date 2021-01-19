@@ -1,0 +1,22 @@
+body {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.code {
+  font-family: monospace;
+}
+
+.block {
+  white-space: nowrap;
+}
+
+.tile {
+  display: inline-block;
+  background: lightskyblue;
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+}

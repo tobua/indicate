@@ -1,3 +1,4 @@
-import 'exmpl'
+import './styles.css'
+import { Indicate } from 'indicate'
 
-console.log('hello')
+const first = Indicate({ element: '.element' })
