@@ -1,6 +1,6 @@
-import { wrap, addIndicators } from './style'
+import { wrap, createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
-import { Instance, Elements, PluginOptions, Options } from './types'
+import { Instance, Elements, PluginOptions, Options, directions } from './types'
 
 const instances = new Map<HTMLElement, Instance>()
 
@@ -24,15 +24,10 @@ const getDOMNodes = (element: Elements) => {
 }
 
 const initialize = (options: Options, element: HTMLElement) => {
-  const wrapper = wrap(element)
-  const indicators = addIndicators(wrapper, element)
+  const instance = createInstance(element, options)
 
-  const instance = {
-    wrapper,
-    element,
-    indicators,
-    options,
-  }
+  addIndicators(instance)
+  addObservers(instance)
 
   instances.set(element, instance)
 
@@ -45,15 +40,14 @@ const initialize = (options: Options, element: HTMLElement) => {
 }
 
 const remove = (instance: Instance) => {
-  instance.indicators.left.remove()
-  instance.indicators.right.remove()
-  instance.indicators.leftObserver.remove()
-  instance.indicators.rightObserver.remove()
+  directions.forEach((direction) => {
+    instance.indicator[direction].remove()
+    instance.observer[direction].remove()
+  })
 }
 
 const defaultOptions = {
-  horizontal: true,
-  vertical: true,
+  arrow: true,
 }
 
 interface Properties {

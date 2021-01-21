@@ -1,32 +1,34 @@
-import { Instance } from './types'
+import { Instance, Visibility, directions } from './types'
+
+const isVisible = (
+  instance: Instance,
+  visible: Visibility,
+  entry: IntersectionObserverEntry,
+  direction: string
+) => {
+  const isMatch = entry.target === instance.observer[direction]
+
+  if (isMatch) {
+    visible[direction] = entry.isIntersecting
+  }
+}
 
 const handler = (instance: Instance, entries: IntersectionObserverEntry[]) => {
-  const visible = { left: false, right: false }
+  const visible = { left: false, right: false, top: false, bottom: false }
 
-  entries.forEach((entry) => {
-    const isLeft = entry.target === instance.indicators.leftObserver
-    const isRight = entry.target === instance.indicators.rightObserver
+  entries.forEach((entry) =>
+    directions.forEach((direction) =>
+      isVisible(instance, visible, entry, direction)
+    )
+  )
 
-    if (isLeft) {
-      visible.left = entry.isIntersecting
-    }
-
-    if (isRight) {
-      visible.right = entry.isIntersecting
+  directions.forEach((direction) => {
+    if (visible[direction]) {
+      instance.indicator[direction].style.display = 'none'
+    } else {
+      instance.indicator[direction].style.display = 'block'
     }
   })
-
-  if (visible.left) {
-    instance.indicators.left.style.display = 'none'
-  } else {
-    instance.indicators.left.style.display = 'block'
-  }
-
-  if (visible.right) {
-    instance.indicators.right.style.display = 'none'
-  } else {
-    instance.indicators.right.style.display = 'block'
-  }
 }
 
 export const observe = (instance: Instance) => {
@@ -36,6 +38,7 @@ export const observe = (instance: Instance) => {
     threshold: 1.0,
   })
 
-  observer.observe(instance.indicators.leftObserver)
-  observer.observe(instance.indicators.rightObserver)
+  directions.forEach((direction) =>
+    observer.observe(instance.observer[direction])
+  )
 }
