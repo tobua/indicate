@@ -1,4 +1,4 @@
-import { wrap, createInstance, addIndicators, addObservers } from './element'
+import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, PluginOptions, Options, directions } from './types'
 
@@ -23,6 +23,13 @@ const getDOMNodes = (element: Elements) => {
   return false
 }
 
+const remove = (instance: Instance) => {
+  directions.forEach((direction) => {
+    instance.indicator[direction].remove()
+    instance.observer[direction].remove()
+  })
+}
+
 const initialize = (options: Options, element: HTMLElement) => {
   const instance = createInstance(element, options)
 
@@ -37,13 +44,6 @@ const initialize = (options: Options, element: HTMLElement) => {
     instance,
     remove: () => remove(instance),
   }
-}
-
-const remove = (instance: Instance) => {
-  directions.forEach((direction) => {
-    instance.indicator[direction].remove()
-    instance.observer[direction].remove()
-  })
 }
 
 const defaultOptions = {
@@ -64,9 +64,8 @@ export const Indicate = ({ element, options = {} }: Properties) => {
   }
 
   if (!IntersectionObserver) {
-    return console.warn(
-      "indicate: Browser doesn't support IntersectionObserver."
-    )
+    console.warn("indicate: Browser doesn't support IntersectionObserver.")
+    return
   }
 
   elements.forEach(initialize.bind(null, instanceOptions))

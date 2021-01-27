@@ -1,8 +1,9 @@
 import { CSSProperties } from './types'
 
 export const addStyle = (element: HTMLElement, properties: CSSProperties) => {
-  for (const property in properties)
+  Object.keys(properties).forEach((property) => {
     element.style[property] = properties[property]
+  })
 }
 
 export const indicatorBase = {
@@ -21,4 +22,10 @@ export const indicatorVertical = {
   height: '20px',
   width: '100%',
   left: '0',
+}
+
+export const observerBase = {
+  position: 'absolute',
+  background: 'red',
+  opacity: '0.4',
 }

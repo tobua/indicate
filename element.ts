@@ -3,17 +3,28 @@ import {
   indicatorBase,
   indicatorHorizontal,
   indicatorVertical,
+  observerBase,
 } from './style'
 import {
   directions,
   Instance,
-  isEnd,
   isHorizontal,
-  isStart,
   isVertical,
   Options,
   CSSProperties,
 } from './types'
+
+const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
+  element.parentNode.insertBefore(wrapper, element)
+  wrapper.append(element)
+}
+
+// <element>{contents}</element> => <element><wrapper>{contents}<wrapper/></element>
+const wrapContentsWith = (element: HTMLElement, wrapper: HTMLElement) => {
+  wrapper.innerHTML = element.innerHTML
+  element.innerHTML = ''
+  element.appendChild(wrapper)
+}
 
 export const wrap = (element: HTMLElement) => {
   if (
@@ -23,17 +34,29 @@ export const wrap = (element: HTMLElement) => {
     element.style.overflow = 'auto'
   }
 
-  const wrapper = document.createElement('div')
+  // Wrapper arount the element to position the indicators.
+  const outerWrapper = document.createElement('div')
 
-  addStyle(wrapper, {
+  addStyle(outerWrapper, {
     position: 'relative',
+    display: 'block',
   })
 
-  // Wrap element in wrapper.
-  element.parentNode.insertBefore(wrapper, element)
-  wrapper.append(element)
+  wrapElementIn(element, outerWrapper)
 
-  return wrapper
+  // Wrapper around the content of the element.
+  // Allows to position observers absolutely inside (due to inline-block).
+  const innerWrapper = document.createElement('div')
+
+  addStyle(innerWrapper, {
+    position: 'relative',
+    // TODO check if possible without inner wrapper if element is inline-block.
+    display: 'inline-block',
+  })
+
+  wrapContentsWith(element, innerWrapper)
+
+  return { outerWrapper, innerWrapper }
 }
 
 export const createInstance = (
@@ -42,14 +65,17 @@ export const createInstance = (
 ): Instance => {
   const getSpansByDirection = () => {
     const result = {}
-    directions.forEach(
-      (direction) => (result[direction] = document.createElement('span'))
-    )
+    directions.forEach((direction) => {
+      result[direction] = document.createElement('span')
+    })
     return result
   }
 
+  const { outerWrapper, innerWrapper } = wrap(element)
+
   return {
-    wrapper: wrap(element),
+    outerWrapper,
+    innerWrapper,
     element,
     indicator: getSpansByDirection(),
     observer: getSpansByDirection(),
@@ -62,7 +88,6 @@ export const addIndicators = (instance: Instance) => {
     const indicator = instance.indicator[direction]
     const style: CSSProperties = {
       ...indicatorBase,
-      ...indicatorHorizontal,
       [direction]: '0',
     }
 
@@ -75,7 +100,7 @@ export const addIndicators = (instance: Instance) => {
     }
 
     addStyle(indicator, style)
-    instance.wrapper.append(indicator)
+    instance.outerWrapper.append(indicator)
   })
 }
 
@@ -83,25 +108,24 @@ export const addObservers = (instance: Instance) => {
   directions.forEach((direction) => {
     const observer = instance.observer[direction]
     const style: CSSProperties = {
-      background: 'red',
+      ...observerBase,
+      [direction]: '0',
+      width: '30px',
+      height: '30px',
     }
 
     if (isHorizontal(direction)) {
+      style.top = '0'
       style.width = '10px'
     }
 
     if (isVertical(direction)) {
+      style.right = '0'
       style.height = '10px'
     }
 
     addStyle(observer, style)
 
-    if (isStart(direction)) {
-      instance.element.prepend(observer)
-    }
-
-    if (isEnd(direction)) {
-      instance.element.append(observer)
-    }
+    instance.innerWrapper.append(observer)
   })
 }

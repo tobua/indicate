@@ -37,7 +37,8 @@ export interface Options {
 }
 
 export interface Instance {
-  wrapper: HTMLDivElement
+  outerWrapper: HTMLDivElement
+  innerWrapper: HTMLDivElement
   element: HTMLElement
   indicator: {
     left: HTMLSpanElement
@@ -61,7 +62,7 @@ export interface Visibility {
   bottom: boolean
 }
 
-// See https://stackoverflow.com/a/52876098/3185545 if nesting requried.
+// See https://stackoverflow.com/a/52876098/3185545 if nesting required.
 export type CSSProperties = {
   [P in keyof CSSStyleDeclaration]?: CSSStyleDeclaration[P]
 }
