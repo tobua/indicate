@@ -1,4 +1,10 @@
-import { CSSProperties } from './types'
+import { CSSProperties, Direction, Options } from './types'
+
+export const theme = {
+  indicator: (direction: Direction, options: Options) => ({
+    background: `linear-gradient(to ${direction}, transparent, ${options.color})`,
+  }),
+}
 
 export const addStyle = (element: HTMLElement, properties: CSSProperties) => {
   Object.keys(properties).forEach((property) => {

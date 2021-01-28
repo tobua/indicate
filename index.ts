@@ -1,5 +1,6 @@
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
+import { theme } from './style'
 import { Instance, Elements, PluginOptions, Options, directions } from './types'
 
 const instances = new Map<HTMLElement, Instance>()
@@ -48,6 +49,8 @@ const initialize = (options: Options, element: HTMLElement) => {
 
 const defaultOptions = {
   arrow: true,
+  theme,
+  color: '#FFFFFF',
 }
 
 interface Properties {

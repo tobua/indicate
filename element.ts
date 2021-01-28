@@ -82,7 +82,7 @@ export const addIndicators = (instance: Instance) => {
     const indicator = instance.indicator[direction]
     const style: CSSProperties = {
       ...absolute,
-      background: 'gray',
+      ...instance.options.theme.indicator(direction, instance.options),
       [direction]: '0',
     }
 
