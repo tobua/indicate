@@ -6,9 +6,28 @@ import {
   isVertical,
 } from './types'
 
+const directionToRotation = {
+  [Direction.left]: 225,
+  [Direction.right]: 45,
+  [Direction.top]: 315,
+  [Direction.bottom]: 135,
+}
+
 export const theme = {
   indicator: (direction: Direction, options: Options) => ({
     background: `linear-gradient(to ${direction}, transparent, ${options.color})`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }),
+  arrow: (direction: Direction) => ({
+    borderTop: '3px solid black',
+    borderRight: '3px solid black',
+    width: '10px',
+    height: '10px',
+    borderRadius: '3px',
+    display: 'block',
+    transform: `rotate(${directionToRotation[direction]}deg)`,
   }),
 }
 

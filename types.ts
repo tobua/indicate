@@ -28,6 +28,7 @@ export type Elements = string | HTMLElement | NodeListOf<HTMLElement>
 
 export interface Theme {
   indicator: (direction: Direction, options: Options) => CSSProperties
+  arrow: (direction: Direction) => CSSProperties
 }
 
 // User facing options.

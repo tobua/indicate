@@ -20,7 +20,7 @@ const handleObservation = (
     if (visibility.visible) {
       instance.indicator[visibility.direction].style.display = 'none'
     } else {
-      instance.indicator[visibility.direction].style.display = 'block'
+      instance.indicator[visibility.direction].style.display = 'flex'
     }
   })
 }

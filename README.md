@@ -6,6 +6,8 @@ Indicates possible scroll using a fade effect in elements with overflow.
 
 > Requires browser support for IntersectionObserver (no IE11) and the build tool to work with ES Modules.
 
+[![indicate Demo](https://img.shields.io/static/v1?label=indicate&message=Demo&color=brightgreen)](http://tobua.github.io/indicate)
+
 ## Installation & Usage
 
 ```

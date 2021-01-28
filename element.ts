@@ -82,6 +82,16 @@ export const addIndicators = (instance: Instance) => {
 
     addStyle(indicator, style)
     instance.outerWrapper.append(indicator)
+
+    if (!instance.options.arrow) {
+      return
+    }
+
+    const arrow = document.createElement('span')
+
+    addStyle(arrow, instance.options.theme.arrow(direction))
+
+    indicator.append(arrow)
   })
 }
 
