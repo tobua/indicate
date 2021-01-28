@@ -1,10 +1,4 @@
-import {
-  addStyle,
-  indicatorBase,
-  indicatorHorizontal,
-  indicatorVertical,
-  observerBase,
-} from './style'
+import { addStyle, absolute, horizontal, vertical } from './style'
 import {
   directions,
   Instance,
@@ -87,16 +81,17 @@ export const addIndicators = (instance: Instance) => {
   directions.forEach((direction) => {
     const indicator = instance.indicator[direction]
     const style: CSSProperties = {
-      ...indicatorBase,
+      ...absolute,
+      background: 'gray',
       [direction]: '0',
     }
 
     if (isHorizontal(direction)) {
-      Object.assign(style, indicatorHorizontal)
+      Object.assign(style, horizontal)
     }
 
     if (isVertical(direction)) {
-      Object.assign(style, indicatorVertical)
+      Object.assign(style, vertical)
     }
 
     addStyle(indicator, style)
@@ -108,20 +103,17 @@ export const addObservers = (instance: Instance) => {
   directions.forEach((direction) => {
     const observer = instance.observer[direction]
     const style: CSSProperties = {
-      ...observerBase,
+      ...absolute,
+      background: 'red',
       [direction]: '0',
-      width: '30px',
-      height: '30px',
     }
 
     if (isHorizontal(direction)) {
-      style.top = '0'
-      style.width = '10px'
+      Object.assign(style, horizontal)
     }
 
     if (isVertical(direction)) {
-      style.right = '0'
-      style.height = '10px'
+      Object.assign(style, vertical)
     }
 
     addStyle(observer, style)
