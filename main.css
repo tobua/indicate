@@ -1,0 +1,36 @@
+body {
+  max-width: 75vw;
+  margin: 0 auto;
+  padding: 2vh 0;
+  font-family: sans-serif;
+  font-size: 1.5vw;
+}
+
+@media (max-width: 750px) {
+  body {
+    font-size: 3vw;
+  }
+}
+
+.code {
+  font-family: monospace;
+}
+
+.element {
+  max-height: 25vw;
+}
+
+.block {
+  white-space: nowrap;
+}
+
+.tile {
+  display: inline-block;
+  background: lightskyblue;
+  width: 15vw;
+  height: 15vw;
+  border-radius: 3vw;
+}
+
+
+/*# sourceMappingURL=main.css.map*/
