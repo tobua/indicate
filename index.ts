@@ -51,6 +51,7 @@ const defaultOptions = {
   arrow: true,
   theme,
   color: '#FFFFFF',
+  width: '20px',
 }
 
 interface Properties {

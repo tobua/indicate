@@ -1,12 +1,5 @@
-import { addStyle, absolute, horizontal, vertical } from './style'
-import {
-  directions,
-  Instance,
-  isHorizontal,
-  isVertical,
-  Options,
-  CSSProperties,
-} from './types'
+import { addStyle, absolute, alignment } from './style'
+import { directions, Instance, Options, CSSProperties } from './types'
 
 const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
   element.parentNode.insertBefore(wrapper, element)
@@ -83,15 +76,8 @@ export const addIndicators = (instance: Instance) => {
     const style: CSSProperties = {
       ...absolute,
       ...instance.options.theme.indicator(direction, instance.options),
+      ...alignment(direction, instance.options),
       [direction]: '0',
-    }
-
-    if (isHorizontal(direction)) {
-      Object.assign(style, horizontal)
-    }
-
-    if (isVertical(direction)) {
-      Object.assign(style, vertical)
     }
 
     addStyle(indicator, style)
@@ -104,16 +90,9 @@ export const addObservers = (instance: Instance) => {
     const observer = instance.observer[direction]
     const style: CSSProperties = {
       ...absolute,
-      background: 'red',
+      ...alignment(direction, instance.options),
+      pointerEvents: 'none',
       [direction]: '0',
-    }
-
-    if (isHorizontal(direction)) {
-      Object.assign(style, horizontal)
-    }
-
-    if (isVertical(direction)) {
-      Object.assign(style, vertical)
     }
 
     addStyle(observer, style)

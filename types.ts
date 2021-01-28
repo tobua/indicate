@@ -27,13 +27,14 @@ export const isEnd = (direction: Direction) =>
 export type Elements = string | HTMLElement | NodeListOf<HTMLElement>
 
 export interface Theme {
-  indicator: (direction: Direction) => CSSProperties
+  indicator: (direction: Direction, options: Options) => CSSProperties
 }
 
 // User facing options.
 export interface PluginOptions {
   arrow?: boolean
   color?: string
+  width?: string
 }
 
 // Internal options extended with defaults.
@@ -41,6 +42,7 @@ export interface Options {
   arrow: boolean
   theme: Theme
   color: string
+  width: string
 }
 
 export interface Instance {

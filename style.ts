@@ -1,4 +1,10 @@
-import { CSSProperties, Direction, Options } from './types'
+import {
+  CSSProperties,
+  Direction,
+  Options,
+  isHorizontal,
+  isVertical,
+} from './types'
 
 export const theme = {
   indicator: (direction: Direction, options: Options) => ({
@@ -16,14 +22,21 @@ export const absolute = {
   position: 'absolute',
 }
 
-export const horizontal = {
-  height: '100%',
-  width: '20px',
-  top: '0',
-}
+export const alignment = (direction: Direction, options: Options) => {
+  const style: CSSProperties = {}
+  const horizontal = isHorizontal(direction)
+  const vertical = isVertical(direction)
 
-export const vertical = {
-  height: '20px',
-  width: '100%',
-  left: '0',
+  if (horizontal) {
+    style.top = '0'
+  }
+
+  if (vertical) {
+    style.left = '0'
+  }
+
+  style.width = horizontal ? options.width : '100%'
+  style.height = vertical ? options.width : '100%'
+
+  return style
 }
