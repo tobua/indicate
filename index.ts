@@ -52,6 +52,7 @@ const defaultOptions = {
   theme,
   color: '#FFFFFF',
   width: '20px',
+  click: true,
 }
 
 interface Properties {

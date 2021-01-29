@@ -54,6 +54,8 @@ Indicate(document.getElementById('my-element'), {
   color: '#0000FF',
   // Configure the width of the fade effect, default 20px.
   width: '3vw',
+  // Click on indicator to scroll, default true.
+  click: false,
 })
 ```
 

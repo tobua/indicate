@@ -36,6 +36,7 @@ export interface PluginOptions {
   arrow?: boolean
   color?: string
   width?: string
+  click?: boolean
 }
 
 // Internal options extended with defaults.
@@ -44,6 +45,7 @@ export interface Options {
   theme: Theme
   color: string
   width: string
+  click: boolean
 }
 
 export interface Instance {

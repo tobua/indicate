@@ -15,10 +15,11 @@ const directionToRotation = {
 
 export const theme = {
   indicator: (direction: Direction, options: Options) => ({
-    background: `linear-gradient(to ${direction}, transparent, ${options.color})`,
+    background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${options.color})`,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    cursor: options.click ? 'pointer' : 'inherit',
   }),
   arrow: (direction: Direction) => ({
     borderTop: '3px solid black',

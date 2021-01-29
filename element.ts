@@ -1,5 +1,6 @@
 import { addStyle, absolute, alignment } from './style'
 import { directions, Instance, Options, CSSProperties } from './types'
+import { registerClickListener } from './feature/click'
 
 const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
   element.parentNode.insertBefore(wrapper, element)
@@ -82,6 +83,8 @@ export const addIndicators = (instance: Instance) => {
 
     addStyle(indicator, style)
     instance.outerWrapper.append(indicator)
+
+    registerClickListener(direction, indicator, instance)
 
     if (!instance.options.arrow) {
       return
