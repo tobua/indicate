@@ -47,7 +47,7 @@ const initialize = (options: Options, element: HTMLElement) => {
   }
 }
 
-const defaultOptions = {
+export const defaultOptions = {
   arrow: true,
   arrowPosition: 'center',
   theme,
