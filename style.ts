@@ -14,13 +14,28 @@ const directionToRotation = {
 }
 
 export const theme = {
-  indicator: (direction: Direction, options: Options) => ({
-    background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${options.color})`,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: options.click ? 'pointer' : 'inherit',
-  }),
+  indicator: (direction: Direction, options: Options) => {
+    const style: CSSProperties = {
+      background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${options.color})`,
+      // Initially not visible.
+      display: 'none',
+      cursor: options.click ? 'pointer' : 'inherit',
+    }
+
+    if (isHorizontal(direction)) {
+      style.alignItems =
+        options.arrowPosition !== 'center'
+          ? `flex-${options.arrowPosition}`
+          : options.arrowPosition
+    } else {
+      style.justifyContent =
+        options.arrowPosition !== 'center'
+          ? `flex-${options.arrowPosition}`
+          : options.arrowPosition
+    }
+
+    return style
+  },
   arrow: (direction: Direction) => ({
     borderTop: '3px solid black',
     borderRight: '3px solid black',

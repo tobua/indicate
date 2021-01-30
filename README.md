@@ -49,7 +49,9 @@ See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/maste
 ```ts
 Indicate(document.getElementById('my-element'), {
   // Disable arrows, default true.
-  arrows: false,
+  arrow: false,
+  // Position of arrows, default 'center'.
+  arrowPosition: 'start',
   // Change fade color, default white.
   color: '#0000FF',
   // Configure the width of the fade effect, default 20px.

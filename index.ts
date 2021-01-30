@@ -49,6 +49,7 @@ const initialize = (options: Options, element: HTMLElement) => {
 
 const defaultOptions = {
   arrow: true,
+  arrowPosition: 'center',
   theme,
   color: '#FFFFFF',
   width: '20px',
@@ -62,7 +63,7 @@ interface Properties {
 
 export const Indicate = ({ element, options = {} }: Properties) => {
   const elements = getDOMNodes(element)
-  const instanceOptions = Object.assign(options, defaultOptions)
+  const instanceOptions = { ...defaultOptions, ...options }
 
   if (!elements) {
     return

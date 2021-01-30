@@ -30,11 +30,7 @@ const scrollVertical = (direction: Direction, element: HTMLElement) => {
   })
 }
 
-const handleIndicatorClick = (
-  direction: Direction,
-  element: HTMLElement,
-  instance: Instance
-) => {
+const handleIndicatorClick = (direction: Direction, instance: Instance) => {
   if (isHorizontal(direction)) {
     scrollHorizontal(direction, instance.element)
   } else {
@@ -54,7 +50,7 @@ export const registerClickListener = (
   if (instance.options.click) {
     element.addEventListener(
       'click',
-      handleIndicatorClick.bind(null, direction, element, instance)
+      handleIndicatorClick.bind(null, direction, instance)
     )
   }
 }

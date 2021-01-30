@@ -24,16 +24,19 @@ export const isStart = (direction: Direction) =>
 export const isEnd = (direction: Direction) =>
   direction === Direction.right || direction === Direction.bottom
 
-export type Elements = string | HTMLElement | NodeListOf<HTMLElement>
+export type Elements = string | Element | NodeListOf<Element>
 
 export interface Theme {
   indicator: (direction: Direction, options: Options) => CSSProperties
   arrow: (direction: Direction) => CSSProperties
 }
 
+type ArrowPosition = 'start' | 'center' | 'end'
+
 // User facing options.
 export interface PluginOptions {
   arrow?: boolean
+  arrowPosition?: ArrowPosition
   color?: string
   width?: string
   click?: boolean
@@ -42,6 +45,7 @@ export interface PluginOptions {
 // Internal options extended with defaults.
 export interface Options {
   arrow: boolean
+  arrowPosition: ArrowPosition
   theme: Theme
   color: string
   width: string
