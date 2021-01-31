@@ -5,7 +5,7 @@ import prettier from 'prettier'
 // @ts-ignore
 import parserBabel from 'prettier/esm/parser-babel.mjs'
 import './styles.css'
-import { Indicate, defaultOptions } from 'indicate'
+import { indicate, remove, defaultOptions } from 'indicate'
 
 // Remove the default options, so only the changes remain.
 const removeDefaultOptions = (options, defaults = defaultOptions) => {
@@ -51,8 +51,12 @@ const initialize = (options = {}) => {
   )
   const code = document.getElementById('code')
   code.innerHTML = currentCode
+  // Remove existing instance (when options edited).
+  remove('.demo')
+  // Insert tiles according to current count.
   insertTiles()
-  Indicate({ element: '.demo', options })
+  // Initialize indicate effect with currently selected options.
+  indicate({ element: '.demo', options })
 }
 
 initialize()
@@ -95,12 +99,12 @@ const handleStyles = (data: any) => {
 }
 
 render(
-  <div style={{ display: 'flex' }}>
-    <div style={{ flex: 1 }}>
+  <div className="edits">
+    <div className="options">
       <h2>Edit Options</h2>
       <Konfi schema={schema} data={data} onChange={handleOptions} />
     </div>
-    <div style={{ flex: 1 }}>
+    <div className="styles">
       <h2>Edit Styles</h2>
       <Konfi data={{ maxHeight: '15vw' }} onChange={handleStyles} />
     </div>

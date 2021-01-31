@@ -48,3 +48,18 @@ nav > a > img {
   margin-right: 1vw;
   border-radius: 2vw;
 }
+
+.edits {
+  display: flex;
+}
+
+@media (max-width: 750px) {
+  .edits {
+    flex-direction: column;
+  }
+}
+
+.options,
+.styles {
+  flex: 1;
+}

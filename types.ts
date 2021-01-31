@@ -24,7 +24,7 @@ export const isStart = (direction: Direction) =>
 export const isEnd = (direction: Direction) =>
   direction === Direction.right || direction === Direction.bottom
 
-export type Elements = string | Element | NodeListOf<Element>
+export type Elements = string | Element | HTMLElement | NodeListOf<Element>
 
 export interface Theme {
   indicator: (direction: Direction, options: Options) => CSSProperties
@@ -68,6 +68,7 @@ export interface Instance {
     top: HTMLSpanElement
     bottom: HTMLSpanElement
   }
+  intersectionObserver: IntersectionObserver
   options: Options
 }
 

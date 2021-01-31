@@ -37,6 +37,8 @@ export const observe = (instance: Instance) => {
     }
   )
 
+  instance.intersectionObserver = observer
+
   // Observe all four observer elements absolutely positioned at the borders of the root element.
   directions.forEach((direction) =>
     observer.observe(instance.observer[direction])
