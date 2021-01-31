@@ -49,5 +49,20 @@ nav > a > img {
   border-radius: 2vw;
 }
 
+.edits {
+  display: flex;
+}
+
+@media (max-width: 750px) {
+  .edits {
+    flex-direction: column;
+  }
+}
+
+.options,
+.styles {
+  flex: 1;
+}
+
 
 /*# sourceMappingURL=main.css.map*/
