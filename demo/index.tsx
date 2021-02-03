@@ -5,7 +5,7 @@ import prettier from 'prettier'
 // @ts-ignore
 import parserBabel from 'prettier/esm/parser-babel.mjs'
 import './styles.css'
-import { indicate, remove, defaultOptions } from 'indicate'
+import { indicate, remove, useIndicate, defaultOptions } from 'indicate'
 
 // Remove the default options, so only the changes remain.
 const removeDefaultOptions = (options, defaults = defaultOptions) => {
@@ -49,7 +49,7 @@ const initialize = (options = {}) => {
       printWidth: 40,
     }
   )
-  const code = document.getElementById('code')
+  const code = document.getElementById('code-regular')
   code.innerHTML = currentCode
   // Remove existing instance (when options edited).
   remove('.demo')
@@ -110,4 +110,35 @@ render(
     </div>
   </div>,
   document.getElementById('options')
+)
+
+const Indicate = () => {
+  const ref = useIndicate()
+
+  return (
+    <div className="demo" ref={ref}>
+      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((index) => (
+        <p key={index} className="tile" />
+      ))}
+    </div>
+  )
+}
+
+render(
+  <>
+    <h2>React</h2>
+    <Indicate />
+    <pre className="code">{`import { useIndicate } from 'indicate'
+    
+const Indicate = () => {
+  const ref = useIndicate({ arrow: false })
+
+  return (
+    <div ref={ref}>
+      {...}
+    </div>
+  )
+}`}</pre>
+  </>,
+  document.getElementById('react')
 )

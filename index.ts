@@ -6,6 +6,7 @@ import { log, Message } from './helper'
 
 export { defaultOptions } from './options'
 export { remove } from './instance'
+export { useIndicate } from './react'
 
 interface Properties {
   element: Elements

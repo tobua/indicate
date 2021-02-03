@@ -6,7 +6,7 @@ Indicates possible scroll using a fade effect in elements with overflow.
 
 > Requires browser support for IntersectionObserver (no IE11) and the build tool to work with ES Modules.
 
-[![indicate Demo](https://img.shields.io/static/v1?label=indicate&message=Demo&color=brightgreen)](http://tobua.github.io/indicate)
+[![indicate Demo](https://img.shields.io/static/v1?label=indicate&message=Demo&color=brightgreen)](https://tobua.github.io/indicate)
 
 ## Installation & Usage
 
@@ -23,21 +23,18 @@ indicate(document.querySelectorAll('.nav-bar'))
 
 ### React
 
-```
-npm install indicate indicate-react
-```
-
 ```tsx
-import Indicate from 'indicate-react'
+import { useIndicate } from 'indicate'
 
-export const Scrollable = () => (
-  <Indicate arrows={false}>
-    <div>
-      <h2>Lorem ipsum</h2>
-      <p>dolor sit amet, consectetur adipiscing elit.</p>
+const Scrollable = () => {
+  const ref = useIndicate({ arrow: false })
+
+  return (
+    <div ref={ref}>
+      {...}
     </div>
-  </Indicate>
-)
+  )
+}
 ```
 
 ### React Native

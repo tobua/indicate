@@ -27,11 +27,13 @@ export const theme = {
         options.arrowPosition !== 'center'
           ? `flex-${options.arrowPosition}`
           : options.arrowPosition
+      style.justifyContent = 'center'
     } else {
       style.justifyContent =
         options.arrowPosition !== 'center'
           ? `flex-${options.arrowPosition}`
           : options.arrowPosition
+      style.alignItems = 'center'
     }
 
     return style
