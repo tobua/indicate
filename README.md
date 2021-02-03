@@ -35,11 +35,10 @@ const Scrollable = () => {
     </div>
   )
 }
+
+// TypeScript
+const ref = useIndicate<HTMLDivElement>({ arrow: false })
 ```
-
-### React Native
-
-See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/master/plugins/react-native) note that this plugin is quite different and has some drawbacks compared to the web version.
 
 ## Options
 
@@ -75,3 +74,7 @@ remove('#my-element')
 // Reinitialize with different options.
 indicate('#my-element', { arrow: false })
 ```
+
+### React Native
+
+See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/master/plugins/react-native) note that this plugin is quite different and has some drawbacks compared to the web version.

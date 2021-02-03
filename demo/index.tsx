@@ -113,7 +113,7 @@ render(
 )
 
 const Indicate = () => {
-  const ref = useIndicate()
+  const ref = useIndicate<HTMLDivElement>()
 
   return (
     <div className="demo" ref={ref}>

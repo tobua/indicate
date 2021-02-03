@@ -1,8 +1,0 @@
-/* Text inside element double the width to guarantee overflow. */
-p {
-  width: 150vw;
-}
-
-.idc-element {
-  max-height: 100px;
-}
