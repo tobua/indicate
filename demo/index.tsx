@@ -1,5 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
+import { observable, autorun, runInAction } from 'mobx'
+import { observer } from 'mobx-react'
 import { Konfi, Type } from 'konfi'
 import prettier from 'prettier'
 // @ts-ignore
@@ -7,20 +9,64 @@ import parserBabel from 'prettier/esm/parser-babel.mjs'
 import './styles.css'
 import { indicate, remove, useIndicate, defaultOptions } from 'indicate'
 
+const options = observable({
+  arrow: true,
+  arrowPosition: 'center' as 'center',
+  click: true,
+  color: '#FFFFFF',
+  width: '20px',
+})
+
+const styles = observable({
+  maxHeight: '15vw',
+  tiles: 9,
+  rows: 1,
+})
+
+const formatCode = (
+  code: (value: string) => string,
+  wrapper?: (value: string) => string
+) => {
+  const modifiedOptions = removeDefaultOptions(options)
+  const hasProperties = !!Object.keys(modifiedOptions).length
+  let stringifiedOptions = hasProperties ? JSON.stringify(modifiedOptions) : ''
+
+  // Optional wrapper only applied if there are options.
+  if (wrapper && hasProperties) {
+    stringifiedOptions = wrapper(stringifiedOptions)
+  }
+
+  return prettier.format(code(stringifiedOptions), {
+    parser: 'babel',
+    plugins: [parserBabel],
+    semi: false,
+    trailingComma: 'none',
+    printWidth: 40,
+  })
+}
+
 // Remove the default options, so only the changes remain.
 const removeDefaultOptions = (options, defaults = defaultOptions) => {
-  Object.keys(options).forEach((key) => {
-    if (options[key] !== null && typeof options[key] === 'object') {
-      options[key] = removeDefaultOptions(options[key], defaults[key])
+  const withoutDefaults = { ...options }
+
+  Object.keys(withoutDefaults).forEach((key) => {
+    if (
+      withoutDefaults[key] !== null &&
+      typeof withoutDefaults[key] === 'object'
+    ) {
+      withoutDefaults[key] = removeDefaultOptions(
+        withoutDefaults[key],
+        defaults[key]
+      )
       return
     }
 
-    if (options[key] === defaults[key]) {
-      delete options[key]
+    if (withoutDefaults[key] === defaults[key]) {
+      delete withoutDefaults[key]
     }
   })
 
-  return options
+  return withoutDefaults
 }
 
 const insertTiles = () => {
@@ -34,20 +80,10 @@ const insertTiles = () => {
   }
 }
 
-const initialize = (options = {}) => {
-  const modifiedOptions = removeDefaultOptions(options)
-  const stringifiedOptions = Object.keys(modifiedOptions).length
-    ? `, options: ${JSON.stringify(modifiedOptions)}`
-    : ''
-  const currentCode = prettier.format(
-    `Indicate({ element: '.demo'${stringifiedOptions} })`,
-    {
-      parser: 'babel',
-      plugins: [parserBabel],
-      semi: false,
-      trailingComma: 'none',
-      printWidth: 40,
-    }
+autorun(() => {
+  const currentCode = formatCode(
+    (value) => `Indicate({ element: '.demo'${value} })`,
+    (value) => `, options: ${value}`
   )
   const code = document.getElementById('code-regular')
   code.innerHTML = currentCode
@@ -57,17 +93,7 @@ const initialize = (options = {}) => {
   insertTiles()
   // Initialize indicate effect with currently selected options.
   indicate({ element: '.demo', options })
-}
-
-initialize()
-
-const data = {
-  arrow: true,
-  arrowPosition: 'center',
-  click: true,
-  color: '#FFFFFF',
-  width: '20px',
-}
+})
 
 // The schema is optional and in most cases can be inferred from the data.
 const schema = {
@@ -89,9 +115,8 @@ const schema = {
   },
 }
 
-const handleOptions = (data: any) => {
-  initialize(data)
-}
+const handleOptions = (data: any) =>
+  runInAction(() => Object.assign(options, data))
 
 const handleStyles = (data: any) => {
   const element: HTMLElement = document.querySelector('.demo')
@@ -102,18 +127,18 @@ render(
   <div className="edits">
     <div className="options">
       <h2>Edit Options</h2>
-      <Konfi schema={schema} data={data} onChange={handleOptions} />
+      <Konfi schema={schema} data={options} onChange={handleOptions} />
     </div>
     <div className="styles">
       <h2>Edit Styles</h2>
-      <Konfi data={{ maxHeight: '15vw' }} onChange={handleStyles} />
+      <Konfi data={styles} onChange={handleStyles} />
     </div>
   </div>,
   document.getElementById('options')
 )
 
-const Indicate = () => {
-  const ref = useIndicate<HTMLDivElement>()
+const Indicate = observer(() => {
+  const ref = useIndicate<HTMLDivElement>(options)
 
   return (
     <div className="demo" ref={ref}>
@@ -122,23 +147,31 @@ const Indicate = () => {
       ))}
     </div>
   )
-}
+})
+
+const ReactCode = observer(() => (
+  <pre className="code">
+    {formatCode(
+      (value) => `import { useIndicate } from 'indicate'
+    
+const Indicate = () => {
+  const ref = useIndicate(${value})
+
+  return (
+    <div ref={ref}>
+      {\`...\`}
+    </div>
+  )
+}`
+    )}
+  </pre>
+))
 
 render(
   <>
     <h2>React</h2>
     <Indicate />
-    <pre className="code">{`import { useIndicate } from 'indicate'
-    
-const Indicate = () => {
-  const ref = useIndicate({ arrow: false })
-
-  return (
-    <div ref={ref}>
-      {...}
-    </div>
-  )
-}`}</pre>
+    <ReactCode />
   </>,
   document.getElementById('react')
 )
