@@ -11,7 +11,7 @@ import { indicate, remove, useIndicate, defaultOptions } from 'indicate'
 const removeDefaultOptions = (options, defaults = defaultOptions) => {
   Object.keys(options).forEach((key) => {
     if (options[key] !== null && typeof options[key] === 'object') {
-      removeDefaultOptions(options[key], defaults[key])
+      options[key] = removeDefaultOptions(options[key], defaults[key])
       return
     }
 

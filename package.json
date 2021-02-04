@@ -9,6 +9,9 @@
     "build": "padua build",
     "start": "padua watch"
   },
+  "dependencies": {
+    "react": "^17.0.1"
+  },
   "main": "dist/index.js",
   "module": "dist/index.js",
   "sideEffects": false,
@@ -18,7 +21,8 @@
     "dist"
   ],
   "devDependencies": {
-    "padua": "^0.2.3"
+    "@types/react": "^17.0.1",
+    "padua": "^0.2.4"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {
