@@ -28,7 +28,7 @@ nav > a > img {
   margin-left: 10px;
 }
 
-#code {
+.code {
   font-family: monospace;
   border: 2px solid black;
   border-radius: 5px;
