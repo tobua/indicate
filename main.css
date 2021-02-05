@@ -30,13 +30,13 @@ nav > a > img {
 
 .code {
   font-family: monospace;
-  border: 2px solid black;
-  border-radius: 5px;
+  border: 1px solid black;
+  border-radius: 8px;
   padding: 10px;
+  box-shadow: inset 0 0 3px #000000;
 }
 
-.demo {
-  max-height: 15vw;
+.element {
   white-space: nowrap;
 }
 
