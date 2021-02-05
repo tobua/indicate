@@ -1,10 +1,31 @@
-import { getDOMNodes } from './initialize'
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, Options, directions } from './types'
 import { log, Message } from './helper'
 
 export const instances = new Map<HTMLElement, Instance>()
+
+export const getDOMNodes = (element: Elements) => {
+  if (typeof element === 'string') {
+    const elements = document.querySelectorAll(element)
+    if (elements.length) {
+      return elements
+    }
+  }
+
+  if (element instanceof NodeList && element.length) {
+    return element
+  }
+
+  // Second check to make sure element if attached to DOM.
+  if (element instanceof HTMLElement && element.isConnected) {
+    return [element]
+  }
+
+  log(Message.InvalidElement, { element })
+
+  return false
+}
 
 export const initialize = (options: Options, element: HTMLElement) => {
   if (instances.get(element)) {

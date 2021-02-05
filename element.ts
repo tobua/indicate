@@ -1,5 +1,11 @@
 import { addStyle, absolute, alignment } from './style'
-import { directions, Instance, Options, CSSProperties } from './types'
+import {
+  directions,
+  Instance,
+  Options,
+  CSSProperties,
+  PluginOptions,
+} from './types'
 import { registerClickListener } from './feature/click'
 
 const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
@@ -14,7 +20,13 @@ const wrapContentsWith = (element: HTMLElement, wrapper: HTMLElement) => {
   element.appendChild(wrapper)
 }
 
-export const wrap = (element: HTMLElement) => {
+export const wrap = ({
+  element,
+  options,
+}: {
+  element: HTMLElement
+  options: PluginOptions
+}) => {
   if (
     element.style.overflow !== 'auto' &&
     element.style.overflow !== 'scroll'
@@ -23,18 +35,20 @@ export const wrap = (element: HTMLElement) => {
   }
 
   // Wrapper arount the element to position the indicators.
-  const outerWrapper = document.createElement('div')
+  const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
   addStyle(outerWrapper, {
     position: 'relative',
     display: 'block',
   })
 
-  wrapElementIn(element, outerWrapper)
+  if (!options.outerWrapper) {
+    wrapElementIn(element, outerWrapper)
+  }
 
   // Wrapper around the content of the element.
   // Allows to position observers absolutely inside (due to inline-block).
-  const innerWrapper = document.createElement('div')
+  const innerWrapper = options.innerWrapper ?? document.createElement('div')
 
   addStyle(innerWrapper, {
     position: 'relative',
@@ -42,7 +56,9 @@ export const wrap = (element: HTMLElement) => {
     display: 'inline-block',
   })
 
-  wrapContentsWith(element, innerWrapper)
+  if (!options.innerWrapper) {
+    wrapContentsWith(element, innerWrapper)
+  }
 
   return { outerWrapper, innerWrapper }
 }
@@ -59,7 +75,7 @@ export const createInstance = (
     return result
   }
 
-  const { outerWrapper, innerWrapper } = wrap(element)
+  const { outerWrapper, innerWrapper } = wrap({ element, options })
 
   return {
     outerWrapper,

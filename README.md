@@ -28,16 +28,11 @@ import { useIndicate } from 'indicate'
 
 const Scrollable = () => {
   const ref = useIndicate({ arrow: false })
+  // or with TypeScript
+  const ref = useIndicate<HTMLDivElement>({ arrow: false })
 
-  return (
-    <div ref={ref}>
-      {...}
-    </div>
-  )
+  return <div ref={ref}>{`...`}</div>
 }
-
-// TypeScript
-const ref = useIndicate<HTMLDivElement>({ arrow: false })
 ```
 
 ## Options

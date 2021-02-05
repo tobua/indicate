@@ -33,24 +33,38 @@ export interface Theme {
 
 type ArrowPosition = 'start' | 'center' | 'end'
 
+export const pluginOptionsProperties = [
+  'arrow',
+  'arrowPosition',
+  'color',
+  'width',
+  'click',
+]
+
+// Unpublished, required for React plugin.
+interface UnpublishedOptions {
+  outerWrapper?: HTMLElement
+  innerWrapper?: HTMLElement
+}
+
 // User facing options.
-export interface PluginOptions {
+export type PluginOptions = {
   arrow?: boolean
   arrowPosition?: ArrowPosition
   color?: string
   width?: string
   click?: boolean
-}
+} & UnpublishedOptions
 
 // Internal options extended with defaults.
-export interface Options {
+export type Options = {
   arrow: boolean
   arrowPosition: ArrowPosition
   theme: Theme
   color: string
   width: string
   click: boolean
-}
+} & UnpublishedOptions
 
 export interface Instance {
   outerWrapper: HTMLDivElement

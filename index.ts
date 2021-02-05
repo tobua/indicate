@@ -1,12 +1,11 @@
 import { getOptions } from './options'
-import { getDOMNodes } from './initialize'
 import { Elements, PluginOptions } from './types'
-import { initialize } from './instance'
+import { initialize, getDOMNodes } from './instance'
 import { log, Message } from './helper'
 
 export { defaultOptions } from './options'
 export { remove } from './instance'
-export { useIndicate } from './react'
+export { Indicate } from './component'
 
 interface Properties {
   element: Elements
