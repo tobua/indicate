@@ -24,15 +24,9 @@ indicate(document.querySelectorAll('.nav-bar'))
 ### React
 
 ```tsx
-import { useIndicate } from 'indicate'
+import { Indicate } from 'indicate'
 
-const Scrollable = () => {
-  const ref = useIndicate({ arrow: false })
-  // or with TypeScript
-  const ref = useIndicate<HTMLDivElement>({ arrow: false })
-
-  return <div ref={ref}>{`...`}</div>
-}
+const Scrollable = () => <Indicate as="div" color="#00FF00">{`...`}</Indicate>
 ```
 
 ## Options

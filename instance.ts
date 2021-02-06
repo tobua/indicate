@@ -65,15 +65,19 @@ export const remove = (element: Elements) => {
 
     instance.intersectionObserver.disconnect()
 
-    // Remove outer wrapper.
-    instance.outerWrapper.replaceWith(
-      ...Array.from(instance.outerWrapper.childNodes)
-    )
+    if (!instance.options.outerWrapper) {
+      // Remove outer wrapper.
+      instance.outerWrapper.replaceWith(
+        ...Array.from(instance.outerWrapper.childNodes)
+      )
+    }
 
-    // Remove inner wrapper.
-    const contents = instance.innerWrapper.innerHTML
-    instance.innerWrapper.remove()
-    currentElement.innerHTML = contents
+    if (!instance.options.innerWrapper) {
+      // Remove inner wrapper.
+      const contents = instance.innerWrapper.innerHTML
+      instance.innerWrapper.remove()
+      currentElement.innerHTML = contents
+    }
 
     instances.delete(currentElement)
   })

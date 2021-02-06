@@ -5,6 +5,21 @@ import { Indicate } from 'indicate'
 import { formatCode } from 'code'
 import { options, styles } from 'state'
 
+const nonStyleProps = ['rows', 'tiles']
+
+// Remove non-CSS properties from styles.
+const getElementStyleProps = (fullProps) => {
+  const styleProps = { ...fullProps }
+
+  nonStyleProps.forEach((property) => {
+    if (Object.prototype.hasOwnProperty.call(styleProps, property)) {
+      delete styleProps[property]
+    }
+  })
+
+  return styleProps
+}
+
 const tileArray = (count: number) =>
   Array.from({ length: count }).map((_, index) => (
     <p key={index} className="tile" />
@@ -12,7 +27,12 @@ const tileArray = (count: number) =>
 
 const Plugin = observer(() => {
   return (
-    <Indicate as="div" className="element" {...options}>
+    <Indicate
+      as="div"
+      className="element"
+      style={getElementStyleProps(styles)}
+      {...options}
+    >
       {styles.rows < 2
         ? tileArray(styles.tiles)
         : Array.from({ length: styles.rows }).map((_, index) => (
@@ -25,15 +45,13 @@ const Plugin = observer(() => {
 const ReactCode = observer(() => (
   <pre className="code">
     {formatCode(
-      (value) => `import { useIndicate } from 'indicate'
+      (value) => `import { Indicate } from 'indicate'
       
-  const Indicate = () => {
-    const ref = useIndicate(${value})
-  
+  const Scrollable = () => {
     return (
-      <div ref={ref}>
+      <Indicate as="div">
         {\`...\`}
-      </div>
+      </Indicate>
     )
   }`
     )}
