@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import { autorun, runInAction } from 'mobx'
+import { observer } from 'mobx-react'
 import { Konfi } from 'konfi'
+import { Exmpl, Code } from 'exmpl'
 import './styles.css'
 import { indicate, remove } from 'indicate'
-import 'react-preview'
+import { ReactPreview } from 'react-preview'
 import { formatCode } from 'code'
 import { options, styles, optionsSchema } from 'state'
 
@@ -23,7 +25,7 @@ const createTiles = (element: Element, count: number) =>
     element.append(tile)
   })
 
-autorun(() => {
+const renderIndicate = () => {
   // Remove existing instance.
   remove('.demo')
 
@@ -46,23 +48,7 @@ autorun(() => {
 
   // Initialize indicate effect with currently selected options.
   indicate({ element: '.demo', options })
-})
-
-autorun(() => {
-  // Adapt code preview to match new options.
-  const currentCode = formatCode(
-    (value) => `import { indicate } from 'indicate'
-
-indicate({ element: '.demo'${value} })`,
-    (value) => `, options: ${value}`
-  )
-  const code = document.getElementById('code-regular')
-  code.innerHTML = currentCode
-  // Remove existing instance (when options edited).
-  remove('.demo')
-  // Initialize indicate effect with currently selected options.
-  indicate({ element: '.demo', options })
-})
+}
 
 const handleOptions = (data: any) =>
   runInAction(() => Object.assign(options, data))
@@ -70,16 +56,45 @@ const handleOptions = (data: any) =>
 const handleStyles = (data: any) =>
   runInAction(() => Object.assign(styles, data))
 
-render(
-  <div className="edits">
-    <div className="options">
-      <h2>Edit Options</h2>
-      <Konfi schema={optionsSchema} data={options} onChange={handleOptions} />
-    </div>
-    <div className="styles">
-      <h2>Edit Styles & Contents</h2>
-      <Konfi data={styles} onChange={handleStyles} />
-    </div>
-  </div>,
-  document.getElementById('options')
-)
+// Code preview matching current options.
+const CodePreview = observer(() => (
+  <Code>
+    {formatCode(
+      (value) => `import { indicate } from 'indicate'
+
+indicate({ element: '.demo'${value} })`,
+      (value) => `, options: ${value}`
+    )}
+  </Code>
+))
+
+const Body = () => {
+  useEffect(() => {
+    autorun(renderIndicate)
+  })
+
+  return (
+    <Exmpl title="Indicate Demo" npm="indicate" github="tobua/indicate">
+      <div style={{ whiteSpace: 'nowrap' }} className="demo"></div>
+      <div className="edits">
+        <div style={{ flex: 1 }}>
+          <h2>Edit Options</h2>
+          <Konfi
+            schema={optionsSchema}
+            data={options}
+            onChange={handleOptions}
+          />
+        </div>
+        <div style={{ flex: 1 }}>
+          <h2>Edit Styles & Contents</h2>
+          <Konfi data={styles} onChange={handleStyles} />
+        </div>
+      </div>
+      <h2>Code</h2>
+      <CodePreview />
+      <ReactPreview />
+    </Exmpl>
+  )
+}
+
+render(<Body />, document.body)

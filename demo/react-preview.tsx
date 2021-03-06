@@ -1,6 +1,6 @@
 import React from 'react'
-import { render } from 'react-dom'
 import { observer } from 'mobx-react'
+import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
 import { formatCode } from 'code'
 import { options, styles } from 'state'
@@ -43,7 +43,7 @@ const Plugin = observer(() => {
 })
 
 const ReactCode = observer(() => (
-  <pre className="code">
+  <Code>
     {formatCode(
       (value) => `import { Indicate } from 'indicate'
       
@@ -55,14 +55,13 @@ const ReactCode = observer(() => (
     )
   }`
     )}
-  </pre>
+  </Code>
 ))
 
-render(
+export const ReactPreview = () => (
   <>
     <h2>React</h2>
     <Plugin />
     <ReactCode />
-  </>,
-  document.getElementById('react')
+  </>
 )
