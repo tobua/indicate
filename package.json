@@ -21,7 +21,7 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^17.0.2",
+    "@types/react": "^17.0.3",
     "padua": "^0.3.0"
   },
   "prettier": "padua/configuration/.prettierrc.json",

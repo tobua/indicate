@@ -9,7 +9,7 @@ const nonStyleProps = ['rows', 'tiles']
 
 // Remove non-CSS properties from styles.
 const getElementStyleProps = (fullProps) => {
-  const styleProps = { ...fullProps }
+  const styleProps = { ...fullProps, whiteSpace: 'nowrap' }
 
   nonStyleProps.forEach((property) => {
     if (Object.prototype.hasOwnProperty.call(styleProps, property)) {
@@ -27,12 +27,7 @@ const tileArray = (count: number) =>
 
 const Plugin = observer(() => {
   return (
-    <Indicate
-      as="div"
-      className="element"
-      style={getElementStyleProps(styles)}
-      {...options}
-    >
+    <Indicate as="div" style={getElementStyleProps(styles)} {...options}>
       {styles.rows < 2
         ? tileArray(styles.tiles)
         : Array.from({ length: styles.rows }).map((_, index) => (

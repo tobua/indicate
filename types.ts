@@ -33,13 +33,7 @@ export interface Theme {
 
 type ArrowPosition = 'start' | 'center' | 'end'
 
-export const pluginOptionsProperties = [
-  'arrow',
-  'arrowPosition',
-  'color',
-  'width',
-  'click',
-]
+export const pluginOptionsProperties = ['arrow', 'color', 'width', 'click']
 
 // Unpublished, required for React plugin.
 interface UnpublishedOptions {
@@ -47,10 +41,15 @@ interface UnpublishedOptions {
   innerWrapper?: HTMLElement
 }
 
+export interface ArrowOptions {
+  position?: ArrowPosition
+  image?: string
+  markup?: Node | string
+}
+
 // User facing options.
 export type PluginOptions = {
-  arrow?: boolean
-  arrowPosition?: ArrowPosition
+  arrow?: boolean | ArrowOptions
   color?: string
   width?: string
   click?: boolean
@@ -58,8 +57,7 @@ export type PluginOptions = {
 
 // Internal options extended with defaults.
 export type Options = {
-  arrow: boolean
-  arrowPosition: ArrowPosition
+  arrow: false | ArrowOptions
   theme: Theme
   color: string
   width: string

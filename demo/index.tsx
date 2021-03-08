@@ -74,7 +74,7 @@ const Body = () => {
   })
 
   return (
-    <Exmpl title="Indicate Demo" npm="indicate" github="tobua/indicate">
+    <Exmpl title="indicate Demo" npm="indicate" github="tobua/indicate">
       <div style={{ whiteSpace: 'nowrap' }} className="demo"></div>
       <div className="edits">
         <div style={{ flex: 1 }}>

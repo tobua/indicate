@@ -5,6 +5,7 @@ import {
   Options,
   CSSProperties,
   PluginOptions,
+  Direction,
 } from './types'
 import { registerClickListener } from './feature/click'
 
@@ -87,6 +88,63 @@ export const createInstance = (
   } as Instance
 }
 
+const createSvgLine = (x1: string, y1: string, x2: string, y2: string) => {
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+  line.setAttribute('stroke-linecap', 'round')
+  line.setAttribute('stroke-width', '20')
+  line.setAttribute('stroke', 'black')
+  line.setAttribute('x1', x1)
+  line.setAttribute('y1', y1)
+  line.setAttribute('x2', x2)
+  line.setAttribute('y2', y2)
+
+  return line
+}
+
+const createRightArrowIcon = () => {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+  svg.setAttribute('viewBox', '0 0 120 120')
+
+  svg.appendChild(createSvgLine('10', '60', '110', '60'))
+  svg.appendChild(createSvgLine('108.213', '57.3553', '61.5442', '10.6863'))
+  svg.appendChild(createSvgLine('61.5442', '109.213', '108.213', '62.5442'))
+
+  return svg
+}
+
+const addArrow = (
+  instance: Instance,
+  indicator: HTMLSpanElement,
+  direction: Direction
+) => {
+  const options = instance.options.arrow
+
+  if (!options) {
+    return
+  }
+
+  let arrow = null
+
+  if (options.image) {
+    arrow = document.createElement('img')
+    arrow.src = options.image
+    arrow.alt = `indicate arrow ${direction}`
+  } else if (options.markup && options.markup !== '') {
+    if (typeof options.markup === 'string') {
+      arrow = document.createElement('span')
+      arrow.innerHTML = options.markup
+    } else {
+      arrow = options.markup
+    }
+  } else {
+    arrow = createRightArrowIcon()
+  }
+
+  addStyle(arrow, instance.options.theme.arrow(direction))
+
+  indicator.append(arrow)
+}
+
 export const addIndicators = (instance: Instance) => {
   directions.forEach((direction) => {
     const indicator = instance.indicator[direction]
@@ -101,16 +159,7 @@ export const addIndicators = (instance: Instance) => {
     instance.outerWrapper.append(indicator)
 
     registerClickListener(direction, indicator, instance)
-
-    if (!instance.options.arrow) {
-      return
-    }
-
-    const arrow = document.createElement('span')
-
-    addStyle(arrow, instance.options.theme.arrow(direction))
-
-    indicator.append(arrow)
+    addArrow(instance, indicator, direction)
   })
 }
 

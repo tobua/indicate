@@ -7,10 +7,10 @@ import {
 } from './types'
 
 const directionToRotation = {
-  [Direction.left]: 225,
-  [Direction.right]: 45,
-  [Direction.top]: 315,
-  [Direction.bottom]: 135,
+  [Direction.left]: 180,
+  [Direction.right]: 0,
+  [Direction.top]: 270,
+  [Direction.bottom]: 90,
 }
 
 export const theme = {
@@ -24,26 +24,23 @@ export const theme = {
 
     if (isHorizontal(direction)) {
       style.alignItems =
-        options.arrowPosition !== 'center'
-          ? `flex-${options.arrowPosition}`
-          : options.arrowPosition
+        options.arrow && options.arrow.position !== 'center'
+          ? `flex-${options.arrow.position}`
+          : 'center'
       style.justifyContent = 'center'
     } else {
       style.justifyContent =
-        options.arrowPosition !== 'center'
-          ? `flex-${options.arrowPosition}`
-          : options.arrowPosition
+        options.arrow && options.arrow.position !== 'center'
+          ? `flex-${options.arrow.position}`
+          : 'center'
       style.alignItems = 'center'
     }
 
     return style
   },
   arrow: (direction: Direction) => ({
-    borderTop: '3px solid black',
-    borderRight: '3px solid black',
     width: '10px',
     height: '10px',
-    borderRadius: '3px',
     display: 'block',
     transform: `rotate(${directionToRotation[direction]}deg)`,
   }),
