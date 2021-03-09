@@ -18,8 +18,10 @@ export const theme = {
     const style: CSSProperties = {
       background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${options.color})`,
       // Initially not visible.
-      display: 'none',
+      opacity: '0',
+      display: 'flex',
       cursor: options.click ? 'pointer' : 'inherit',
+      transition: 'opacity 300ms linear',
     }
 
     if (isHorizontal(direction)) {
@@ -39,14 +41,21 @@ export const theme = {
     return style
   },
   arrow: (direction: Direction) => ({
-    width: '10px',
-    height: '10px',
+    width: '12px',
+    height: '12px',
     display: 'block',
     transform: `rotate(${directionToRotation[direction]}deg)`,
   }),
+  hide: (indicator: HTMLSpanElement) => {
+    indicator.style.opacity = '0'
+  },
+  show: (indicator: HTMLSpanElement) => {
+    indicator.style.opacity = '1'
+  },
 }
 
-export const addStyle = (element: HTMLElement, properties: CSSProperties) => {
+// Apply style object as inline-style to an element.
+export const add = (element: HTMLElement, properties: CSSProperties) => {
   Object.keys(properties).forEach((property) => {
     element.style[property] = properties[property]
   })
@@ -74,3 +83,15 @@ export const alignment = (direction: Direction, options: Options) => {
 
   return style
 }
+
+export const outerWrapper = {
+  position: 'relative',
+  display: 'block',
+}
+
+export const innerWrapper = {
+  position: 'relative',
+  // TODO check if possible without inner wrapper if element is inline-block.
+  display: 'inline-block',
+}
+

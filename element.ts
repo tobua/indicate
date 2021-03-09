@@ -1,4 +1,4 @@
-import { addStyle, absolute, alignment } from './style'
+import * as style from './style'
 import {
   directions,
   Instance,
@@ -38,10 +38,7 @@ export const wrap = ({
   // Wrapper arount the element to position the indicators.
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
-  addStyle(outerWrapper, {
-    position: 'relative',
-    display: 'block',
-  })
+  style.add(outerWrapper, style.outerWrapper)
 
   if (!options.outerWrapper) {
     wrapElementIn(element, outerWrapper)
@@ -51,11 +48,7 @@ export const wrap = ({
   // Allows to position observers absolutely inside (due to inline-block).
   const innerWrapper = options.innerWrapper ?? document.createElement('div')
 
-  addStyle(innerWrapper, {
-    position: 'relative',
-    // TODO check if possible without inner wrapper if element is inline-block.
-    display: 'inline-block',
-  })
+  style.add(innerWrapper, style.innerWrapper)
 
   if (!options.innerWrapper) {
     wrapContentsWith(element, innerWrapper)
@@ -140,7 +133,7 @@ const addArrow = (
     arrow = createRightArrowIcon()
   }
 
-  addStyle(arrow, instance.options.theme.arrow(direction))
+  style.add(arrow, instance.options.theme.arrow(direction))
 
   indicator.append(arrow)
 }
@@ -148,14 +141,14 @@ const addArrow = (
 export const addIndicators = (instance: Instance) => {
   directions.forEach((direction) => {
     const indicator = instance.indicator[direction]
-    const style: CSSProperties = {
-      ...absolute,
+    const indicatorStyle: CSSProperties = {
+      ...style.absolute,
       ...instance.options.theme.indicator(direction, instance.options),
-      ...alignment(direction, instance.options),
+      ...style.alignment(direction, instance.options),
       [direction]: '0',
     }
 
-    addStyle(indicator, style)
+    style.add(indicator, indicatorStyle)
     instance.outerWrapper.append(indicator)
 
     registerClickListener(direction, indicator, instance)
@@ -166,14 +159,14 @@ export const addIndicators = (instance: Instance) => {
 export const addObservers = (instance: Instance) => {
   directions.forEach((direction) => {
     const observer = instance.observer[direction]
-    const style: CSSProperties = {
-      ...absolute,
-      ...alignment(direction, instance.options),
+    const observerStyle: CSSProperties = {
+      ...style.absolute,
+      ...style.alignment(direction, instance.options),
       pointerEvents: 'none',
       [direction]: '0',
     }
 
-    addStyle(observer, style)
+    style.add(observer, observerStyle)
 
     instance.innerWrapper.append(observer)
   })

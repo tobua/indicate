@@ -18,9 +18,9 @@ const handleObservation = (
 
   visibilities.forEach((visibility) => {
     if (visibility.visible) {
-      instance.indicator[visibility.direction].style.display = 'none'
+      instance.options.theme.hide(instance.indicator[visibility.direction])
     } else {
-      instance.indicator[visibility.direction].style.display = 'flex'
+      instance.options.theme.show(instance.indicator[visibility.direction])
     }
   })
 }

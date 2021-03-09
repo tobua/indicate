@@ -29,6 +29,8 @@ export type Elements = string | Element | HTMLElement | NodeListOf<Element>
 export interface Theme {
   indicator: (direction: Direction, options: Options) => CSSProperties
   arrow: (direction: Direction) => CSSProperties
+  hide: (indicator: HTMLSpanElement) => void
+  show: (indicator: HTMLSpanElement) => void
 }
 
 type ArrowPosition = 'start' | 'center' | 'end'
