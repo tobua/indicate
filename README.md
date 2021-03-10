@@ -36,18 +36,27 @@ const Scrollable = () => <Indicate as="div" color="#00FF00">{`...`}</Indicate>
 indicate(document.getElementById('my-element'), {
   // Disable arrows, default true.
   arrow: false,
-  // Position of arrows, default 'center'.
-  arrowPosition: 'start',
-  // TODO
-  arrowUrl: '/assets/icon/arrow-left.svg',
-  // TODO
-  arrowMarkup: '<svg>...</svg>',
+  // Configure arrow:
+  arrow: {
+    // Position of arrows, default 'center'.
+    position: 'start',
+    // URL of an image pointing to an arrow to the right.
+    url: 'arrow-rounded-right.svg',
+    // String with HTML markup inserted as arrow.
+    markup: '<span>→</span>',
+    // DOM Node to be inserted as arrow.
+    markup: svgElement,
+  },
   // Change fade color, default white.
   color: '#0000FF',
   // Configure the width of the fade effect, default 20px.
   width: '3vw',
   // Click on indicator to scroll, default true.
   click: false,
+  click: {
+    // TODO scroll amount
+    scrollDenominator,
+  },
 })
 ```
 

@@ -1,9 +1,13 @@
-import { Direction, Instance, isHorizontal } from '../types'
+import { Direction, Instance, isHorizontal, ClickOptions } from '../types'
 
-const scrollHorizontal = (direction: Direction, element: HTMLElement) => {
+const scrollHorizontal = (
+  direction: Direction,
+  element: HTMLElement,
+  denominator: number
+) => {
   const position = element.scrollLeft
   // Scoll for 50% of currently visible part.
-  let scrollOffset = element.offsetWidth / 2
+  let scrollOffset = element.offsetWidth / denominator
 
   if (direction === Direction.left) {
     scrollOffset = -scrollOffset
@@ -15,10 +19,14 @@ const scrollHorizontal = (direction: Direction, element: HTMLElement) => {
   })
 }
 
-const scrollVertical = (direction: Direction, element: HTMLElement) => {
+const scrollVertical = (
+  direction: Direction,
+  element: HTMLElement,
+  denominator: number
+) => {
   const position = element.scrollTop
   // Scoll for 50% of currently visible part.
-  let scrollOffset = element.offsetHeight / 2
+  let scrollOffset = element.offsetHeight / denominator
 
   if (direction === Direction.top) {
     scrollOffset = -scrollOffset
@@ -30,11 +38,15 @@ const scrollVertical = (direction: Direction, element: HTMLElement) => {
   })
 }
 
-const handleIndicatorClick = (direction: Direction, instance: Instance) => {
+const handleIndicatorClick = (
+  direction: Direction,
+  element: HTMLElement,
+  denominator: number
+) => {
   if (isHorizontal(direction)) {
-    scrollHorizontal(direction, instance.element)
+    scrollHorizontal(direction, element, denominator)
   } else {
-    scrollVertical(direction, instance.element)
+    scrollVertical(direction, element, denominator)
   }
 }
 
@@ -47,10 +59,13 @@ export const registerClickListener = (
     return
   }
 
+  // Access here, as inferred type check above is lost inside methods.
+  const denominator = instance.options.click.denominator
+
   if (instance.options.click) {
     element.addEventListener(
       'click',
-      handleIndicatorClick.bind(null, direction, instance)
+      handleIndicatorClick.bind(null, direction, instance.element, denominator)
     )
   }
 }

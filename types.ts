@@ -43,6 +43,10 @@ interface UnpublishedOptions {
   innerWrapper?: HTMLElement
 }
 
+export interface ClickOptions {
+  denominator?: number
+}
+
 export interface ArrowOptions {
   position?: ArrowPosition
   image?: string
@@ -54,7 +58,7 @@ export type PluginOptions = {
   arrow?: boolean | ArrowOptions
   color?: string
   width?: string
-  click?: boolean
+  click?: boolean | ClickOptions
 } & UnpublishedOptions
 
 // Internal options extended with defaults.
@@ -63,7 +67,7 @@ export type Options = {
   theme: Theme
   color: string
   width: string
-  click: boolean
+  click: false | ClickOptions
 } & UnpublishedOptions
 
 export interface Instance {

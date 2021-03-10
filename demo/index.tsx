@@ -26,8 +26,10 @@ const createTiles = (element: Element, count: number) =>
   })
 
 const renderIndicate = () => {
-  // Remove existing instance.
-  remove('.demo')
+  // Remove existing instance, except on first render.
+  if (document.readyState !== 'interactive') {
+    remove('.demo')
+  }
 
   const element: HTMLElement = document.querySelector('.demo')
   element.innerHTML = ''
@@ -93,6 +95,31 @@ const Body = () => {
       <h2>Code</h2>
       <CodePreview />
       <ReactPreview />
+      <h2>Use Cases</h2>
+      <h3>Table</h3>
+      <table className="demo">
+        <thead>
+          <tr>
+            <th>FirstHeader</th>
+            <th colSpan={2}>SecondThirdHeader</th>
+            <th>FourthHeader</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>FirstColumnFirstColumnFirstColumn</td>
+            <td>SecondColumnSecondColumnSecondColumn</td>
+            <td>ThirdColumnThirdColumnThirdColumn</td>
+            <td>FourthColumnFourthColumnFourthColumn</td>
+          </tr>
+          <tr>
+            <td>FirstColumn FirstColumn FirstColumn</td>
+            <td>SecondColumn SecondColumn SecondColumn</td>
+            <td>ThirdColumn ThirdColumn ThirdColumn</td>
+            <td>FourthColumn FourthColumn FourthColumn</td>
+          </tr>
+        </tbody>
+      </table>
     </Exmpl>
   )
 }

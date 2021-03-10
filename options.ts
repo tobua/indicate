@@ -8,7 +8,9 @@ export const defaultOptions: Options = {
   theme,
   color: '#FFFFFF',
   width: '20px',
-  click: true,
+  click: {
+    denominator: 2,
+  },
 }
 
 export const getOptions = (options: PluginOptions) => {
@@ -25,8 +27,19 @@ export const getOptions = (options: PluginOptions) => {
     }
   }
 
+  if (typeof shallowMerge.click === 'object') {
+    shallowMerge.click = {
+      ...defaultOptions.click,
+      ...shallowMerge.click,
+    }
+  }
+
   if (shallowMerge.arrow === true) {
     shallowMerge.arrow = defaultOptions.arrow
+  }
+
+  if (shallowMerge.click === true) {
+    shallowMerge.click = defaultOptions.click
   }
 
   return shallowMerge

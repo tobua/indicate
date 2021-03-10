@@ -21,9 +21,17 @@ export const optionsSchema = {
       },
     },
   ],
-  click: {
-    type: Type.boolean,
-  },
+  click: [
+    {
+      type: Type.boolean,
+    },
+    {
+      denominator: {
+        type: Type.number,
+        default: 2,
+      },
+    },
+  ],
   color: {
     type: Type.hex,
   },
