@@ -17,3 +17,6 @@ export const log = (message: Message, objects = null) => {
     }
   }
 }
+
+export const isTable = (element: HTMLElement) =>
+  element.tagName.toLowerCase() === 'table'

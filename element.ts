@@ -8,8 +8,10 @@ import {
   Direction,
 } from './types'
 import { registerClickListener } from './feature/click'
+import { wrapTable } from './feature/table'
+import { isTable } from './helper'
 
-const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
+export const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
   element.parentNode.insertBefore(wrapper, element)
   wrapper.append(element)
 }
@@ -21,13 +23,17 @@ const wrapContentsWith = (element: HTMLElement, wrapper: HTMLElement) => {
   element.appendChild(wrapper)
 }
 
-export const wrap = ({
+const wrap = ({
   element,
   options,
 }: {
   element: HTMLElement
   options: PluginOptions
 }) => {
+  if (isTable(element)) {
+    return wrapTable({ element, options })
+  }
+
   if (
     element.style.overflow !== 'auto' &&
     element.style.overflow !== 'scroll'
@@ -168,6 +174,10 @@ export const addObservers = (instance: Instance) => {
 
     style.add(observer, observerStyle)
 
-    instance.innerWrapper.append(observer)
+    if (isTable(instance.element)) {
+      instance.element.append(observer)
+    } else {
+      instance.innerWrapper.append(observer)
+    }
   })
 }

@@ -86,7 +86,6 @@ export const alignment = (direction: Direction, options: Options) => {
 
 export const outerWrapper = {
   position: 'relative',
-  display: 'block',
 }
 
 export const innerWrapper = {
@@ -95,3 +94,17 @@ export const innerWrapper = {
   display: 'inline-block',
 }
 
+// TODO scrollbars
+// overflow: -moz-scrollbars-none;
+// Hide Scrollbar in IE
+// -ms-overflow-style: none;
+
+// Hide Scrollbar in Chrome
+// .idc-container::-webkit-scrollbar,
+// .idc-element::-webkit-scrollbar {
+//   width: 0;
+//   height: 0;
+//   background: transparent;
+// }
+
+// content: '›' for arrow

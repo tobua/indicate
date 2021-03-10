@@ -1,7 +1,7 @@
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, Options, directions } from './types'
-import { log, Message } from './helper'
+import { isTable, log, Message } from './helper'
 
 export const instances = new Map<HTMLElement, Instance>()
 
@@ -74,9 +74,15 @@ export const remove = (element: Elements) => {
 
     if (!instance.options.innerWrapper) {
       // Remove inner wrapper.
-      const contents = instance.innerWrapper.innerHTML
-      instance.innerWrapper.remove()
-      currentElement.innerHTML = contents
+      if (isTable(instance.element)) {
+        instance.innerWrapper.replaceWith(
+          ...Array.from(instance.innerWrapper.childNodes)
+        )
+      } else {
+        const contents = instance.innerWrapper.innerHTML
+        instance.innerWrapper.remove()
+        currentElement.innerHTML = contents
+      }
     }
 
     instances.delete(currentElement)
