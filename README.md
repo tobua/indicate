@@ -54,9 +54,12 @@ indicate(document.getElementById('my-element'), {
   // Click on indicator to scroll, default true.
   click: false,
   click: {
-    // TODO scroll amount
-    scrollDenominator,
+    // Denotes how much of the currently visible part should be scrolled by a click.
+    // Default is 2 for 50% of the currently visible part, 4 would equal to 25%.
+    scrollDenominator: 4,
   },
+  // Disable hiding the native OS scrollbar inside the element.
+  hideNativeScrollbar: false,
 })
 ```
 

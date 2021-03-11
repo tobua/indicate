@@ -1,7 +1,7 @@
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, Options, directions } from './types'
-import { isTable, log, Message } from './helper'
+import { isTable, log, Message, removeHideScrollbarStyle } from './helper'
 
 export const instances = new Map<HTMLElement, Instance>()
 
@@ -50,7 +50,7 @@ export const remove = (element: Elements) => {
     return
   }
 
-  elements.forEach((currentElement) => {
+  elements.forEach((currentElement: HTMLElement) => {
     const instance = instances.get(currentElement)
 
     if (!instance) {
@@ -64,6 +64,8 @@ export const remove = (element: Elements) => {
     })
 
     instance.intersectionObserver.disconnect()
+
+    removeHideScrollbarStyle(instance.element, instance.innerWrapper)
 
     if (!instance.options.outerWrapper) {
       // Remove outer wrapper.

@@ -1,7 +1,10 @@
 {
+  "papua": {
+    "title": "indicate Demo"
+  },
   "dependencies": {
-    "exmpl": "^2.0.0",
-    "konfi": "^0.1.8",
+    "exmpl": "^2.0.1",
+    "konfi": "^0.1.9",
     "mobx": "^6.1.8",
     "mobx-react": "^7.1.0",
     "papua": "^0.1.14",

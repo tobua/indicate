@@ -11,13 +11,6 @@ export const wrapTable = ({
   element: HTMLElement
   options: PluginOptions
 }) => {
-  if (
-    element.style.overflow === 'auto' ||
-    element.style.overflow === 'scroll'
-  ) {
-    element.style.overflow = ''
-  }
-
   // TODO provide way to  revert on remove.
   element.style.position = 'relative'
 

@@ -9,7 +9,7 @@ import {
 } from './types'
 import { registerClickListener } from './feature/click'
 import { wrapTable } from './feature/table'
-import { isTable } from './helper'
+import { isTable, hideScrollbarWithWebkitPseudoClass } from './helper'
 
 export const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
   element.parentNode.insertBefore(wrapper, element)
@@ -34,13 +34,6 @@ const wrap = ({
     return wrapTable({ element, options })
   }
 
-  if (
-    element.style.overflow !== 'auto' &&
-    element.style.overflow !== 'scroll'
-  ) {
-    element.style.overflow = 'auto'
-  }
-
   // Wrapper arount the element to position the indicators.
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
@@ -63,6 +56,37 @@ const wrap = ({
   return { outerWrapper, innerWrapper }
 }
 
+const makeScrollable = ({
+  element,
+  innerWrapper,
+  options,
+}: {
+  element: HTMLElement
+  innerWrapper: HTMLElement
+  options: PluginOptions
+}) => {
+  const scrollableElement = isTable(element) ? innerWrapper : element
+
+  if (
+    scrollableElement.style.overflow !== 'auto' &&
+    scrollableElement.style.overflow !== 'scroll'
+  ) {
+    element.style.overflow = 'auto'
+  }
+
+  if (
+    isTable(element) &&
+    (element.style.overflow === 'auto' || element.style.overflow === 'scroll')
+  ) {
+    element.style.overflow = ''
+  }
+
+  if (options.hideScrollbar) {
+    style.add(scrollableElement, style.hideScrollbar)
+    hideScrollbarWithWebkitPseudoClass(scrollableElement)
+  }
+}
+
 export const createInstance = (
   element: HTMLElement,
   options: Options
@@ -76,6 +100,8 @@ export const createInstance = (
   }
 
   const { outerWrapper, innerWrapper } = wrap({ element, options })
+
+  makeScrollable({ element, innerWrapper, options })
 
   return {
     outerWrapper,

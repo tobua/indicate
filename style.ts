@@ -4,6 +4,7 @@ import {
   Options,
   isHorizontal,
   isVertical,
+  Instance,
 } from './types'
 
 const directionToRotation = {
@@ -94,17 +95,9 @@ export const innerWrapper = {
   display: 'inline-block',
 }
 
-// TODO scrollbars
-// overflow: -moz-scrollbars-none;
-// Hide Scrollbar in IE
-// -ms-overflow-style: none;
-
-// Hide Scrollbar in Chrome
-// .idc-container::-webkit-scrollbar,
-// .idc-element::-webkit-scrollbar {
-//   width: 0;
-//   height: 0;
-//   background: transparent;
-// }
-
-// content: '›' for arrow
+export const hideScrollbar = {
+  // Hide scrollbar in IE and Edge.
+  '-ms-overflow-style': 'none',
+  // Hide scrollbar in Firefox.
+  'scrollbar-width': 'none',
+}

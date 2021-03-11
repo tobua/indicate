@@ -11,6 +11,7 @@ export const defaultOptions: Options = {
   click: {
     denominator: 2,
   },
+  hideScrollbar: true,
 }
 
 export const getOptions = (options: PluginOptions) => {

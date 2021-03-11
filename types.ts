@@ -35,7 +35,14 @@ export interface Theme {
 
 type ArrowPosition = 'start' | 'center' | 'end'
 
-export const pluginOptionsProperties = ['arrow', 'color', 'width', 'click']
+// Omit passing option-props to children in React component.
+export const pluginOptionsProperties = [
+  'arrow',
+  'color',
+  'width',
+  'click',
+  'hideScrollbar',
+]
 
 // Unpublished, required for React plugin.
 interface UnpublishedOptions {
@@ -59,6 +66,7 @@ export type PluginOptions = {
   color?: string
   width?: string
   click?: boolean | ClickOptions
+  hideScrollbar?: boolean
 } & UnpublishedOptions
 
 // Internal options extended with defaults.
@@ -68,6 +76,7 @@ export type Options = {
   color: string
   width: string
   click: false | ClickOptions
+  hideScrollbar: boolean
 } & UnpublishedOptions
 
 export interface Instance {

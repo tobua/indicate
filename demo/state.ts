@@ -38,6 +38,9 @@ export const optionsSchema = {
   width: {
     type: Type.string,
   },
+  hideScrollbar: {
+    type: Type.boolean,
+  },
 }
 
 export const options = observable({
@@ -45,6 +48,7 @@ export const options = observable({
   click: true,
   color: '#FFFFFF',
   width: '20px',
+  hideScrollbar: true,
 })
 
 export const styles = observable({
