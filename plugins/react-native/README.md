@@ -1,6 +1,6 @@
 <p></p>
 <p align="center">
-  <img src="https://raw.githubusercontent.com/naminho/indicate/master/plugins/react-native/preview.png" width="400" alt="React Native Indicate Preview">
+  <img src="https://raw.githubusercontent.com/tobua/indicate/master/plugins/react-native/preview.png" width="400" alt="React Native Indicate Preview">
 </p>
 
 # react-native-indicate
