@@ -29,7 +29,7 @@ const removeDefaultOptions = (currentOptions, defaults = defaultOptions) => {
 }
 
 export const formatCode = (
-  code: (value: string) => string,
+  code: (value: string, objectValues?: string) => string,
   wrapper?: (value: string) => string
 ) => {
   const modifiedOptions = removeDefaultOptions(options)
@@ -41,7 +41,7 @@ export const formatCode = (
     stringifiedOptions = wrapper(stringifiedOptions)
   }
 
-  return prettier.format(code(stringifiedOptions), {
+  return prettier.format(code(stringifiedOptions, modifiedOptions), {
     parser: 'babel',
     plugins: [parserBabel],
     semi: false,

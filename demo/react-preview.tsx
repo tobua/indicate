@@ -7,6 +7,30 @@ import { options, styles } from 'state'
 
 const nonStyleProps = ['rows', 'tiles']
 
+const objectToComponentProps = (values) => {
+  let result = ''
+
+  Object.keys(values).forEach((key) => {
+    const value = values[key]
+
+    result += ` ${key}`
+
+    // Implicity true for boolean props.
+    if (value === true) {
+      return
+    }
+
+    if (typeof value === 'string') {
+      result += `=${JSON.stringify(value)}`
+      return
+    }
+
+    result += `={${JSON.stringify(value)}}`
+  })
+
+  return result
+}
+
 // Remove non-CSS properties from styles.
 const getElementStyleProps = (fullProps) => {
   const styleProps = { ...fullProps, whiteSpace: 'nowrap' }
@@ -40,11 +64,11 @@ const Plugin = observer(() => {
 const ReactCode = observer(() => (
   <Code>
     {formatCode(
-      (value) => `import { Indicate } from 'indicate'
+      (_, values) => `import { Indicate } from 'indicate'
       
   const Scrollable = () => {
     return (
-      <Indicate as="div">
+      <Indicate as="div"${objectToComponentProps(values)}>
         {\`...\`}
       </Indicate>
     )
