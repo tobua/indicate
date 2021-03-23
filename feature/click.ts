@@ -1,4 +1,4 @@
-import { Direction, Instance, isHorizontal, ClickOptions } from '../types'
+import { Direction, Instance, isHorizontal } from '../types'
 
 const scrollHorizontal = (
   direction: Direction,
@@ -60,7 +60,7 @@ export const registerClickListener = (
   }
 
   // Access here, as inferred type check above is lost inside methods.
-  const denominator = instance.options.click.denominator
+  const { denominator } = instance.options.click
 
   if (instance.options.click) {
     element.addEventListener(

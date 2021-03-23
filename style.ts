@@ -4,7 +4,7 @@ import {
   Options,
   isHorizontal,
   isVertical,
-  Instance,
+  Theme,
 } from './types'
 
 const directionToRotation = {
@@ -14,59 +14,14 @@ const directionToRotation = {
   [Direction.bottom]: 90,
 }
 
-export const theme = {
-  indicator: (direction: Direction, options: Options) => {
-    const style: CSSProperties = {
-      background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${options.color})`,
-      // Initially not visible.
-      opacity: '0',
-      display: 'flex',
-      cursor: options.click ? 'pointer' : 'inherit',
-      transition: 'opacity 300ms linear',
-    }
-
-    if (isHorizontal(direction)) {
-      style.alignItems =
-        options.arrow && options.arrow.position !== 'center'
-          ? `flex-${options.arrow.position}`
-          : 'center'
-      style.justifyContent = 'center'
-    } else {
-      style.justifyContent =
-        options.arrow && options.arrow.position !== 'center'
-          ? `flex-${options.arrow.position}`
-          : 'center'
-      style.alignItems = 'center'
-    }
-
-    return style
-  },
-  arrow: (direction: Direction) => ({
-    width: '12px',
-    height: '12px',
-    display: 'block',
-    transform: `rotate(${directionToRotation[direction]}deg)`,
-  }),
-  hide: (indicator: HTMLSpanElement) => {
-    indicator.style.opacity = '0'
-  },
-  show: (indicator: HTMLSpanElement) => {
-    indicator.style.opacity = '1'
-  },
-}
-
 // Apply style object as inline-style to an element.
-export const add = (element: HTMLElement, properties: CSSProperties) => {
+const add = (element: HTMLElement, properties: CSSProperties) => {
   Object.keys(properties).forEach((property) => {
     element.style[property] = properties[property]
   })
 }
 
-export const absolute = {
-  position: 'absolute',
-}
-
-export const alignment = (direction: Direction, options: Options) => {
+const alignment = (direction: Direction, options: Options) => {
   const style: CSSProperties = {}
   const horizontal = isHorizontal(direction)
   const vertical = isVertical(direction)
@@ -85,19 +40,110 @@ export const alignment = (direction: Direction, options: Options) => {
   return style
 }
 
-export const outerWrapper = {
-  position: 'relative',
+const base: Theme = {
+  indicator: (_, direction: Direction, options: Options) => {
+    const style: CSSProperties = {
+      position: 'absolute',
+      // Initially hidden.
+      display: 'none',
+      cursor: options.click ? 'pointer' : 'inherit',
+      [direction]: '0',
+    }
+
+    if (isHorizontal(direction)) {
+      style.alignItems =
+        options.arrow && options.arrow.position !== 'center'
+          ? `flex-${options.arrow.position}`
+          : 'center'
+      style.justifyContent = 'center'
+    } else {
+      style.justifyContent =
+        options.arrow && options.arrow.position !== 'center'
+          ? `flex-${options.arrow.position}`
+          : 'center'
+      style.alignItems = 'center'
+    }
+
+    return { ...style, ...alignment(direction, options) }
+  },
+  hide: (indicator: HTMLSpanElement) => {
+    indicator.style.display = 'none'
+  },
+  show: (indicator: HTMLSpanElement) => {
+    indicator.style.display = 'flex'
+  },
+  arrow: (_, direction: Direction) => ({
+    width: '12px',
+    height: '12px',
+    display: 'block',
+    transform: `rotate(${directionToRotation[direction]}deg)`,
+  }),
+  element: () => undefined,
+  innerWrapper: {
+    position: 'relative',
+    // TODO check if possible without inner wrapper if element is inline-block.
+    display: 'inline-block',
+  },
+  outerWrapper: {
+    position: 'relative',
+  } as CSSProperties,
+  observer: (_, direction, options) =>
+    ({
+      position: 'absolute',
+      pointerEvents: 'none',
+      [direction]: '0',
+      ...alignment(direction, options),
+    } as CSSProperties),
 }
 
-export const innerWrapper = {
-  position: 'relative',
-  // TODO check if possible without inner wrapper if element is inline-block.
-  display: 'inline-block',
+type ThemeKey = keyof Theme
+
+const apply = (
+  method: ((...args: any[]) => CSSProperties | void) | CSSProperties,
+  ...args: any[]
+) => {
+  if (typeof method === 'object') {
+    return method
+  }
+
+  const result = method(...args)
+
+  if (typeof result === 'object') {
+    return result
+  }
+
+  return undefined
 }
 
-export const hideScrollbar = {
-  // Hide scrollbar in IE and Edge.
-  '-ms-overflow-style': 'none',
-  // Hide scrollbar in Firefox.
-  'scrollbar-width': 'none',
+export const theme = (
+  element: HTMLElement,
+  key: ThemeKey,
+  options: Options,
+  ...args: any[]
+) => {
+  let userProperties: CSSProperties | undefined
+
+  if (options.theme && options.theme[key]) {
+    userProperties = apply(options.theme[key], element, ...args, options)
+  }
+
+  const baseProperties = apply(base[key], element, ...args, options)
+
+  const styles = userProperties
+    ? { ...baseProperties, ...userProperties }
+    : baseProperties
+
+  if (styles) {
+    add(element, styles)
+  }
+}
+
+export const hideScrollbar = (element: HTMLElement) => {
+  add(element, {
+    // Hide scrollbar in IE and Edge.
+    // @ts-ignore
+    '-ms-overflow-style': 'none',
+    // Hide scrollbar in Firefox.
+    'scrollbar-width': 'none',
+  })
 }

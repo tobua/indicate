@@ -1,4 +1,5 @@
 import { isTable } from './helper'
+import { theme } from './style'
 import { Instance, directions } from './types'
 
 const handleObservation = (
@@ -19,9 +20,9 @@ const handleObservation = (
 
   visibilities.forEach((visibility) => {
     if (visibility.visible) {
-      instance.options.theme.hide(instance.indicator[visibility.direction])
+      theme(instance.indicator[visibility.direction], 'hide', instance.options)
     } else {
-      instance.options.theme.show(instance.indicator[visibility.direction])
+      theme(instance.indicator[visibility.direction], 'show', instance.options)
     }
   })
 }

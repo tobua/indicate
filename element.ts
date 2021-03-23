@@ -1,20 +1,12 @@
-import * as style from './style'
-import {
-  directions,
-  Instance,
-  Options,
-  CSSProperties,
-  PluginOptions,
-  Direction,
-} from './types'
+import { theme, hideScrollbar } from './style'
+import { directions, Instance, Options, Direction } from './types'
 import { registerClickListener } from './feature/click'
 import { wrapTable } from './feature/table'
-import { isTable, hideScrollbarWithWebkitPseudoClass } from './helper'
-
-export const wrapElementIn = (element: HTMLElement, wrapper: HTMLElement) => {
-  element.parentNode.insertBefore(wrapper, element)
-  wrapper.append(element)
-}
+import {
+  isTable,
+  hideScrollbarWithWebkitPseudoClass,
+  wrapElementIn,
+} from './helper'
 
 // <element>{contents}</element> => <element><wrapper>{contents}<wrapper/></element>
 const wrapContentsWith = (element: HTMLElement, wrapper: HTMLElement) => {
@@ -28,7 +20,7 @@ const wrap = ({
   options,
 }: {
   element: HTMLElement
-  options: PluginOptions
+  options: Options
 }) => {
   if (isTable(element)) {
     return wrapTable({ element, options })
@@ -37,7 +29,7 @@ const wrap = ({
   // Wrapper arount the element to position the indicators.
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
-  style.add(outerWrapper, style.outerWrapper)
+  theme(outerWrapper, 'outerWrapper', options)
 
   if (!options.outerWrapper) {
     wrapElementIn(element, outerWrapper)
@@ -47,7 +39,7 @@ const wrap = ({
   // Allows to position observers absolutely inside (due to inline-block).
   const innerWrapper = options.innerWrapper ?? document.createElement('div')
 
-  style.add(innerWrapper, style.innerWrapper)
+  theme(innerWrapper, 'innerWrapper', options)
 
   if (!options.innerWrapper) {
     wrapContentsWith(element, innerWrapper)
@@ -63,7 +55,7 @@ const makeScrollable = ({
 }: {
   element: HTMLElement
   innerWrapper: HTMLElement
-  options: PluginOptions
+  options: Options
 }) => {
   const scrollableElement = isTable(element) ? innerWrapper : element
 
@@ -78,11 +70,11 @@ const makeScrollable = ({
     isTable(element) &&
     (element.style.overflow === 'auto' || element.style.overflow === 'scroll')
   ) {
-    element.style.overflow = ''
+    element.style.overflow = 'visible'
   }
 
   if (options.hideScrollbar) {
-    style.add(scrollableElement, style.hideScrollbar)
+    hideScrollbar(scrollableElement)
     hideScrollbarWithWebkitPseudoClass(scrollableElement)
   }
 }
@@ -165,7 +157,7 @@ const addArrow = (
     arrow = createRightArrowIcon()
   }
 
-  style.add(arrow, instance.options.theme.arrow(direction))
+  theme(arrow, 'arrow', instance.options, direction)
 
   indicator.append(arrow)
 }
@@ -173,16 +165,8 @@ const addArrow = (
 export const addIndicators = (instance: Instance) => {
   directions.forEach((direction) => {
     const indicator = instance.indicator[direction]
-    const indicatorStyle: CSSProperties = {
-      ...style.absolute,
-      ...instance.options.theme.indicator(direction, instance.options),
-      ...style.alignment(direction, instance.options),
-      [direction]: '0',
-    }
-
-    style.add(indicator, indicatorStyle)
+    theme(indicator, 'indicator', instance.options, direction)
     instance.outerWrapper.append(indicator)
-
     registerClickListener(direction, indicator, instance)
     addArrow(instance, indicator, direction)
   })
@@ -191,15 +175,7 @@ export const addIndicators = (instance: Instance) => {
 export const addObservers = (instance: Instance) => {
   directions.forEach((direction) => {
     const observer = instance.observer[direction]
-    const observerStyle: CSSProperties = {
-      ...style.absolute,
-      ...style.alignment(direction, instance.options),
-      pointerEvents: 'none',
-      [direction]: '0',
-    }
-
-    style.add(observer, observerStyle)
-
+    theme(observer, 'observer', instance.options, direction)
     if (isTable(instance.element)) {
       instance.element.append(observer)
     } else {

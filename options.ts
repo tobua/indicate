@@ -1,11 +1,10 @@
-import { theme } from './style'
 import { Options, PluginOptions } from './types'
+import { log, Message } from './helper'
 
 export const defaultOptions: Options = {
   arrow: {
     position: 'center',
   },
-  theme,
   color: '#FFFFFF',
   width: '20px',
   click: {
@@ -41,6 +40,11 @@ export const getOptions = (options: PluginOptions) => {
 
   if (shallowMerge.click === true) {
     shallowMerge.click = defaultOptions.click
+  }
+
+  if (shallowMerge.theme && typeof shallowMerge.theme !== 'object') {
+    log(Message.InvalidTheme, { theme: shallowMerge.theme })
+    delete shallowMerge.theme
   }
 
   return shallowMerge

@@ -1,6 +1,7 @@
+import { getOptions } from './options'
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
-import { Instance, Elements, Options, directions } from './types'
+import { Instance, Elements, Options, directions, PluginOptions } from './types'
 import { isTable, log, Message, removeHideScrollbarStyle } from './helper'
 
 export const instances = new Map<HTMLElement, Instance>()
@@ -41,6 +42,27 @@ export const initialize = (options: Options, element: HTMLElement) => {
   instances.set(element, instance)
 
   observe(instance)
+}
+
+interface Properties {
+  element: Elements
+  options?: PluginOptions
+}
+
+export const indicate = ({ element, options = {} }: Properties) => {
+  const elements = getDOMNodes(element)
+  const instanceOptions = getOptions(options)
+
+  if (!elements) {
+    return
+  }
+
+  if (!IntersectionObserver) {
+    log(Message.IntersectionObserver)
+    return
+  }
+
+  elements.forEach(initialize.bind(null, instanceOptions))
 }
 
 export const remove = (element: Elements) => {

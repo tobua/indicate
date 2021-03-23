@@ -27,10 +27,32 @@ export const isEnd = (direction: Direction) =>
 export type Elements = string | Element | HTMLElement | NodeListOf<Element>
 
 export interface Theme {
-  indicator: (direction: Direction, options: Options) => CSSProperties
-  arrow: (direction: Direction) => CSSProperties
-  hide: (indicator: HTMLSpanElement) => void
-  show: (indicator: HTMLSpanElement) => void
+  indicator?:
+    | ((
+        element: HTMLElement,
+        direction: Direction,
+        options: Options
+      ) => CSSProperties | void)
+    | CSSProperties
+  hide?: (indicator: HTMLSpanElement) => void | CSSProperties
+  show?: (indicator: HTMLSpanElement) => void | CSSProperties
+  arrow?: (arrow: HTMLElement, direction: Direction) => CSSProperties | void
+  element?:
+    | ((element: HTMLElement, options: Options) => CSSProperties | void)
+    | CSSProperties
+  innerWrapper?:
+    | ((element: HTMLElement, options: Options) => CSSProperties | void)
+    | CSSProperties
+  outerWrapper?:
+    | ((element: HTMLElement, options: Options) => CSSProperties | void)
+    | CSSProperties
+  observer?:
+    | ((
+        element: HTMLElement,
+        direction: Direction,
+        options: Options
+      ) => CSSProperties | void)
+    | CSSProperties
 }
 
 type ArrowPosition = 'start' | 'center' | 'end'
@@ -64,6 +86,7 @@ export interface ArrowOptions {
 export type PluginOptions = {
   arrow?: boolean | ArrowOptions
   color?: string
+  theme?: Theme
   width?: string
   click?: boolean | ClickOptions
   hideScrollbar?: boolean
@@ -72,7 +95,7 @@ export type PluginOptions = {
 // Internal options extended with defaults.
 export type Options = {
   arrow: false | ArrowOptions
-  theme: Theme
+  theme?: Theme
   color: string
   width: string
   click: false | ClickOptions

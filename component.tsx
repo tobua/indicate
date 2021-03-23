@@ -5,7 +5,7 @@ import React, {
   ElementType,
   ReactNode,
 } from 'react'
-import { indicate, remove } from './index'
+import { remove, indicate } from './instance'
 import { PluginOptions, pluginOptionsProperties } from './types'
 
 // Remove PluginOptions from props to get the props meant for the element.
