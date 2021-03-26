@@ -1,5 +1,21 @@
 import { observable } from 'mobx'
 import { Type } from 'konfi'
+import youtube from 'indicate/dist/theme/youtube'
+import className from 'indicate/dist/theme/class-name'
+
+const themes = {
+  youtube,
+  none: {},
+  'class-name': className,
+}
+
+export const getTheme = (name: string) => {
+  if (name === 'default') {
+    return undefined
+  }
+
+  return themes[name]
+}
 
 // The schema is optional and in most cases can be inferred from the data.
 export const optionsSchema = {
@@ -41,6 +57,10 @@ export const optionsSchema = {
   hideScrollbar: {
     type: Type.boolean,
   },
+  theme: {
+    type: Type.select,
+    values: ['default', 'none', 'youtube', 'class-name'],
+  },
 }
 
 export const options = observable({
@@ -49,6 +69,7 @@ export const options = observable({
   color: '#FFFFFF',
   width: '20px',
   hideScrollbar: true,
+  theme: undefined,
 })
 
 export const styles = observable({

@@ -8,7 +8,7 @@ import './styles.css'
 import { indicate, remove } from 'indicate'
 import { ReactPreview } from 'react-preview'
 import { formatCode } from 'code'
-import { options, styles, optionsSchema } from 'state'
+import { options, styles, optionsSchema, getTheme } from 'state'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
 const times = (count: number) => (callback: () => void) => {
@@ -52,8 +52,10 @@ const renderIndicate = () => {
   indicate({ element: '.demo', options })
 }
 
-const handleOptions = (data: any) =>
+const handleOptions = (data: any) => {
+  data.theme = getTheme(data.theme)
   runInAction(() => Object.assign(options, data))
+}
 
 const handleStyles = (data: any) =>
   runInAction(() => Object.assign(styles, data))

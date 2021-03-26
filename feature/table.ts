@@ -26,8 +26,9 @@ export const wrapTable = ({
 
   theme(innerWrapper, 'innerWrapper', options)
 
-  innerWrapper.style.position = 'relative'
   innerWrapper.style.overflow = 'auto'
+  // Table element itself is already inline.
+  innerWrapper.style.display = ''
 
   if (!options.innerWrapper) {
     wrapElementIn(element, innerWrapper)
