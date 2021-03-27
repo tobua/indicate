@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import { autorun, runInAction } from 'mobx'
-import { observer } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 import { Konfi } from 'konfi'
 import { Exmpl, Code } from 'exmpl'
+import { Router, Page } from 'epic-react-router'
 import './styles.css'
 import { indicate, remove } from 'indicate'
-import { ReactPreview } from 'react-preview'
+import { ReactPreview, Tiles } from 'react-preview'
 import { formatCode } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
 
@@ -32,6 +33,11 @@ const renderIndicate = () => {
   }
 
   const element: HTMLElement = document.querySelector('.demo')
+
+  if (!element) {
+    return
+  }
+
   element.innerHTML = ''
 
   // Adapt styles.
@@ -72,13 +78,61 @@ indicate({ element: '.demo'${value} })`,
   </Code>
 ))
 
-const Body = () => {
+const renderTestCases = () => {
+  indicate({ element: '.simple' })
+  indicate({ element: '.no-click', options: { click: false } })
+  indicate({ element: '.no-arrow', options: { arrow: false } })
+  indicate({ element: '.color', options: { color: '#FF00FF' } })
+  indicate({ element: '.inline' })
+}
+
+const TestCases = () => {
+  useEffect(() => {
+    renderTestCases()
+  })
+
+  return (
+    <>
+      <h2>Default</h2>
+      <div style={{ whiteSpace: 'nowrap' }} className="test simple">
+        <Tiles />
+      </div>
+      <h2>No Click</h2>
+      <div style={{ whiteSpace: 'nowrap' }} className="test no-click">
+        <Tiles />
+      </div>
+      <h2>No Arrow</h2>
+      <div style={{ whiteSpace: 'nowrap' }} className="test no-arrow">
+        <Tiles />
+      </div>
+      <h2>Color</h2>
+      <div style={{ whiteSpace: 'nowrap' }} className="test color">
+        <Tiles />
+      </div>
+      <h2>Inline</h2>
+      <div
+        style={{ display: 'inline', width: '49%', whiteSpace: 'nowrap' }}
+        className="test inline"
+      >
+        <Tiles />
+      </div>
+      <div
+        style={{ display: 'inline', width: '49%', whiteSpace: 'nowrap' }}
+        className="test inline"
+      >
+        <Tiles />
+      </div>
+    </>
+  )
+}
+
+const Demo = () => {
   useEffect(() => {
     autorun(renderIndicate)
   })
 
   return (
-    <Exmpl title="indicate Demo" npm="indicate" github="tobua/indicate">
+    <>
       <div style={{ whiteSpace: 'nowrap' }} className="demo"></div>
       <div className="edits">
         <div style={{ flex: 1 }}>
@@ -122,6 +176,54 @@ const Body = () => {
           </tr>
         </tbody>
       </table>
+    </>
+  )
+}
+
+Router.setPages(
+  {
+    demo: Demo,
+    test: TestCases,
+  },
+  'demo'
+)
+
+const Title = observer(() => (
+  <>
+    <span>
+      indicate {Router.route !== Router.initialRoute ? 'Test Cases' : 'Demo'}
+    </span>
+    <button
+      onClick={() => {
+        // Remove instances first, so that react tree is intact again.
+        remove('.demo')
+        remove('.test')
+        Router.go(Router.route === Router.initialRoute ? 'test' : 'demo')
+      }}
+      style={{
+        background: '#59E28A',
+        marginLeft: 20,
+        height: '100%',
+        border: '2px solid #1FC95B',
+        borderRadius: 10,
+        cursor: 'pointer',
+        outline: 'none',
+      }}
+    >
+      {Router.route === Router.initialRoute ? 'Test Cases' : 'Demo'}
+    </button>
+  </>
+))
+
+const Body = () => {
+  return (
+    <Exmpl
+      // @ts-ignore
+      title={<Title />}
+      npm="indicate"
+      github="tobua/indicate"
+    >
+      <Page />
     </Exmpl>
   )
 }

@@ -1,5 +1,5 @@
-import React from 'react'
-import { observer } from 'mobx-react'
+import React, { ReactNode } from 'react'
+import { observer } from 'mobx-react-lite'
 import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
 import { formatCode } from 'code'
@@ -44,19 +44,38 @@ const getElementStyleProps = (fullProps) => {
   return styleProps
 }
 
-const tileArray = (count: number) =>
-  Array.from({ length: count }).map((_, index) => (
-    <p key={index} className="tile" />
-  ))
+const tileArray = (count: number) => (
+  <>
+    {Array.from({ length: count }).map((_, index) => (
+      <p key={index} className="tile" />
+    ))}
+  </>
+)
+
+export const Tiles = ({
+  rows = 1,
+  columns = 7,
+}: {
+  rows?: number
+  columns?: number
+}) => {
+  if (rows < 2) {
+    return tileArray(columns)
+  }
+
+  return (
+    <>
+      {Array.from({ length: rows }).map((_, index) => (
+        <div key={index}>{tileArray(columns)}</div>
+      ))}
+    </>
+  )
+}
 
 const Plugin = observer(() => {
   return (
     <Indicate as="div" style={getElementStyleProps(styles)} {...options}>
-      {styles.rows < 2
-        ? tileArray(styles.tiles)
-        : Array.from({ length: styles.rows }).map((_, index) => (
-            <div key={index}>{tileArray(styles.tiles)}</div>
-          ))}
+      <Tiles rows={styles.rows} columns={styles.tiles} />
     </Indicate>
   )
 })

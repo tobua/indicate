@@ -81,7 +81,6 @@ const base: Theme = {
   element: () => undefined,
   innerWrapper: {
     position: 'relative',
-    // TODO check if possible without inner wrapper if element is inline-block.
     display: 'inline-block',
   },
   outerWrapper: {
