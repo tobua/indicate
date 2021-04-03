@@ -2,7 +2,7 @@ import { getOptions } from './options'
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, Options, directions, PluginOptions } from './types'
-import { isTable, log, Message, removeHideScrollbarStyle } from './helper'
+import { isTable, log, removeHideScrollbarStyle } from './helper'
 
 export const instances = new Map<HTMLElement, Instance>()
 
@@ -23,14 +23,14 @@ export const getDOMNodes = (element: Elements) => {
     return [element]
   }
 
-  log(Message.InvalidElement, { element })
+  log('InvalidElement', { element })
 
   return false
 }
 
 export const initialize = (options: Options, element: HTMLElement) => {
   if (instances.get(element)) {
-    log(Message.ExistingInstance, { element })
+    log('ExistingInstance', { element })
     return
   }
 
@@ -44,12 +44,7 @@ export const initialize = (options: Options, element: HTMLElement) => {
   observe(instance)
 }
 
-interface Properties {
-  element: Elements
-  options?: PluginOptions
-}
-
-export const indicate = ({ element, options = {} }: Properties) => {
+export const indicate = (element: Elements, options?: PluginOptions) => {
   const elements = getDOMNodes(element)
   const instanceOptions = getOptions(options)
 
@@ -58,7 +53,7 @@ export const indicate = ({ element, options = {} }: Properties) => {
   }
 
   if (!IntersectionObserver) {
-    log(Message.IntersectionObserver)
+    log('IntersectionObserver')
     return
   }
 
@@ -76,7 +71,7 @@ export const remove = (element: Elements) => {
     const instance = instances.get(currentElement)
 
     if (!instance) {
-      log(Message.RemoveNoInstance, { element: currentElement })
+      log('RemoveNoInstance', { element: currentElement })
       return
     }
 

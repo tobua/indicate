@@ -75,7 +75,34 @@ indicate(document.getElementById('my-element'), {
 })
 ```
 
+## Instance
+
+```tsx
+import { indicate, remove } from 'indicate'
+
+indicate('#my-element')
+
+// Remove the added listeners, wrappers and elements.
+remove('#my-element')
+
+// Reinitialize with different options.
+indicate('#my-element', { arrow: false })
+```
+
 ## Theme
+
+Use themes to modify the styles of the various elements. There are some [published themes](https://github.com/tobua/indicate/tree/master/theme):
+
+```ts
+// Adds a classname to every element for styling with CSS.
+import className from 'indicate/dist/theme/class-name.js'
+// Fade effect similar to the one found on youtube.
+import youtube from 'indicate/dist/theme/youtube.js'
+
+indicate('.element', { theme: youtube, color: '#FF00FF' })
+```
+
+Create your own theme like this:
 
 ```ts
 const theme = {
@@ -128,18 +155,4 @@ Any theme element can be configured in the following three ways:
     background: 'green'
   }
 }
-```
-
-## Instance
-
-```tsx
-import { indicate, remove } from 'indicate'
-
-indicate('#my-element')
-
-// Remove the added listeners, wrappers and elements.
-remove('#my-element')
-
-// Reinitialize with different options.
-indicate('#my-element', { arrow: false })
 ```

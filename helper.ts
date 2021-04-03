@@ -1,15 +1,15 @@
-export enum Message {
-  IntersectionObserver = "Browser doesn't support IntersectionObserver",
-  ExistingInstance = 'An instance for this element already exists',
-  RemoveNoInstance = 'remove() no instance found for element',
-  InvalidElement = 'Initialized failed due to invalid element',
-  InvalidTheme = 'Invalid value provided to theme option',
-}
-
 // Logs messages only in development mode.
-export const log = (message: Message, objects = null) => {
+export const log = (messageKey: string, objects = null) => {
   if (process.env.NODE_ENV !== 'production') {
-    const prefixedMessage = `indicate: ${message}.`
+    const Messages = {
+      IntersectionObserver: "Browser doesn't support IntersectionObserver",
+      ExistingInstance: 'An instance for this element already exists',
+      RemoveNoInstance: 'remove() no instance found for element',
+      InvalidElement: 'Initialized failed due to invalid element',
+      InvalidTheme: 'Invalid value provided to theme option',
+    }
+
+    const prefixedMessage = `indicate: ${Messages[messageKey]}.`
 
     if (objects) {
       // eslint-disable-next-line no-console

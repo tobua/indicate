@@ -1,10 +1,11 @@
 {
   "papua": {
-    "title": "indicate Demo"
+    "title": "indicate Demo",
+    "publicPath": "indicate"
   },
   "dependencies": {
-    "epic-react-router": "^2.1.5",
-    "exmpl": "^2.0.1",
+    "epic-react-router": "^2.1.6",
+    "exmpl": "^2.1.0",
     "konfi": "^0.1.9",
     "mobx": "^6.1.8",
     "mobx-react-lite": "^3.2.0",

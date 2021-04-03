@@ -1,5 +1,5 @@
 import { Options, PluginOptions, Direction, Theme } from './types'
-import { log, Message } from './helper'
+import { log } from './helper'
 
 const defaultTheme: Theme = {
   indicator: (_, direction: Direction, options: Options) => ({
@@ -33,7 +33,7 @@ export const defaultOptions: Options = {
   hideScrollbar: true,
 }
 
-export const getOptions = (options: PluginOptions) => {
+export const getOptions = (options: PluginOptions = {}) => {
   const shallowMerge = {
     ...defaultOptions,
     ...options,
@@ -63,7 +63,7 @@ export const getOptions = (options: PluginOptions) => {
   }
 
   if (shallowMerge.theme && typeof shallowMerge.theme !== 'object') {
-    log(Message.InvalidTheme, { theme: shallowMerge.theme })
+    log('InvalidTheme', { theme: shallowMerge.theme })
     delete shallowMerge.theme
   } else if (!shallowMerge.theme) {
     shallowMerge.theme = defaultTheme

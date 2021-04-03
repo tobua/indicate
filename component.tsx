@@ -58,10 +58,7 @@ export const Indicate = ({
       const element = elementRef.current
       const innerWrapper = innerWrapperRef.current
 
-      indicate({
-        element,
-        options: { outerWrapper, innerWrapper, ...pluginOptions },
-      })
+      indicate(element, { outerWrapper, innerWrapper, ...pluginOptions })
 
       return () => {
         remove(element)

@@ -55,7 +55,7 @@ const renderIndicate = () => {
   }
 
   // Initialize indicate effect with currently selected options.
-  indicate({ element: '.demo', options })
+  indicate('.demo', options)
 }
 
 const handleOptions = (data: any) => {
@@ -72,18 +72,18 @@ const CodePreview = observer(() => (
     {formatCode(
       (value) => `import { indicate } from 'indicate'
 
-indicate({ element: '.demo'${value} })`,
+indicate('.demo'${value})`,
       (value) => `, options: ${value}`
     )}
   </Code>
 ))
 
 const renderTestCases = () => {
-  indicate({ element: '.simple' })
-  indicate({ element: '.no-click', options: { click: false } })
-  indicate({ element: '.no-arrow', options: { arrow: false } })
-  indicate({ element: '.color', options: { color: '#FF00FF' } })
-  indicate({ element: '.inline' })
+  indicate('.simple')
+  indicate('.no-click', { click: false })
+  indicate('.no-arrow', { arrow: false })
+  indicate('.color', { color: '#FF00FF' })
+  indicate('.inline')
 }
 
 const TestCases = () => {
@@ -189,10 +189,8 @@ Router.setPages(
 )
 
 const Title = observer(() => (
-  <>
-    <span>
-      indicate {Router.route !== Router.initialRoute ? 'Test Cases' : 'Demo'}
-    </span>
+  <h1 style={{ display: 'flex' }}>
+    indicate {Router.route !== Router.initialRoute ? 'Test Cases' : 'Demo'}
     <button
       onClick={() => {
         // Remove instances first, so that react tree is intact again.
@@ -212,17 +210,12 @@ const Title = observer(() => (
     >
       {Router.route === Router.initialRoute ? 'Test Cases' : 'Demo'}
     </button>
-  </>
+  </h1>
 ))
 
 const Body = () => {
   return (
-    <Exmpl
-      // @ts-ignore
-      title={<Title />}
-      npm="indicate"
-      github="tobua/indicate"
-    >
+    <Exmpl title={<Title />} npm="indicate" github="tobua/indicate">
       <Page />
     </Exmpl>
   )
