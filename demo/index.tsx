@@ -7,9 +7,10 @@ import { Exmpl, Code } from 'exmpl'
 import { Router, Page } from 'epic-react-router'
 import './styles.css'
 import { indicate, remove } from 'indicate'
-import { ReactPreview, Tiles } from 'react-preview'
+import { ReactPreview } from 'react-preview'
 import { formatCode } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
+import { TestCases, Table } from 'test'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
 const times = (count: number) => (callback: () => void) => {
@@ -78,54 +79,6 @@ indicate('.demo'${value})`,
   </Code>
 ))
 
-const renderTestCases = () => {
-  indicate('.simple')
-  indicate('.no-click', { click: false })
-  indicate('.no-arrow', { arrow: false })
-  indicate('.color', { color: '#FF00FF' })
-  indicate('.inline')
-}
-
-const TestCases = () => {
-  useEffect(() => {
-    renderTestCases()
-  })
-
-  return (
-    <>
-      <h2>Default</h2>
-      <div style={{ whiteSpace: 'nowrap' }} className="test simple">
-        <Tiles />
-      </div>
-      <h2>No Click</h2>
-      <div style={{ whiteSpace: 'nowrap' }} className="test no-click">
-        <Tiles />
-      </div>
-      <h2>No Arrow</h2>
-      <div style={{ whiteSpace: 'nowrap' }} className="test no-arrow">
-        <Tiles />
-      </div>
-      <h2>Color</h2>
-      <div style={{ whiteSpace: 'nowrap' }} className="test color">
-        <Tiles />
-      </div>
-      <h2>Inline</h2>
-      <div
-        style={{ display: 'inline', width: '49%', whiteSpace: 'nowrap' }}
-        className="test inline"
-      >
-        <Tiles />
-      </div>
-      <div
-        style={{ display: 'inline', width: '49%', whiteSpace: 'nowrap' }}
-        className="test inline"
-      >
-        <Tiles />
-      </div>
-    </>
-  )
-}
-
 const Demo = () => {
   useEffect(() => {
     autorun(renderIndicate)
@@ -153,29 +106,7 @@ const Demo = () => {
       <ReactPreview />
       <h2>Use Cases</h2>
       <h3>Table</h3>
-      <table className="demo">
-        <thead>
-          <tr>
-            <th>FirstHeader</th>
-            <th colSpan={2}>SecondThirdHeader</th>
-            <th>FourthHeader</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>FirstColumnFirstColumnFirstColumn</td>
-            <td>SecondColumnSecondColumnSecondColumn</td>
-            <td>ThirdColumnThirdColumnThirdColumn</td>
-            <td>FourthColumnFourthColumnFourthColumn</td>
-          </tr>
-          <tr>
-            <td>FirstColumn FirstColumn FirstColumn</td>
-            <td>SecondColumn SecondColumn SecondColumn</td>
-            <td>ThirdColumn ThirdColumn ThirdColumn</td>
-            <td>FourthColumn FourthColumn FourthColumn</td>
-          </tr>
-        </tbody>
-      </table>
+      <Table className="demo" />
     </>
   )
 }

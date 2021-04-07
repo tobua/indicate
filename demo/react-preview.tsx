@@ -54,7 +54,7 @@ const tileArray = (count: number) => (
 
 export const Tiles = ({
   rows = 1,
-  columns = 7,
+  columns = 9,
 }: {
   rows?: number
   columns?: number
