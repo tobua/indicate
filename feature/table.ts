@@ -11,9 +11,6 @@ export const wrapTable = ({
   element: HTMLElement
   options: Options
 }) => {
-  // TODO provide way to  revert on remove.
-  element.style.position = 'relative'
-
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
   theme(outerWrapper, 'outerWrapper', options)

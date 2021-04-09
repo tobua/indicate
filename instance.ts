@@ -3,6 +3,7 @@ import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, Options, directions, PluginOptions } from './types'
 import { isTable, log, removeHideScrollbarStyle } from './helper'
+import { undoMove } from './feature/move-styles'
 
 export const instances = new Map<HTMLElement, Instance>()
 
@@ -83,6 +84,8 @@ export const remove = (element: Elements) => {
     instance.intersectionObserver.disconnect()
 
     removeHideScrollbarStyle(instance.element, instance.innerWrapper)
+
+    undoMove(instance.element, instance.outerWrapper, instance.options)
 
     if (!instance.options.outerWrapper) {
       // Remove outer wrapper.

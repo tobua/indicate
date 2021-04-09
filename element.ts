@@ -2,6 +2,7 @@ import { theme, hideScrollbar } from './style'
 import { directions, Instance, Options, Direction } from './types'
 import { registerClickListener } from './feature/click'
 import { wrapTable } from './feature/table'
+import { move } from './feature/move-styles'
 import {
   isTable,
   hideScrollbarWithWebkitPseudoClass,
@@ -92,6 +93,13 @@ export const createInstance = (
   }
 
   const { outerWrapper, innerWrapper } = wrap({ element, options })
+
+  move(element, outerWrapper, options)
+
+  if (isTable(element)) {
+    // TODO provide way to  revert on remove.
+    element.style.position = 'relative'
+  }
 
   makeScrollable({ element, innerWrapper, options })
 

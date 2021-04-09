@@ -11,6 +11,7 @@ import { ReactPreview } from 'react-preview'
 import { formatCode } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
 import { TestCases, Table } from 'test'
+import { Button } from 'markup/Button'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
 const times = (count: number) => (callback: () => void) => {
@@ -122,25 +123,16 @@ Router.setPages(
 const Title = observer(() => (
   <h1 style={{ display: 'flex' }}>
     indicate {Router.route !== Router.initialRoute ? 'Test Cases' : 'Demo'}
-    <button
+    <Button
       onClick={() => {
         // Remove instances first, so that react tree is intact again.
         remove('.demo')
         remove('.test')
         Router.go(Router.route === Router.initialRoute ? 'test' : 'demo')
       }}
-      style={{
-        background: '#59E28A',
-        marginLeft: 20,
-        height: '100%',
-        border: '2px solid #1FC95B',
-        borderRadius: 10,
-        cursor: 'pointer',
-        outline: 'none',
-      }}
     >
       {Router.route === Router.initialRoute ? 'Test Cases' : 'Demo'}
-    </button>
+    </Button>
   </h1>
 ))
 

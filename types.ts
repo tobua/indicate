@@ -90,6 +90,7 @@ export type PluginOptions = {
   width?: string
   click?: boolean | ClickOptions
   hideScrollbar?: boolean
+  moveStyles?: boolean
 } & UnpublishedOptions
 
 // Internal options extended with defaults.
@@ -100,6 +101,7 @@ export type Options = {
   width: string
   click: false | ClickOptions
   hideScrollbar: boolean
+  moveStyles: boolean
 } & UnpublishedOptions
 
 export interface Instance {
