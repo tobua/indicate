@@ -72,6 +72,8 @@ indicate(document.getElementById('my-element'), {
       background: 'blue',
     },
   },
+  // Move styles and classes from element over to newly created wrapper.
+  moveStyles: false,
 })
 ```
 

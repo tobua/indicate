@@ -11,10 +11,8 @@ export const move = (
   }
 
   // Move class.
-  element.classList.forEach((className) => {
-    wrapper.classList.add(className)
-    element.classList.remove(className)
-  })
+  wrapper.className += ` ${element.className}`
+  element.className = ''
   // Move inline-styles.
   wrapper.style.cssText += element.style.cssText
   element.style.cssText = null
@@ -33,9 +31,6 @@ export const undoMove = (
     wrapper.style.position = ''
   }
 
-  wrapper.classList.forEach((className) => {
-    element.classList.add(className)
-    wrapper.classList.remove(className)
-  })
+  element.className += ` ${wrapper.className}`
   element.style.cssText += wrapper.style.cssText
 }
