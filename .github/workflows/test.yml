@@ -1,0 +1,19 @@
+name: test
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  cypress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.1.2
+        with:
+          node-version: '14'
+          check-latest: true
+      - name: Cypress 🧪
+        uses: cypress-io/github-action@v2
+        with:
+          start: cd demo && npm install && npx papua serve
