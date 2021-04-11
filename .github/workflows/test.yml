@@ -14,8 +14,17 @@ jobs:
           node-version: '14'
           check-latest: true
       - name: Create package-lock.json
-        run: npm install
+        run: |
+          npm install
+          cd demo
+          npm install
+          # The & at the end ensures that the command exits
+          # and the server continues in the background.
+          npx papua serve &
       - name: Cypress 🧪
         uses: cypress-io/github-action@v2
         with:
-          start: cd demo && npm install && npx papua serve
+          install: false
+          # Wait for server above to start before testing.
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 240
