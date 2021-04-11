@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { Tiles } from 'react-preview'
 import { indicate, remove } from 'indicate'
+import youtube from 'indicate/dist/theme/youtube'
+import className from 'indicate/dist/theme/class-name'
 import { Button } from 'markup/Button'
 
 export const Table = ({ className }) => (
@@ -36,6 +38,8 @@ const renderTestCases = () => {
   indicate('.color', { color: '#FF00FF' })
   indicate('.inline')
   indicate('.table')
+  indicate('.theme-youtube', { theme: youtube })
+  indicate('.theme-class-name', { theme: className })
 }
 
 const removeTestCases = () => remove('.test')
@@ -106,6 +110,15 @@ export const TestCases = () => {
       </div>
       <h2>Table</h2>
       <Table className="test table" />
+      <h2>Themes</h2>
+      <h3>YouTube</h3>
+      <div style={{ whiteSpace: 'nowrap' }} className="test theme-youtube">
+        <Tiles />
+      </div>
+      <h3>Class Names</h3>
+      <div style={{ whiteSpace: 'nowrap' }} className="test theme-class-name">
+        <Tiles />
+      </div>
     </>
   )
 }
