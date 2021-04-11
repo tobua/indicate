@@ -13,6 +13,8 @@ jobs:
         with:
           node-version: '14'
           check-latest: true
+      - name: Create package-lock.json
+        run: npm install
       - name: Cypress 🧪
         uses: cypress-io/github-action@v2
         with:
