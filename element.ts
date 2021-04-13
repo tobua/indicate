@@ -49,37 +49,6 @@ const wrap = ({
   return { outerWrapper, innerWrapper }
 }
 
-const makeScrollable = ({
-  element,
-  innerWrapper,
-  options,
-}: {
-  element: HTMLElement
-  innerWrapper: HTMLElement
-  options: Options
-}) => {
-  const scrollableElement = isTable(element) ? innerWrapper : element
-
-  if (
-    scrollableElement.style.overflow !== 'auto' &&
-    scrollableElement.style.overflow !== 'scroll'
-  ) {
-    element.style.overflow = 'auto'
-  }
-
-  if (
-    isTable(element) &&
-    (element.style.overflow === 'auto' || element.style.overflow === 'scroll')
-  ) {
-    element.style.overflow = 'visible'
-  }
-
-  if (options.hideScrollbar) {
-    hideScrollbar(scrollableElement)
-    hideScrollbarWithWebkitPseudoClass(scrollableElement)
-  }
-}
-
 export const createInstance = (
   element: HTMLElement,
   options: Options
@@ -96,12 +65,14 @@ export const createInstance = (
 
   move(element, outerWrapper, options)
 
-  if (isTable(element)) {
-    // TODO provide way to  revert on remove.
-    element.style.position = 'relative'
-  }
+  theme(element, 'element', options)
 
-  makeScrollable({ element, innerWrapper, options })
+  if (options.hideScrollbar) {
+    const scrollableElement = isTable(element) ? innerWrapper : element
+
+    hideScrollbar(scrollableElement)
+    hideScrollbarWithWebkitPseudoClass(scrollableElement)
+  }
 
   return {
     outerWrapper,

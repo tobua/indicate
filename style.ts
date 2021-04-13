@@ -1,3 +1,4 @@
+import { isTable } from './helper'
 import {
   CSSProperties,
   Direction,
@@ -78,10 +79,30 @@ const base: Theme = {
     display: 'block',
     transform: `rotate(${directionToRotation[direction]}deg)`,
   }),
-  element: () => undefined,
-  innerWrapper: {
-    position: 'relative',
-    display: 'inline-block',
+  element: (element: HTMLElement) => {
+    const styles: CSSProperties = {}
+
+    if (!isTable(element) && element.style.overflow !== 'scroll') {
+      styles.overflow = 'auto'
+    }
+
+    if (isTable(element)) {
+      styles.position = 'relative'
+    }
+
+    return styles
+  },
+  innerWrapper: (element: HTMLElement) => {
+    const styles: CSSProperties = {
+      position: 'relative',
+      display: 'inline-block',
+    }
+
+    if (isTable(element) && element.style.overflow !== 'scroll') {
+      styles.overflow = 'auto'
+    }
+
+    return styles
   },
   outerWrapper: {
     position: 'relative',
