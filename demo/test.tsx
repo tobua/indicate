@@ -35,6 +35,7 @@ const renderTestCases = () => {
   indicate('.simple')
   indicate('.no-click', { click: false })
   indicate('.no-arrow', { arrow: false })
+  indicate('.pointer', { arrow: { icon: 'pointer', color: '#FF00FF' } })
   indicate('.color', { color: '#FF00FF' })
   indicate('.inline')
   indicate('.table')
@@ -80,6 +81,10 @@ export const TestCases = () => {
       </div>
       <h2>No Arrow</h2>
       <div style={{ whiteSpace: 'nowrap' }} className="test no-arrow">
+        <Tiles />
+      </div>
+      <h2>Colored Pointer Arrow Icon</h2>
+      <div style={{ whiteSpace: 'nowrap' }} className="test pointer">
         <Tiles />
       </div>
       <h2>Color</h2>

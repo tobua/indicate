@@ -29,6 +29,13 @@ export const optionsSchema = {
         values: ['start', 'center', 'end'],
         default: 1,
       },
+      icon: {
+        type: Type.select,
+        values: ['arrow-rounded', 'pointer-rounded', 'arrow', 'pointer'],
+      },
+      color: {
+        type: Type.hex,
+      },
       image: {
         type: Type.string,
       },

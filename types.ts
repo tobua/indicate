@@ -76,15 +76,31 @@ export interface ClickOptions {
   denominator?: number
 }
 
-export interface ArrowOptions {
+export type ArrowIcon =
+  | 'arrow-rounded'
+  | 'pointer-rounded'
+  | 'arrow'
+  | 'pointer'
+
+export interface PluginArrowOptions {
   position?: ArrowPosition
+  icon?: ArrowIcon
+  color?: string
+  image?: string
+  markup?: Node | string
+}
+
+export interface ArrowOptions {
+  position: ArrowPosition
+  icon: ArrowIcon
+  color: string
   image?: string
   markup?: Node | string
 }
 
 // User facing options.
 export type PluginOptions = {
-  arrow?: boolean | ArrowOptions
+  arrow?: boolean | PluginArrowOptions
   color?: string
   theme?: Theme
   width?: string

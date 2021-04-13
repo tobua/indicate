@@ -45,6 +45,8 @@ indicate(document.getElementById('my-element'), {
   arrow: {
     // Position of arrows, default 'center'.
     position: 'start',
+    // Icon to show if not overriden by url or markup, default 'arrow-rounded'.
+    icon: 'pointer',
     // URL of an image pointing to an arrow to the right.
     url: 'arrow-rounded-right.svg',
     // String with HTML markup inserted as arrow.

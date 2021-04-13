@@ -7,6 +7,7 @@ import {
   isTable,
   hideScrollbarWithWebkitPseudoClass,
   wrapElementIn,
+  arrowIcon,
 } from './helper'
 
 // <element>{contents}</element> => <element><wrapper>{contents}<wrapper/></element>
@@ -84,30 +85,6 @@ export const createInstance = (
   } as Instance
 }
 
-const createSvgLine = (x1: string, y1: string, x2: string, y2: string) => {
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-  line.setAttribute('stroke-linecap', 'round')
-  line.setAttribute('stroke-width', '20')
-  line.setAttribute('stroke', 'black')
-  line.setAttribute('x1', x1)
-  line.setAttribute('y1', y1)
-  line.setAttribute('x2', x2)
-  line.setAttribute('y2', y2)
-
-  return line
-}
-
-const createRightArrowIcon = () => {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', '0 0 120 120')
-
-  svg.appendChild(createSvgLine('10', '60', '110', '60'))
-  svg.appendChild(createSvgLine('108.213', '57.3553', '61.5442', '10.6863'))
-  svg.appendChild(createSvgLine('61.5442', '109.213', '108.213', '62.5442'))
-
-  return svg
-}
-
 const addArrow = (
   instance: Instance,
   indicator: HTMLSpanElement,
@@ -133,7 +110,7 @@ const addArrow = (
       arrow = options.markup
     }
   } else {
-    arrow = createRightArrowIcon()
+    arrow = arrowIcon(options.icon, options.color)
   }
 
   theme(arrow, 'arrow', instance.options, direction)

@@ -24,6 +24,8 @@ const defaultTheme: Theme = {
 export const defaultOptions: Options = {
   arrow: {
     position: 'center',
+    icon: 'arrow-rounded',
+    color: '#000000',
   },
   color: '#FFFFFF',
   width: '20px',
