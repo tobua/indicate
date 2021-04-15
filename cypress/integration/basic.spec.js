@@ -1,13 +1,6 @@
-const positionToIndex = {
-  left: 1,
-  right: 2,
-  top: 3,
-  bottom: 4,
-}
-const getIndicator = (element, position) =>
-  cy.get(`${element} > span:nth-of-type(${positionToIndex[position]})`)
+import { getIndicator } from '../helper.js'
 
-describe('Adding Bookmarks', () => {
+describe('Basic tests.', () => {
   it('Proper indicators visible.', () => {
     cy.visit('http://localhost:3000/indicate/test')
     cy.get('.simple').should('be.visible')

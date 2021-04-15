@@ -1,6 +1,9 @@
 export default {
-  indicate: (element: HTMLElement, direction: string) => {
-    element.classList.add(`i-indicate-${direction}`)
+  indicator: (element: HTMLElement, direction: string) => {
+    element.classList.add(`i-indicator-${direction}`)
+  },
+  observer: (element: HTMLElement, direction: string) => {
+    element.classList.add(`i-observer-${direction}`)
   },
   arrow: (element: HTMLElement, direction: string) => {
     element.classList.add(`i-arrow-${direction}`)

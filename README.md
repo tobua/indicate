@@ -47,6 +47,8 @@ indicate(document.getElementById('my-element'), {
     position: 'start',
     // Icon to show if not overriden by url or markup, default 'arrow-rounded'.
     icon: 'pointer',
+    // The color of the icon, default black.
+    color: '#FF00FF',
     // URL of an image pointing to an arrow to the right.
     url: 'arrow-rounded-right.svg',
     // String with HTML markup inserted as arrow.

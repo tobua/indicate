@@ -41,6 +41,8 @@ const renderTestCases = () => {
   indicate('.table')
   indicate('.theme-youtube', { theme: youtube })
   indicate('.theme-class-name', { theme: className })
+  indicate('.padding')
+  indicate('.margin')
 }
 
 const removeTestCases = () => remove('.test')
@@ -122,6 +124,29 @@ export const TestCases = () => {
       </div>
       <h3>Class Names</h3>
       <div style={{ whiteSpace: 'nowrap' }} className="test theme-class-name">
+        <Tiles />
+      </div>
+      <h2>Custom Styles</h2>
+      <h3>Padding</h3>
+      <div
+        style={{
+          whiteSpace: 'nowrap',
+          background: 'lightgray',
+          padding: '20px',
+        }}
+        className="test padding"
+      >
+        <Tiles />
+      </div>
+      <h3>Margin</h3>
+      <div
+        style={{
+          whiteSpace: 'nowrap',
+          background: 'lightgray',
+          margin: '20px',
+        }}
+        className="test margin"
+      >
         <Tiles />
       </div>
     </>
