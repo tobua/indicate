@@ -6,6 +6,7 @@ import { isTable, log, removeHideScrollbarStyle } from './helper'
 import { undoMove } from './feature/move-styles'
 
 export const instances = new Map<HTMLElement, Instance>()
+const wrappers = new Map<HTMLElement, Instance>()
 
 export const getDOMNodes = (element: Elements) => {
   if (typeof element === 'string') {
@@ -41,6 +42,7 @@ export const initialize = (options: Options, element: HTMLElement) => {
   addObservers(instance)
 
   instances.set(element, instance)
+  wrappers.set(instance.outerWrapper, instance)
 
   observe(instance)
 }
@@ -69,7 +71,8 @@ export const remove = (element: Elements) => {
   }
 
   elements.forEach((currentElement: HTMLElement) => {
-    const instance = instances.get(currentElement)
+    const instance =
+      instances.get(currentElement) || wrappers.get(currentElement)
 
     if (!instance) {
       log('RemoveNoInstance', { element: currentElement })
@@ -108,5 +111,6 @@ export const remove = (element: Elements) => {
     }
 
     instances.delete(currentElement)
+    wrappers.delete(currentElement)
   })
 }

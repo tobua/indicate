@@ -1,8 +1,8 @@
-import { getIndicator, getIndicatorElement, testing } from '../helper.js'
+import { open, getIndicator, getIndicatorElement } from '../helper.js'
 
 describe('Plugin works with custom styles on element.', () => {
   it('Padding.', () => {
-    cy.visit('http://localhost:3000/indicate/test')
+    open()
     const selector = '.padding'
     cy.get(selector).should('be.visible')
 

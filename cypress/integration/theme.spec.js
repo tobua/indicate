@@ -1,8 +1,8 @@
-import { getIndicator } from '../helper.js'
+import { open, getIndicator } from '../helper.js'
 
 describe('YouTube theme', () => {
   it('Proper parts visible.', () => {
-    cy.visit('http://localhost:3000/indicate/test')
+    open()
     const selector = '.theme-youtube'
     cy.get(selector).should('be.visible')
 
@@ -13,7 +13,7 @@ describe('YouTube theme', () => {
 
 describe('Class-Name theme', () => {
   it('Classes added to elements.', () => {
-    cy.visit('http://localhost:3000/indicate/test')
+    open()
     const selector = '.theme-class-name'
     cy.get(selector).should('be.visible')
 

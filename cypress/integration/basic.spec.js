@@ -1,8 +1,8 @@
-import { getIndicator } from '../helper.js'
+import { open, getIndicator } from '../helper.js'
 
 describe('Basic tests.', () => {
   it('Proper indicators visible.', () => {
-    cy.visit('http://localhost:3000/indicate/test')
+    open()
     cy.get('.simple').should('be.visible')
 
     getIndicator('.simple', 'left').should('not.be.visible')
@@ -21,7 +21,7 @@ describe('Basic tests.', () => {
     getIndicator('.simple', 'right').should('not.be.visible')
   })
   it('Changes visibility on manual scroll.', () => {
-    cy.reload()
+    open()
     getIndicator('.simple', 'left').should('not.be.visible')
     getIndicator('.simple', 'right').should('be.visible')
     cy.get('.simple > div').scrollTo('right')

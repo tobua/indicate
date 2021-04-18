@@ -3,15 +3,13 @@ import { render } from 'react-dom'
 import { autorun, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Konfi } from 'konfi'
-import { Exmpl, Code } from 'exmpl'
-import { Router, Page } from 'epic-react-router'
+import { Exmpl, Code, Tabs } from 'exmpl'
 import './styles.css'
 import { indicate, remove } from 'indicate'
 import { ReactPreview } from 'react-preview'
 import { formatCode } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
 import { TestCases, Table } from 'test'
-import { Button } from 'markup/Button'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
 const times = (count: number) => (callback: () => void) => {
@@ -75,7 +73,7 @@ const CodePreview = observer(() => (
       (value) => `import { indicate } from 'indicate'
 
 indicate('.demo'${value})`,
-      (value) => `, options: ${value}`
+      (value) => `, ${value}`
     )}
   </Code>
 ))
@@ -112,34 +110,18 @@ const Demo = () => {
   )
 }
 
-Router.setPages(
-  {
-    demo: Demo,
-    test: TestCases,
-  },
-  'demo'
-)
-
-const Title = observer(() => (
-  <h1 style={{ display: 'flex' }}>
-    indicate {Router.route !== Router.initialRoute ? 'Test Cases' : 'Demo'}
-    <Button
-      onClick={() => {
-        // Remove instances first, so that react tree is intact again.
-        remove('.demo')
-        remove('.test')
-        Router.go(Router.route === Router.initialRoute ? 'test' : 'demo')
-      }}
-    >
-      {Router.route === Router.initialRoute ? 'Test Cases' : 'Demo'}
-    </Button>
-  </h1>
-))
-
 const Body = () => {
   return (
-    <Exmpl title={<Title />} npm="indicate" github="tobua/indicate">
-      <Page />
+    <Exmpl title="indicate Demo" npm="indicate" github="tobua/indicate">
+      <Tabs
+        // Remove instances first, so that react tree is intact again.
+        onChange={() => remove('.demo, .test')}
+        labels={['Options', 'Integrations', 'Test Cases']}
+      >
+        <Demo />
+        <span>Coming soon...</span>
+        <TestCases />
+      </Tabs>
     </Exmpl>
   )
 }

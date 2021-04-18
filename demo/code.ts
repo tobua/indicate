@@ -20,7 +20,10 @@ const removeDefaultOptions = (currentOptions, defaults = defaultOptions) => {
       return
     }
 
-    if (withoutDefaults[key] === defaults[key]) {
+    if (
+      withoutDefaults[key] === defaults[key] ||
+      (withoutDefaults[key] === true && typeof defaults[key] === 'object')
+    ) {
       delete withoutDefaults[key]
     }
   })
