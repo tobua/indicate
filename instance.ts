@@ -30,9 +30,32 @@ export const getDOMNodes = (element: Elements) => {
   return false
 }
 
-export const initialize = (options: Options, element: HTMLElement) => {
+const hasExistingInstance = (options: Options, element: HTMLElement) => {
+  let found = false
+
   if (instances.get(element)) {
+    found = true
+  }
+
+  // Check child in case selector class moved to wrapper.
+  if (
+    options.moveStylesToWrapper &&
+    !found &&
+    element.childNodes.length > 0 &&
+    instances.get(element.childNodes[0] as HTMLElement)
+  ) {
+    found = true
+  }
+
+  if (found) {
     log('ExistingInstance', { element })
+  }
+
+  return found
+}
+
+export const initialize = (options: Options, element: HTMLElement) => {
+  if (hasExistingInstance(options, element)) {
     return
   }
 

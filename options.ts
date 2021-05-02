@@ -33,7 +33,7 @@ export const defaultOptions: Options = {
     denominator: 2,
   },
   hideScrollbar: true,
-  moveStyles: true,
+  moveStylesToWrapper: false,
 }
 
 export const getOptions = (options: PluginOptions = {}) => {

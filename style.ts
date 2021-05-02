@@ -22,7 +22,11 @@ const add = (element: HTMLElement, properties: CSSProperties) => {
   })
 }
 
-const alignment = (direction: Direction, options: Options) => {
+const alignment = (
+  direction: Direction,
+  options: Options,
+  observer = false
+) => {
   const style: CSSProperties = {}
   const horizontal = isHorizontal(direction)
   const vertical = isVertical(direction)
@@ -35,8 +39,11 @@ const alignment = (direction: Direction, options: Options) => {
     style.left = '0'
   }
 
-  style.width = horizontal ? options.width : '100%'
-  style.height = vertical ? options.width : '100%'
+  // Minimally possible observer width.
+  const size = observer ? '1px' : options.width
+
+  style.width = horizontal ? size : '100%'
+  style.height = vertical ? size : '100%'
 
   return style
 }
@@ -112,7 +119,7 @@ const base: Theme = {
       position: 'absolute',
       pointerEvents: 'none',
       [direction]: '0',
-      ...alignment(direction, options),
+      ...alignment(direction, options, true),
     } as CSSProperties),
 }
 

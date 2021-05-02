@@ -37,7 +37,8 @@ const renderTestCases = () => {
   indicate('.no-arrow', { arrow: false })
   indicate('.pointer', { arrow: { icon: 'pointer', color: '#FF00FF' } })
   indicate('.color', { color: '#FF00FF' })
-  indicate('.inline')
+  indicate('.overflow')
+  indicate('.inline', { moveStylesToWrapper: true })
   indicate('.table')
   indicate('.theme-youtube', { theme: youtube })
   indicate('.theme-class-name', { theme: className })
@@ -92,6 +93,14 @@ export const TestCases = () => {
       <h2>Color</h2>
       <div style={{ whiteSpace: 'nowrap' }} className="test color">
         <Tiles />
+      </div>
+      <h2>Minimal Overflow</h2>
+      <div style={{ display: 'inline-block' }}>
+        <div style={{ width: 100, height: 50 }} className="test overflow">
+          <div style={{ width: 101, height: 51, fontSize: 10 }}>
+            Only one pixel overflow in both directions.
+          </div>
+        </div>
       </div>
       <h2>Inline</h2>
       <div

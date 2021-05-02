@@ -6,7 +6,7 @@ export const move = (
   wrapper: HTMLElement,
   options: Options
 ) => {
-  if (!options.moveStyles) {
+  if (!options.moveStylesToWrapper) {
     return
   }
 
@@ -23,7 +23,7 @@ export const undoMove = (
   wrapper: HTMLElement,
   options: Options
 ) => {
-  if (!options.moveStyles) {
+  if (!options.moveStylesToWrapper) {
     return
   }
 
