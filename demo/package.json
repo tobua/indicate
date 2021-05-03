@@ -1,7 +1,8 @@
 {
   "papua": {
     "title": "indicate Demo",
-    "publicPath": "indicate"
+    "publicPath": "indicate",
+    "icon": "../logo.png"
   },
   "dependencies": {
     "exmpl": "^2.2.0",

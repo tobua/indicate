@@ -40,6 +40,16 @@ describe('Basic tests.', () => {
   it('No arrow inside indicator if disabled through option.', () => {
     getIndicator('.no-arrow', 'right').should('be.empty')
   })
+  it('Color option colors the fade effect in rgb.', () => {
+    getIndicator('.color', 'right')
+      .should('have.attr', 'style')
+      .should('contain', 'rgb(255, 0, 255)')
+  })
+  it('Arrow SVG is colored.', () => {
+    getIndicator('.pointer', 'right')
+      .find('svg')
+      .should('have.attr', 'stroke', '#FF00FF')
+  })
 })
 
 describe('Observers work correctly.', () => {

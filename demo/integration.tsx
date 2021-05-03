@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Tiles } from 'react-preview'
 import { indicate, remove } from 'indicate'
 import { Button } from 'markup/Button'
 
