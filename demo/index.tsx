@@ -10,6 +10,7 @@ import { ReactPreview } from 'react-preview'
 import { formatCode } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
 import { TestCases, Table } from 'test'
+import { Integrations } from 'integration'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
 const times = (count: number) => (callback: () => void) => {
@@ -119,7 +120,7 @@ const Body = () => {
         labels={['Options', 'Integrations', 'Test Cases']}
       >
         <Demo />
-        <span>Coming soon...</span>
+        <Integrations />
         <TestCases />
       </Tabs>
     </Exmpl>
