@@ -1,3 +1,4 @@
+import { isTable } from '../helper'
 import { Direction, Instance, isHorizontal } from '../types'
 
 const scrollHorizontal = (
@@ -62,10 +63,14 @@ export const registerClickListener = (
   // Access here, as inferred type check above is lost inside methods.
   const { denominator } = instance.options.click
 
+  const scrollableElement = isTable(instance.element)
+    ? instance.innerWrapper
+    : instance.element
+
   if (instance.options.click) {
     element.addEventListener(
       'click',
-      handleIndicatorClick.bind(null, direction, instance.element, denominator)
+      handleIndicatorClick.bind(null, direction, scrollableElement, denominator)
     )
   }
 }

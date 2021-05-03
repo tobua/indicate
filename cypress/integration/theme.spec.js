@@ -14,22 +14,25 @@ describe('YouTube theme', () => {
 describe('Class-Name theme', () => {
   it('Classes added to elements.', () => {
     open()
-    const selector = '.theme-class-name'
-    cy.get(selector).should('be.visible')
+    const className = '.theme-class-name'
 
-    getIndicator(selector, 'left').should('not.be.visible')
-    getIndicator(selector, 'right').should('be.visible')
+    cy.get(className).should('be.visible')
 
-    getIndicator(selector, 'left').should('have.class', 'i-indicator-left')
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
 
-    cy.get(`${selector} .i-observer-top`).should('exist')
-    cy.get(`${selector} .i-arrow-bottom`)
+    getIndicator(className, 'left').should('have.class', 'i-indicator-left')
+
+    cy.get(`${className} .i-observer-top`).should('exist')
+    cy.get(className)
+      .parent()
+      .get('.i-arrow-bottom')
       .should('exist')
       .should('not.be.visible')
 
-    const outerWrapper = cy.get(`${selector}.i-outer-wrapper`)
-    const element = cy.get(`${selector} .i-element`)
-    const innerWrapper = cy.get(`${selector} .i-inner-wrapper`)
+    const outerWrapper = cy.get(className).parent().get('.i-outer-wrapper')
+    const element = cy.get(`${className}.i-element`)
+    const innerWrapper = cy.get(`${className} .i-inner-wrapper`)
 
     outerWrapper.should('exist')
     element.should('exist')

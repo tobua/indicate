@@ -7,12 +7,19 @@ const positionToIndex = {
   bottom: 4,
 }
 
-export const getIndicator = (selector, position) =>
-  cy.get(`${selector} > span:nth-of-type(${positionToIndex[position]})`)
+export const getIndicator = (className, position, inline = false) => {
+  let wrapper = cy.get(className).parent()
+
+  if (inline) {
+    wrapper = wrapper.parent()
+  }
+
+  return wrapper.find(`span`).eq(positionToIndex[position] + 3)
+}
 
 export const getIndicatorElement = (document, selector, position) =>
   document.querySelector(
-    `${selector} > span:nth-of-type(${positionToIndex[position]})`
+    `${selector} ~ span:nth-of-type(${positionToIndex[position]})`
   )
 
 export const open = () => {

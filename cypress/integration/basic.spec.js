@@ -2,31 +2,33 @@ import { open, getIndicator } from '../helper.js'
 
 describe('Basic tests.', () => {
   it('Proper indicators visible.', () => {
+    const className = '.simple'
     open()
-    cy.get('.simple').should('be.visible')
+    cy.get(className).should('be.visible')
 
-    getIndicator('.simple', 'left').should('not.be.visible')
-    getIndicator('.simple', 'right').should('be.visible')
-    getIndicator('.simple', 'top').should('not.be.visible')
-    getIndicator('.simple', 'bottom').should('not.be.visible')
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'top').should('not.be.visible')
+    getIndicator(className, 'bottom').should('not.be.visible')
 
-    cy.get('.simple > div').should('have.prop', 'scrollLeft', 0)
+    cy.get(className).should('have.prop', 'scrollLeft', 0)
 
     // Scroll right.
-    getIndicator('.simple', 'right').click()
+    getIndicator(className, 'right').click()
 
-    cy.get('.simple > div').should('not.have.prop', 'scrollLeft', 0)
+    cy.get(className).should('not.have.prop', 'scrollLeft', 0)
 
-    getIndicator('.simple', 'left').should('be.visible')
-    getIndicator('.simple', 'right').should('not.be.visible')
+    getIndicator(className, 'left').should('be.visible')
+    getIndicator(className, 'right').should('not.be.visible')
   })
   it('Changes visibility on manual scroll.', () => {
+    const className = '.simple'
     open()
-    getIndicator('.simple', 'left').should('not.be.visible')
-    getIndicator('.simple', 'right').should('be.visible')
-    cy.get('.simple > div').scrollTo('right')
-    getIndicator('.simple', 'left').should('be.visible')
-    getIndicator('.simple', 'right').should('not.be.visible')
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+    cy.get(className).scrollTo('right')
+    getIndicator(className, 'left').should('be.visible')
+    getIndicator(className, 'right').should('not.be.visible')
   })
   it('No scroll on click if click disabled.', () => {
     getIndicator('.no-click', 'right').should('be.visible')
@@ -37,5 +39,26 @@ describe('Basic tests.', () => {
   })
   it('No arrow inside indicator if disabled through option.', () => {
     getIndicator('.no-arrow', 'right').should('be.empty')
+  })
+})
+
+describe('Observers work correctly.', () => {
+  it('Proper indicators visible even if only 1 px overflow present.', () => {
+    const className = '.overflow'
+    open()
+    cy.get(className).should('be.visible')
+
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'top').should('not.be.visible')
+    getIndicator(className, 'bottom').should('be.visible')
+
+    getIndicator(className, 'right').click()
+    getIndicator(className, 'bottom').click()
+
+    getIndicator(className, 'left').should('be.visible')
+    getIndicator(className, 'right').should('not.be.visible')
+    getIndicator(className, 'top').should('be.visible')
+    getIndicator(className, 'bottom').should('not.be.visible')
   })
 })
