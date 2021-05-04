@@ -64,6 +64,9 @@ export const optionsSchema = {
   hideScrollbar: {
     type: Type.boolean,
   },
+  moveStylesToWrapper: {
+    type: Type.boolean,
+  },
   theme: {
     type: Type.select,
     values: ['default', 'none', 'youtube', 'class-name'],
@@ -76,6 +79,7 @@ export const options = observable({
   color: '#FFFFFF',
   width: '20px',
   hideScrollbar: true,
+  moveStylesToWrapper: false,
   theme: undefined,
 })
 

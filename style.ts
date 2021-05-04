@@ -87,13 +87,15 @@ const base: Theme = {
     transform: `rotate(${directionToRotation[direction]}deg)`,
   }),
   element: (element: HTMLElement) => {
+    const table = isTable(element)
     const styles: CSSProperties = {}
 
-    if (!isTable(element) && element.style.overflow !== 'scroll') {
+    // Make element scrollable.
+    if (!table && element.style.overflow !== 'scroll') {
       styles.overflow = 'auto'
     }
 
-    if (isTable(element)) {
+    if (table) {
       styles.position = 'relative'
     }
 
@@ -102,7 +104,7 @@ const base: Theme = {
   innerWrapper: (element: HTMLElement) => {
     const styles: CSSProperties = {
       position: 'relative',
-      display: 'inline-block',
+      display: 'inline-flex',
     }
 
     if (isTable(element) && element.style.overflow !== 'scroll') {
@@ -154,8 +156,18 @@ export const theme = (
     userProperties = apply(options.theme[key], element, ...args, options)
   }
 
-  const baseProperties = apply(base[key], element, ...args, options)
+  // Base theme always applied.
+  let baseProperties = apply(base[key], element, ...args, options)
 
+  // Add simple user styles from options.
+  if (
+    typeof options.style === 'object' &&
+    typeof options.style[key] === 'object'
+  ) {
+    baseProperties = { ...baseProperties, ...options.style[key] }
+  }
+
+  // Add default theme or user theme.
   const styles = userProperties
     ? { ...baseProperties, ...userProperties }
     : baseProperties

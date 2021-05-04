@@ -118,6 +118,7 @@ const Body = () => {
         // Remove instances first, so that react tree is intact again.
         onChange={() => remove('.demo, .test')}
         labels={['Options', 'Integrations', 'Test Cases']}
+        style={{ marginBottom: 10 }}
       >
         <Demo />
         <Integrations />

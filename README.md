@@ -70,14 +70,20 @@ indicate(document.getElementById('my-element'), {
   },
   // Disable hiding the native OS scrollbar inside the element.
   hideNativeScrollbar: false,
+  // Move styles and classes from element over to wrapper added by plugin.
+  moveStylesToWrapper: true,
+  // Simple way to add inline styles to elements.
+  style: {
+    innerWrapper: {
+      gap: '10px',
+    },
+  },
   // The CSS styles can be customized with a theme, see below for full documentation.
   theme: {
     outerWrapper: {
       background: 'blue',
     },
   },
-  // Move styles and classes from element over to wrapper added by plugin.
-  moveStylesToWrapper: true,
 })
 ```
 

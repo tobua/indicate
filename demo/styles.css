@@ -3,8 +3,12 @@
   background: lightskyblue;
   width: 10vw;
   height: 10vw;
-  margin-right: 1vw;
   border-radius: 2vw;
+  margin: 0 2vw 0 0;
+}
+
+.tile:last-of-type {
+  margin: 0;
 }
 
 .edits {

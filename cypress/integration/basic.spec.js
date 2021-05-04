@@ -50,6 +50,21 @@ describe('Basic tests.', () => {
       .find('svg')
       .should('have.attr', 'stroke', '#FF00FF')
   })
+  it('Vertical indicators show up as well.', () => {
+    const className = '.vertical'
+
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'top').should('not.be.visible')
+    getIndicator(className, 'bottom').should('be.visible')
+
+    cy.get(className).scrollTo('bottomRight')
+
+    getIndicator(className, 'left').should('be.visible')
+    getIndicator(className, 'right').should('not.be.visible')
+    getIndicator(className, 'top').should('be.visible')
+    getIndicator(className, 'bottom').should('not.be.visible')
+  })
 })
 
 describe('Observers work correctly.', () => {

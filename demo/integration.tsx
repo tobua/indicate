@@ -3,7 +3,15 @@ import { indicate, remove } from 'indicate'
 import { Button } from 'markup/Button'
 
 const initializeFadeEffect = () => {
-  indicate('.integration')
+  indicate('.integration', {
+    style: {
+      innerWrapper: {
+        gap: '10px',
+        marginTop: '10px',
+        marginBottom: '10px',
+      },
+    },
+  })
 }
 
 const removeFadeEffect = () => remove('.integration')
@@ -35,14 +43,9 @@ export const Integrations = () => {
       </div>
       <style>
         {`@font-face {
-  font-family: 'nyt-franklin';
-  src: url('https://g1.nyt.com/fonts/family/franklin/franklin-normal-500.d6c06a3d84a57100edad5bf9b84ff739.woff2') format('woff2'),
-       url('https://g1.nyt.com/fonts/family/franklin/franklin-normal-500.414758de098dc644b688afa031d35f9b.woff') format('woff'),
-       url('https://g1.nyt.com/fonts/family/franklin/franklin-normal-500.1b6dc8a3d86d2a28b825482c9497a633.ttf') format('truetype');
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-}`}
+          font-family: 'nyt-franklin';
+          src: url('https://g1.nyt.com/fonts/family/franklin/franklin-normal-500.d6c06a3d84a57100edad5bf9b84ff739.woff2') format('woff2');
+        }`}
       </style>
       <header style={{ fontFamily: 'nyt-franklin,helvetica,arial,sans-serif' }}>
         <section style={{ display: 'flex', justifyContent: 'center' }}>
@@ -53,6 +56,8 @@ export const Integrations = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              whiteSpace: 'nowrap',
+              gap: 10,
             }}
           >
             <li>U.S.</li>
@@ -159,17 +164,16 @@ export const Integrations = () => {
             borderTop: '1px solid lightgray',
             borderBottom: '1px solid black',
           }}
-          className="integration"
         >
           <ul
             style={{
               listStyle: 'none',
+              padding: 0,
+              margin: 0,
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-around',
               whiteSpace: 'nowrap',
-              gap: 10,
             }}
+            className="integration"
           >
             <li>World</li>
             <li>U.S.</li>

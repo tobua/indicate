@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
 import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
@@ -7,7 +7,7 @@ import { options, styles } from 'state'
 
 const nonStyleProps = ['rows', 'tiles']
 
-const objectToComponentProps = (values) => {
+const objectToComponentProps = (values: Object) => {
   let result = ''
 
   Object.keys(values).forEach((key) => {

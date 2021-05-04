@@ -33,6 +33,9 @@ export const Table = ({ className }) => (
 
 const renderTestCases = () => {
   indicate('.simple')
+  indicate('.vertical', {
+    style: { innerWrapper: { flexDirection: 'column' } },
+  })
   indicate('.no-click', { click: false })
   indicate('.no-arrow', { arrow: false })
   indicate('.pointer', { arrow: { icon: 'pointer', color: '#FF00FF' } })
@@ -77,6 +80,13 @@ export const TestCases = () => {
       </div>
       <div style={{ whiteSpace: 'nowrap' }} className="test simple">
         <Tiles />
+      </div>
+      <h2>Vertical</h2>
+      <div
+        style={{ whiteSpace: 'nowrap', height: 120 }}
+        className="test vertical"
+      >
+        <Tiles rows={2} />
       </div>
       <h2>No Click</h2>
       <div style={{ whiteSpace: 'nowrap' }} className="test no-click">
