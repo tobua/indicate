@@ -47,6 +47,8 @@ const renderTestCases = () => {
   indicate('.theme-class-name', { theme: className })
   indicate('.padding')
   indicate('.margin')
+  indicate(document.getElementById('get-by-id'))
+  indicate(document.querySelectorAll('.get-by-class'))
 }
 
 const removeTestCases = () => remove('.test')
@@ -166,6 +168,18 @@ export const TestCases = () => {
         }}
         className="test margin"
       >
+        <Tiles />
+      </div>
+      <h2>Initialization</h2>
+      <h3>Node</h3>
+      <div style={{ whiteSpace: 'nowrap' }} id="get-by-id" className="test">
+        <Tiles />
+      </div>
+      <h3>Nodelist</h3>
+      <div style={{ whiteSpace: 'nowrap' }} className="test get-by-class">
+        <Tiles />
+      </div>
+      <div style={{ whiteSpace: 'nowrap' }} className="test get-by-class">
         <Tiles />
       </div>
     </>

@@ -37,6 +37,8 @@ See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/maste
 
 ## Options
 
+Also refer to the [Demo](https://tobua.github.io/indicate) to interactively explore the different options.
+
 ```ts
 indicate(document.getElementById('my-element'), {
   // Disable arrows, default true.
@@ -103,7 +105,7 @@ indicate('#my-element', { arrow: false })
 
 ## Theme
 
-Use themes to modify the styles of the various elements. There are some [published themes](https://github.com/tobua/indicate/tree/master/theme):
+Use themes to modify the styles of added elements. Use either one of the [published themes](https://github.com/tobua/indicate/tree/master/theme):
 
 ```ts
 // Adds a classname to every element for styling with CSS.
@@ -114,4 +116,4 @@ import youtube from 'indicate/dist/theme/youtube.js'
 indicate('.element', { theme: youtube, color: '#FF00FF' })
 ```
 
-To create your **own theme** check out the [dedicated documentation](https://github.com/tobua/indicate/tree/master/theme).
+or create your **own theme** through the [dedicated documentation](https://github.com/tobua/indicate/tree/master/theme).

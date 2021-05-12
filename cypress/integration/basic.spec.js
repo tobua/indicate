@@ -87,3 +87,23 @@ describe('Observers work correctly.', () => {
     getIndicator(className, 'bottom').should('not.be.visible')
   })
 })
+
+describe('Several initialization methods available.', () => {
+  it('Initialization from node.', () => {
+    const className = '#get-by-id'
+    open()
+    cy.get(className).should('be.visible')
+
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+  })
+  it('Initialization from nodelist.', () => {
+    const className = '.get-by-class'
+    open()
+
+    // First
+    cy.get(className).eq(0).should('be.visible')
+    // Second
+    cy.get(className).eq(1).should('be.visible')
+  })
+})
