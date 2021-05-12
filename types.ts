@@ -65,6 +65,8 @@ export const pluginOptionsProperties = [
   'click',
   'hideScrollbar',
   'moveStylesToWrapper',
+  'inlineStyles',
+  'theme',
 ]
 
 // Unpublished, required for React plugin.
@@ -108,10 +110,7 @@ export type PluginOptions = {
   click?: boolean | ClickOptions
   hideScrollbar?: boolean
   moveStylesToWrapper?: boolean
-  style?: {
-    outerWrapper?: CSSProperties
-    innerWrapper?: CSSProperties
-  }
+  inlineStyles?: { [key in keyof Theme]: CSSProperties }
 } & UnpublishedOptions
 
 // Internal options extended with defaults.
@@ -123,7 +122,7 @@ export type Options = {
   click: false | ClickOptions
   hideScrollbar: boolean
   moveStylesToWrapper: boolean
-  style?: { [key in keyof Theme]: CSSProperties }
+  inlineStyles?: { [key in keyof Theme]: CSSProperties }
 } & UnpublishedOptions
 
 export interface Instance {

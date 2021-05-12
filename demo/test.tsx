@@ -34,7 +34,7 @@ export const Table = ({ className }) => (
 const renderTestCases = () => {
   indicate('.simple')
   indicate('.vertical', {
-    style: { innerWrapper: { flexDirection: 'column' } },
+    inlineStyles: { innerWrapper: { flexDirection: 'column' } },
   })
   indicate('.no-click', { click: false })
   indicate('.no-arrow', { arrow: false })

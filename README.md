@@ -71,11 +71,11 @@ indicate(document.getElementById('my-element'), {
     scrollDenominator: 4,
   },
   // Disable hiding the native OS scrollbar inside the element.
-  hideNativeScrollbar: false,
+  hideScrollbar: false,
   // Move styles and classes from element over to wrapper added by plugin.
   moveStylesToWrapper: true,
   // Simple way to add inline styles to elements.
-  style: {
+  inlineStyles: {
     innerWrapper: {
       gap: '10px',
     },

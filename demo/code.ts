@@ -1,3 +1,4 @@
+import { toJS } from 'mobx'
 import prettier from 'prettier'
 // @ts-ignore
 import parserBabel from 'prettier/esm/parser-babel.mjs'
@@ -52,4 +53,19 @@ export const formatCode = (
     singleQuote: true,
     printWidth: 40,
   })
+}
+
+export const addDirectionToOptions = (rows) => {
+  const currentOptions = toJS(options)
+
+  if (rows > 1) {
+    // @ts-ignore
+    currentOptions.inlineStyles = {
+      innerWrapper: {
+        flexDirection: 'column',
+      },
+    }
+  }
+
+  return currentOptions
 }

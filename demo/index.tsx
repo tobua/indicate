@@ -7,7 +7,7 @@ import { Exmpl, Code, Tabs } from 'exmpl'
 import './styles.css'
 import { indicate, remove } from 'indicate'
 import { ReactPreview } from 'react-preview'
-import { formatCode } from 'code'
+import { formatCode, addDirectionToOptions } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
 import { TestCases, Table } from 'test'
 import { Integrations } from 'integration'
@@ -50,13 +50,14 @@ const renderIndicate = () => {
   } else {
     times(styles.rows)(() => {
       const wrapper = document.createElement('div')
+      wrapper.style.whiteSpace = 'nowrap'
       createTiles(wrapper, styles.tiles)
       element.append(wrapper)
     })
   }
 
   // Initialize indicate effect with currently selected options.
-  indicate('.demo', options)
+  indicate('.demo', addDirectionToOptions(styles.rows))
 }
 
 const handleOptions = (data: any) => {
@@ -86,7 +87,7 @@ const Demo = () => {
 
   return (
     <>
-      <div style={{ whiteSpace: 'nowrap' }} className="demo"></div>
+      <div className="demo"></div>
       <div className="edits">
         <div style={{ flex: 1 }}>
           <h2>Edit Options</h2>

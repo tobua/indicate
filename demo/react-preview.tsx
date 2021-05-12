@@ -2,7 +2,7 @@ import React from 'react'
 import { observer } from 'mobx-react-lite'
 import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
-import { formatCode } from 'code'
+import { formatCode, addDirectionToOptions } from 'code'
 import { options, styles } from 'state'
 
 const nonStyleProps = ['rows', 'tiles']
@@ -33,7 +33,11 @@ const objectToComponentProps = (values: Object) => {
 
 // Remove non-CSS properties from styles.
 const getElementStyleProps = (fullProps) => {
-  const styleProps = { ...fullProps, whiteSpace: 'nowrap' }
+  const styleProps = {
+    ...fullProps,
+    whiteSpace: 'nowrap',
+    maxHeight: styles.maxHeight,
+  }
 
   nonStyleProps.forEach((property) => {
     if (Object.prototype.hasOwnProperty.call(styleProps, property)) {
@@ -66,19 +70,23 @@ export const Tiles = ({
   return (
     <>
       {Array.from({ length: rows }).map((_, index) => (
-        <div key={index}>{tileArray(columns)}</div>
+        <div style={{ whiteSpace: 'nowrap' }} key={index}>
+          {tileArray(columns)}
+        </div>
       ))}
     </>
   )
 }
 
-const Plugin = observer(() => {
-  return (
-    <Indicate as="div" style={getElementStyleProps(styles)} {...options}>
-      <Tiles rows={styles.rows} columns={styles.tiles} />
-    </Indicate>
-  )
-})
+const Plugin = observer(() => (
+  <Indicate
+    as="div"
+    style={getElementStyleProps(styles)}
+    {...addDirectionToOptions(styles.rows)}
+  >
+    <Tiles rows={styles.rows} columns={styles.tiles} />
+  </Indicate>
+))
 
 const ReactCode = observer(() => (
   <Code>

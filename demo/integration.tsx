@@ -4,7 +4,7 @@ import { Button } from 'markup/Button'
 
 const initializeFadeEffect = () => {
   indicate('.integration', {
-    style: {
+    inlineStyles: {
       innerWrapper: {
         gap: '10px',
         marginTop: '10px',

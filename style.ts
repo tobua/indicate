@@ -161,10 +161,10 @@ export const theme = (
 
   // Add simple user styles from options.
   if (
-    typeof options.style === 'object' &&
-    typeof options.style[key] === 'object'
+    typeof options.inlineStyles === 'object' &&
+    typeof options.inlineStyles[key] === 'object'
   ) {
-    baseProperties = { ...baseProperties, ...options.style[key] }
+    baseProperties = { ...baseProperties, ...options.inlineStyles[key] }
   }
 
   // Add default theme or user theme.
