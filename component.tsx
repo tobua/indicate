@@ -40,7 +40,7 @@ interface Props {
 }
 
 export const Indicate = ({
-  as,
+  as = 'div',
   children,
   ...options
 }: Props &

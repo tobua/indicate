@@ -117,3 +117,36 @@ indicate('.element', { theme: youtube, color: '#FF00FF' })
 ```
 
 or create your **own theme** through the [dedicated documentation](https://github.com/tobua/indicate/tree/master/theme).
+
+## Styling
+
+Making sure the layout still looks fine after the plugin has added the necessary outer and inner wrapper can be tricky. Here is the structure of the relevant elements and how to target them:
+
+```js
+// Before
+<div class="element">
+  {contents}
+</div>
+
+indicate(document.querySelector('.element', {
+  style: {
+    outerWrapper: {
+      background: 'blue'
+    },
+    innerWrapper: {
+      background: 'red'
+    }
+  }
+}))
+
+// After
+<div style="background: blue;"> // outerWrapper
+  <div class="element">
+    <div style="background: red;"> // innerWrapper
+      {contents}
+      4 x <span /> // observer (invisible)
+    </div>
+  </div>
+  4 x <span /> // indicator
+<div>
+```

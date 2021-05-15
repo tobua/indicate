@@ -3,3 +3,7 @@ package-lock.json
 tsconfig.json
 dist
 demo/.gitignore
+cypress/fixtures
+cypress/plugins
+cypress/screenshots
+cypress/support
