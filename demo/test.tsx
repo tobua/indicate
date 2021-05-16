@@ -49,6 +49,7 @@ const renderTestCases = () => {
   indicate('.margin')
   indicate(document.getElementById('get-by-id'))
   indicate(document.querySelectorAll('.get-by-class'))
+  indicate('.show-scrollbar', { hideScrollbar: false })
 }
 
 const removeTestCases = () => remove('.test')
@@ -180,6 +181,10 @@ export const TestCases = () => {
         <Tiles />
       </div>
       <div style={{ whiteSpace: 'nowrap' }} className="test get-by-class">
+        <Tiles />
+      </div>
+      <h2>Show Native Scrollbar</h2>
+      <div style={{ whiteSpace: 'nowrap' }} className="test show-scrollbar">
         <Tiles />
       </div>
     </>

@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
 import { formatCode, addDirectionToOptions } from 'code'
-import { options, styles } from 'state'
+import { styles } from 'state'
 
 const nonStyleProps = ['rows', 'tiles']
 
@@ -70,7 +70,13 @@ export const Tiles = ({
   return (
     <>
       {Array.from({ length: rows }).map((_, index) => (
-        <div style={{ whiteSpace: 'nowrap' }} key={index}>
+        <div
+          style={{
+            display: 'inline-flex',
+            marginBottom: index === rows - 1 ? 0 : 10,
+          }}
+          key={index}
+        >
           {tileArray(columns)}
         </div>
       ))}

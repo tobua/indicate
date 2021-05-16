@@ -144,6 +144,16 @@ const apply = (
   return undefined
 }
 
+// Base theme usually applied as required for plugin to work.
+// show and hide will not be extended when overridden by theme.
+const applyBaseTheme = (key, element, args, options) => {
+  if (['show', 'hide'].includes(key) && options.theme[key]) {
+    return {}
+  }
+
+  return apply(base[key], element, ...args, options)
+}
+
 export const theme = (
   element: HTMLElement,
   key: ThemeKey,
@@ -156,8 +166,7 @@ export const theme = (
     userProperties = apply(options.theme[key], element, ...args, options)
   }
 
-  // Base theme always applied.
-  let baseProperties = apply(base[key], element, ...args, options)
+  let baseProperties = applyBaseTheme(key, element, args, options)
 
   // Add simple user styles from options.
   if (

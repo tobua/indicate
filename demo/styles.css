@@ -1,5 +1,6 @@
 .tile {
-  display: inline-block;
+  display: flex;
+  flex-shrink: 0;
   background: lightskyblue;
   width: 10vw;
   height: 10vw;

@@ -65,6 +65,17 @@ describe('Basic tests.', () => {
     getIndicator(className, 'top').should('be.visible')
     getIndicator(className, 'bottom').should('not.be.visible')
   })
+  it('Also works well with native scrollbar shown.', () => {
+    const className = '.show-scrollbar'
+
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+
+    cy.get(className).scrollTo('right')
+
+    getIndicator(className, 'left').should('be.visible')
+    getIndicator(className, 'right').should('not.be.visible')
+  })
 })
 
 describe('Observers work correctly.', () => {

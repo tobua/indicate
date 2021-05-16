@@ -47,7 +47,12 @@ export const Integrations = () => {
           src: url('https://g1.nyt.com/fonts/family/franklin/franklin-normal-500.d6c06a3d84a57100edad5bf9b84ff739.woff2') format('woff2');
         }`}
       </style>
-      <header style={{ fontFamily: 'nyt-franklin,helvetica,arial,sans-serif' }}>
+      <header
+        style={{
+          fontFamily: 'nyt-franklin,helvetica,arial,sans-serif',
+          maxWidth: 1000,
+        }}
+      >
         <section style={{ display: 'flex', justifyContent: 'center' }}>
           <ul
             style={{
