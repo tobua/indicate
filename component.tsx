@@ -22,11 +22,11 @@ const getElementProps = (ref: any, options: {}) => {
 }
 
 // Get the options applicable to the plugin.
-const getPluginProps = (options: {}) => {
+const getPluginProps = (options: {}, alsoEmpty = false) => {
   const props = {}
 
   pluginOptionsProperties.forEach((property) => {
-    if (Object.prototype.hasOwnProperty.call(options, property)) {
+    if (alsoEmpty || Object.prototype.hasOwnProperty.call(options, property)) {
       props[property] = options[property]
     }
   })
@@ -50,6 +50,7 @@ export const Indicate = ({
   const elementRef = useRef<HTMLElement>(null)
   const innerWrapperRef = useRef<HTMLDivElement>(null)
   const elementProps = getElementProps(elementRef, options)
+  const allPluginOptions = getPluginProps(options, true)
   const pluginOptions = getPluginProps(options)
 
   useEffect(
@@ -64,7 +65,8 @@ export const Indicate = ({
         remove(element)
       }
     },
-    Object.keys(pluginOptions).map((key) => pluginOptions[key])
+    // Size of arguments needs to stay constant, therefore also empty options.
+    Object.keys(allPluginOptions).map((key) => allPluginOptions[key])
   )
 
   // createElement workaround to render "as" element from string.

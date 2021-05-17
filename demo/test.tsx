@@ -5,28 +5,52 @@ import youtube from 'indicate/dist/theme/youtube'
 import className from 'indicate/dist/theme/class-name'
 import { Button } from 'markup/Button'
 
+const TableHeader = (name) => (
+  <th
+    style={{
+      minWidth: '20vw',
+      padding: 10,
+      borderRadius: 10,
+      background: 'lightgray',
+    }}
+  >
+    {name}Header
+  </th>
+)
+
+const TableColumn = (name) => (
+  <td
+    style={{
+      padding: 10,
+      borderRadius: 10,
+      background: 'lightskyblue',
+    }}
+  >
+    {name}Column
+  </td>
+)
+
 export const Table = ({ className }) => (
   <table className={className}>
     <thead>
       <tr>
-        <th>FirstHeader</th>
-        <th colSpan={2}>SecondThirdHeader</th>
-        <th>FourthHeader</th>
+        {TableHeader('First')}
+        {TableHeader('Second')}
+        {TableHeader('Third')}
+        {TableHeader('Fourth')}
+        {TableHeader('Fifth')}
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>FirstColumnFirstColumnFirstColumn</td>
-        <td>SecondColumnSecondColumnSecondColumn</td>
-        <td>ThirdColumnThirdColumnThirdColumn</td>
-        <td>FourthColumnFourthColumnFourthColumn</td>
-      </tr>
-      <tr>
-        <td>FirstColumn FirstColumn FirstColumn</td>
-        <td>SecondColumn SecondColumn SecondColumn</td>
-        <td>ThirdColumn ThirdColumn ThirdColumn</td>
-        <td>FourthColumn FourthColumn FourthColumn</td>
-      </tr>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <tr key={index}>
+          {TableColumn('First')}
+          {TableColumn('Second')}
+          {TableColumn('Third')}
+          {TableColumn('Fourth')}
+          {TableColumn('Fifth')}
+        </tr>
+      ))}
     </tbody>
   </table>
 )

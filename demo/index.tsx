@@ -13,9 +13,9 @@ import { TestCases, Table } from 'test'
 import { Integrations } from 'integration'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
-const times = (count: number) => (callback: () => void) => {
+const times = (count: number) => (callback: (count?: number) => void) => {
   if (count > 0) {
-    callback()
+    callback(count - 1)
     times(count - 1)(callback)
   }
 }
@@ -48,9 +48,12 @@ const renderIndicate = () => {
   if (styles.rows < 2) {
     createTiles(element, styles.tiles)
   } else {
-    times(styles.rows)(() => {
+    times(styles.rows)((index) => {
       const wrapper = document.createElement('div')
-      wrapper.style.whiteSpace = 'nowrap'
+      wrapper.style.display = 'flex'
+      if (index !== 0) {
+        wrapper.style.marginBottom = '10px'
+      }
       createTiles(wrapper, styles.tiles)
       element.append(wrapper)
     })
