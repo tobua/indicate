@@ -105,6 +105,8 @@ const base: Theme = {
     const styles: CSSProperties = {
       position: 'relative',
       display: 'inline-flex',
+      // Avoid small bottom space otherwise added by inline-.
+      verticalAlign: 'top',
     }
 
     if (isTable(element) && element.style.overflow !== 'scroll') {

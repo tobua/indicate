@@ -61,7 +61,7 @@ Unless you provide a theme the default theme with some basic styling is applied.
 
 ## TypeScript
 
-To avoid issues create and verify your custom themes using the provided types.
+Avoid issues by creating and verifying your custom themes with type checking.
 
 ```ts
 import { Theme, Direction, Options, CSSProperties } from 'indicate'

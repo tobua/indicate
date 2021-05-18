@@ -9,6 +9,7 @@ export const defaultTheme: Theme = {
   }),
   hide: (indicator: HTMLElement) => {
     indicator.style.opacity = '0'
+    indicator.style.pointerEvents = 'none'
 
     // Avoid initial animation.
     if (!indicator.style.transition) {
@@ -17,5 +18,6 @@ export const defaultTheme: Theme = {
   },
   show: (indicator: HTMLSpanElement) => {
     indicator.style.opacity = '1'
+    indicator.style.pointerEvents = 'auto'
   },
 }

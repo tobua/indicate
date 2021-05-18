@@ -74,6 +74,8 @@ const renderTestCases = () => {
   indicate(document.getElementById('get-by-id'))
   indicate(document.querySelectorAll('.get-by-class'))
   indicate('.show-scrollbar', { hideScrollbar: false })
+  indicate('.remove')
+  remove('.remove')
 }
 
 const removeTestCases = () => remove('.test')
@@ -93,6 +95,10 @@ export const TestCases = () => {
 
   return (
     <>
+      <p>
+        These test cases are used to run automated tests with cypress and also
+        quickly spot issues after changes.
+      </p>
       <div
         style={{
           display: 'flex',
@@ -209,6 +215,11 @@ export const TestCases = () => {
       </div>
       <h2>Show Native Scrollbar</h2>
       <div style={{ whiteSpace: 'nowrap' }} className="test show-scrollbar">
+        <Tiles />
+      </div>
+      <h2>Removal</h2>
+      <p>No leftovers after plugin initialized on element and removed again.</p>
+      <div style={{ display: 'flex' }} className="remove">
         <Tiles />
       </div>
     </>

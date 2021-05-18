@@ -76,6 +76,20 @@ describe('Basic tests.', () => {
     getIndicator(className, 'left').should('be.visible')
     getIndicator(className, 'right').should('not.be.visible')
   })
+  it('Nothing is left over after initialization and subsequent removal.', () => {
+    const className = '.remove'
+
+    // No inner wrapper, observers or indicators anymore.
+    cy.get(className).children().should('have.length', 9)
+    cy.get(className).children().should('have.prop', 'tagName', 'P')
+
+    // No wrapper anymore.
+    cy.get(className).parent().parent().should('have.prop', 'tagName', 'BODY')
+
+    cy.get(className).should('have.css', 'display', 'flex')
+    // If an add is necessary the overflow attribute will stay.
+    cy.get(className).should('have.css', 'overflow', 'auto')
+  })
 })
 
 describe('Observers work correctly.', () => {

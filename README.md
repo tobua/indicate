@@ -150,3 +150,5 @@ indicate('.my-element', {
   {4 x <span />} → indicator
 <div>
 ```
+
+Note that with table or inline elements both wrappers will be wrapping the element and the overflow attribute will be added to the innerWrapper.
