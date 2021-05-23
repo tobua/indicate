@@ -99,13 +99,11 @@ const ReactCode = observer(() => (
     {formatCode(
       (_, values) => `import { Indicate } from 'indicate'
       
-  const Scrollable = () => {
-    return (
-      <Indicate as="div"${objectToComponentProps(values)}>
-        {\`...\`}
-      </Indicate>
-    )
-  }`
+  const Scrollable = () => (
+    <Indicate as="div"${objectToComponentProps(values)}>
+      {\`...\`}
+    </Indicate>
+  )`
     )}
   </Code>
 ))

@@ -11,6 +11,7 @@ import { formatCode, addDirectionToOptions } from 'code'
 import { options, styles, optionsSchema, getTheme } from 'state'
 import { TestCases, Table } from 'test'
 import { Integrations } from 'integration'
+import { Basic } from 'basic'
 
 // https://stackoverflow.com/a/30452949/3185545 if index required.
 const times = (count: number) => (callback: (count?: number) => void) => {
@@ -121,10 +122,11 @@ const Body = () => {
       <Tabs
         // Remove instances first, so that react tree is intact again.
         onChange={() => remove('.demo, .test')}
-        labels={['Options', 'Integrations', 'Test Cases']}
+        labels={['Options', 'How?', 'Examples', 'Test Cases']}
         style={{ marginBottom: 10 }}
       >
         <Demo />
+        <Basic />
         <Integrations />
         <TestCases />
       </Tabs>
