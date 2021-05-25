@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { render } from 'react-dom'
 import { autorun, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'

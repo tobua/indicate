@@ -1,5 +1,3 @@
-import React from 'react'
-
 const outerWrapperStyles = {
   background: '#757575',
   padding: 10,
@@ -70,6 +68,35 @@ export const Basic = () => (
       <span style={indicatorStyles} />
     </div>
     <h2>Inline</h2>
+    <span
+      style={{
+        ...outerWrapperStyles,
+        display: 'inline-block',
+        height: 'auto',
+      }}
+    >
+      <span
+        style={{
+          ...elementStyles,
+          position: 'relative',
+          display: 'inline-block',
+          width: 150,
+          height: 100,
+        }}
+      >
+        <span
+          style={{
+            ...innerWrapperStyles,
+            overflow: 'auto',
+          }}
+        >
+          <div style={{ ...contentStyles, width: 300 }} />
+          <span style={observerStyles} />
+        </span>
+      </span>
+      <span style={indicatorStyles} />
+    </span>
+    <span style={{ display: 'inline-block', width: 20 }} />
     <span style={{ ...outerWrapperStyles, display: 'inline-block' }}>
       <span
         style={{
@@ -94,33 +121,13 @@ export const Basic = () => (
       </span>
       <span style={indicatorStyles} />
     </span>
-    <span style={{ display: 'inline-block', width: 20 }} />
-    <span style={outerWrapperStyles}>
-      <span
-        style={{
-          ...innerWrapperStyles,
-          overflow: 'auto',
-          width: 150,
-          height: 100,
-        }}
-      >
-        <div
-          style={{
-            ...elementStyles,
-            position: 'relative',
-            display: 'inline',
-            overflow: 'visible',
-            height: 'auto',
-          }}
-        >
-          <div style={{ ...contentStyles, width: 300 }} />
-          <span style={observerStyles} />
-        </div>
-      </span>
-      <span style={indicatorStyles} />
-    </span>
     <h2>Table (Inline)</h2>
-    <span style={outerWrapperStyles}>
+    <p>
+      Since we cannot place a wrapper inside a table tag (semantics) both
+      wrappers are placed outside and the overflow is applied on the inner
+      wrapper.
+    </p>
+    <span style={{ ...outerWrapperStyles, display: 'inline-block' }}>
       <span
         style={{
           ...innerWrapperStyles,

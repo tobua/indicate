@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { indicate, remove } from 'indicate'
 import { Button } from 'markup/Button'
 

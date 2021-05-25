@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Tiles } from 'react-preview'
 import { indicate, remove } from 'indicate'
 import youtube from 'indicate/dist/theme/youtube'
