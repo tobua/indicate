@@ -24,7 +24,7 @@ export const isStart = (direction: Direction) =>
 export const isEnd = (direction: Direction) =>
   direction === Direction.right || direction === Direction.bottom
 
-export type Inline = false | 'inline' | 'inline-block' | 'inline-flex'
+export type Inline = false | string
 
 export type Elements = string | Element | HTMLElement | NodeListOf<Element>
 
