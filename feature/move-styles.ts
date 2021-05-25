@@ -1,5 +1,4 @@
-import { isTable } from '../helper'
-import { Options } from '../types'
+import { Instance, Options } from '../types'
 
 export const move = (
   element: HTMLElement,
@@ -21,13 +20,13 @@ export const move = (
 export const undoMove = (
   element: HTMLElement,
   wrapper: HTMLElement,
-  options: Options
+  instance: Instance
 ) => {
-  if (!options.moveStylesToWrapper) {
+  if (!instance.options.moveStylesToWrapper) {
     return
   }
 
-  if (isTable(element) && wrapper.style.position === 'relative') {
+  if (instance.table && wrapper.style.position === 'relative') {
     wrapper.style.position = ''
   }
 

@@ -4,7 +4,7 @@ Create your own theme like this:
 
 ```ts
 const theme = {
-  indicator: (element, direction, options) => {
+  indicator: (element, options, direction) => {
     element.style[direction] = '-5px'
   },
   hide: (element, options) => {
@@ -15,7 +15,7 @@ const theme = {
       element.display = 'flex'
     }, 500)
   },
-  arrow: (element, direction, options) => {
+  arrow: (element, options, direction) => {
     element.style.display = 'block'
   },
   element: (element, options) => {
@@ -28,7 +28,7 @@ const theme = {
     const myElement = document.createElement('span')
     element.append(myAbsoluteElement)
   },
-  observer: (element, direction, options) => {
+  observer: (element, options, direction) => {
     element.pointerEvents = 'none'
   },
 }
@@ -67,7 +67,7 @@ Avoid issues by creating and verifying your custom themes with type checking.
 import { Theme, Direction, Options, CSSProperties } from 'indicate'
 
 const theme: Theme = {
-  indicator: (element: HTMLElement, direction: Direction, options: Options) => {
+  indicator: (element: HTMLElement, options: Options, direction: Direction) => {
     const styles: CSSProperties = {}
 
     if (direction === Direction.right) {

@@ -65,7 +65,10 @@ const renderTestCases = () => {
   indicate('.pointer', { arrow: { icon: 'pointer', color: '#FF00FF' } })
   indicate('.color', { color: '#FF00FF' })
   indicate('.overflow')
-  indicate('.inline', { moveStylesToWrapper: true })
+  indicate('.inline')
+  indicate('.inline-vertical')
+  indicate('.inline-by-class')
+  indicate('.inline-display')
   indicate('.table')
   indicate('.theme-youtube', { theme: youtube })
   indicate('.theme-class-name', { theme: className })
@@ -146,26 +149,74 @@ export const TestCases = () => {
         </div>
       </div>
       <h2>Inline</h2>
+      <p>
+        Adding absolutely positioned indicators to an inline element isn't
+        possible so inline elements are converted to inline-block.
+      </p>
       <div
         style={{
-          display: 'inline-block',
-          width: '49%',
-          marginRight: '2%',
-          whiteSpace: 'nowrap',
+          display: 'inline',
+          width: 300,
         }}
         className="test inline"
       >
-        <Tiles />
+        <div style={{ display: 'flex' }}>
+          <Tiles />
+        </div>
       </div>
       <div
         style={{
           display: 'inline-block',
-          width: '49%',
-          whiteSpace: 'nowrap',
+          width: 300,
         }}
         className="test inline"
       >
-        <Tiles />
+        <div style={{ display: 'flex' }}>
+          <Tiles />
+        </div>
+      </div>
+      <h3>Inline vertical</h3>
+      <div
+        style={{
+          display: 'inline',
+          width: 300,
+          height: 80,
+          marginRight: '2%',
+        }}
+        className="test inline-vertical"
+      >
+        <div style={{ display: 'flex' }}>
+          <Tiles />
+        </div>
+      </div>
+      <h3>Inline from class</h3>
+      <style>
+        {`.inline-by-class {
+          display: inline;
+          max-width: 50vw;
+        }`}
+      </style>
+      <div className="test inline-by-class">
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Tiles />
+        </div>
+      </div>
+      <h3>Inline-block and inline-flex</h3>
+      <div
+        className="test inline-display"
+        style={{ display: 'inline-block', width: 400 }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Tiles />
+        </div>
+      </div>
+      <div
+        className="test inline-display"
+        style={{ display: 'inline-flex', width: 400 }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Tiles />
+        </div>
       </div>
       <h2>Table</h2>
       <Table className="test table" />

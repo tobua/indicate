@@ -1,10 +1,11 @@
 import { theme, hideScrollbar } from './style'
-import { directions, Instance, Options, Direction } from './types'
+import { directions, Instance, Options, Direction, Inline } from './types'
 import { registerClickListener } from './feature/click'
 import { wrapTable } from './feature/table'
 import { move } from './feature/move-styles'
 import {
   isTable,
+  isInline,
   hideScrollbarWithWebkitPseudoClass,
   wrapElementIn,
   arrowIcon,
@@ -20,18 +21,22 @@ const wrapContentsWith = (element: HTMLElement, wrapper: HTMLElement) => {
 const wrap = ({
   element,
   options,
+  table,
+  inline,
 }: {
   element: HTMLElement
   options: Options
+  table: boolean
+  inline: Inline
 }) => {
-  if (isTable(element)) {
+  if (table) {
     return wrapTable({ element, options })
   }
 
   // Wrapper arount the element to position the indicators.
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
-  theme(outerWrapper, 'outerWrapper', options)
+  theme(outerWrapper, 'outerWrapper', options, table, inline)
 
   if (!options.outerWrapper) {
     wrapElementIn(element, outerWrapper)
@@ -41,7 +46,7 @@ const wrap = ({
   // Allows to position observers absolutely inside (due to inline-block).
   const innerWrapper = options.innerWrapper ?? document.createElement('div')
 
-  theme(innerWrapper, 'innerWrapper', options)
+  theme(innerWrapper, 'innerWrapper', options, table, inline)
 
   if (!options.innerWrapper) {
     wrapContentsWith(element, innerWrapper)
@@ -54,6 +59,8 @@ export const createInstance = (
   element: HTMLElement,
   options: Options
 ): Instance => {
+  const table = isTable(element)
+  const inline = isInline(element)
   const getSpansByDirection = () => {
     const result = {}
     directions.forEach((direction) => {
@@ -62,14 +69,19 @@ export const createInstance = (
     return result
   }
 
-  const { outerWrapper, innerWrapper } = wrap({ element, options })
+  const { outerWrapper, innerWrapper } = wrap({
+    element,
+    options,
+    table,
+    inline,
+  })
 
   move(element, outerWrapper, options)
 
-  theme(element, 'element', options)
+  theme(element, 'element', options, table, inline)
 
   if (options.hideScrollbar) {
-    const scrollableElement = isTable(element) ? innerWrapper : element
+    const scrollableElement = table ? innerWrapper : element
 
     hideScrollbar(scrollableElement)
     hideScrollbarWithWebkitPseudoClass(scrollableElement)
@@ -82,6 +94,8 @@ export const createInstance = (
     indicator: getSpansByDirection(),
     observer: getSpansByDirection(),
     options,
+    table,
+    inline,
   } as Instance
 }
 
@@ -132,7 +146,7 @@ export const addObservers = (instance: Instance) => {
   directions.forEach((direction) => {
     const observer = instance.observer[direction]
     theme(observer, 'observer', instance.options, direction)
-    if (isTable(instance.element)) {
+    if (instance.table) {
       instance.element.append(observer)
     } else {
       instance.innerWrapper.append(observer)

@@ -1,7 +1,7 @@
 import { Direction, Options, Theme } from '../types'
 
 export default {
-  indicator: (_, direction: Direction, options: Options) => ({
+  indicator: (_, options: Options, direction: Direction) => ({
     background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${options.color} 25%)`,
     width: '100px',
   }),

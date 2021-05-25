@@ -27,3 +27,29 @@ describe('Basic tests for table elements', () => {
     getIndicator(className, 'right', true).should('not.be.visible')
   })
 })
+
+describe('Tests for inline elements', () => {
+  it('Plugin works on inline elements and keeps the page flow.', () => {
+    const className = '.inline'
+    open()
+    cy.get(className).should('be.visible')
+
+    // Inline elements on the same line.
+    cy.get(className)
+      .should('have.length', 2)
+      .then(($list) => {
+        expect($list[0].offsetTop).to.equal($list[1].offsetTop)
+      })
+  })
+
+  it('Vertical scrolling works with inline elements.', () => {
+    const className = '.inline-vertical'
+    open()
+    cy.get(className).should('be.visible')
+
+    getIndicator(className, 'left').should('not.be.visible')
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'top').should('not.be.visible')
+    getIndicator(className, 'bottom').should('be.visible')
+  })
+})

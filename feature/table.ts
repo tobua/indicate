@@ -13,7 +13,7 @@ export const wrapTable = ({
 }) => {
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
-  theme(outerWrapper, 'outerWrapper', options)
+  theme(outerWrapper, 'outerWrapper', options, true, false)
 
   if (!options.outerWrapper) {
     wrapElementIn(element, outerWrapper)
@@ -21,7 +21,7 @@ export const wrapTable = ({
 
   const innerWrapper = options.innerWrapper ?? document.createElement('div')
 
-  theme(innerWrapper, 'innerWrapper', options)
+  theme(innerWrapper, 'innerWrapper', options, true, false)
 
   innerWrapper.style.overflow = 'auto'
   // Table element itself is already inline.

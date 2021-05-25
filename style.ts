@@ -1,4 +1,3 @@
-import { isTable } from './helper'
 import {
   CSSProperties,
   Direction,
@@ -6,6 +5,7 @@ import {
   isHorizontal,
   isVertical,
   Theme,
+  Inline,
 } from './types'
 
 const directionToRotation = {
@@ -49,7 +49,7 @@ const alignment = (
 }
 
 const base: Theme = {
-  indicator: (_, direction: Direction, options: Options) => {
+  indicator: (_, options: Options, direction: Direction) => {
     const style: CSSProperties = {
       position: 'absolute',
       // Initially hidden.
@@ -80,15 +80,33 @@ const base: Theme = {
   show: (indicator: HTMLSpanElement) => {
     indicator.style.display = 'flex'
   },
-  arrow: (_, direction: Direction) => ({
+  arrow: (_, __: Options, direction: Direction) => ({
     width: '12px',
     height: '12px',
     display: 'block',
     transform: `rotate(${directionToRotation[direction]}deg)`,
   }),
-  element: (element: HTMLElement) => {
-    const table = isTable(element)
+  outerWrapper: (_: HTMLElement, __: Options, ___: boolean, inline: Inline) => {
+    const styles: CSSProperties = { position: 'relative' }
+
+    if (inline) {
+      styles.display = inline === 'inline' ? 'inline-block' : inline
+    }
+
+    return styles
+  },
+  element: (
+    element: HTMLElement,
+    _: Options,
+    table: boolean,
+    inline: Inline
+  ) => {
     const styles: CSSProperties = {}
+
+    if (inline) {
+      styles.display = inline === 'inline' ? 'inline-block' : inline
+      styles.verticalAlign = 'top'
+    }
 
     // Make element scrollable.
     if (!table && element.style.overflow !== 'scroll') {
@@ -97,11 +115,13 @@ const base: Theme = {
 
     if (table) {
       styles.position = 'relative'
+      styles.display = 'inline-block'
+      styles.verticalAlign = 'top'
     }
 
     return styles
   },
-  innerWrapper: (element: HTMLElement) => {
+  innerWrapper: (element: HTMLElement, _: Options, table: boolean) => {
     const styles: CSSProperties = {
       position: 'relative',
       display: 'inline-flex',
@@ -109,16 +129,13 @@ const base: Theme = {
       verticalAlign: 'top',
     }
 
-    if (isTable(element) && element.style.overflow !== 'scroll') {
+    if (table && element.style.overflow !== 'scroll') {
       styles.overflow = 'auto'
     }
 
     return styles
   },
-  outerWrapper: {
-    position: 'relative',
-  } as CSSProperties,
-  observer: (_, direction, options) =>
+  observer: (_, options, direction) =>
     ({
       position: 'absolute',
       pointerEvents: 'none',
@@ -148,12 +165,17 @@ const apply = (
 
 // Base theme usually applied as required for plugin to work.
 // show and hide will not be extended when overridden by theme.
-const applyBaseTheme = (key, element, args, options) => {
+const applyBaseTheme = (
+  key: ThemeKey,
+  element: HTMLElement,
+  options: Options,
+  args: any[]
+) => {
   if (['show', 'hide'].includes(key) && options.theme[key]) {
     return {}
   }
 
-  return apply(base[key], element, ...args, options)
+  return apply(base[key], element, options, ...args)
 }
 
 export const theme = (
@@ -165,10 +187,10 @@ export const theme = (
   let userProperties: CSSProperties | undefined
 
   if (options.theme && options.theme[key]) {
-    userProperties = apply(options.theme[key], element, ...args, options)
+    userProperties = apply(options.theme[key], element, options, ...args)
   }
 
-  let baseProperties = applyBaseTheme(key, element, args, options)
+  let baseProperties = applyBaseTheme(key, element, options, args)
 
   // Add simple user styles from options.
   if (

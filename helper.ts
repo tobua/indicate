@@ -23,9 +23,21 @@ export const log = (messageKey: string, objects = null) => {
   }
 }
 
+// Is it an inline element? false or display property ()
+export const isInline = (element: HTMLElement) => {
+  const computedStyleDisplay = window
+    .getComputedStyle(element)
+    .getPropertyValue('display')
+
+  if (computedStyleDisplay.startsWith('inline')) {
+    return computedStyleDisplay
+  }
+
+  return false
+}
+
 export const isTable = (element: HTMLElement) =>
-  element.tagName.toLowerCase() === 'table' ||
-  element.style.display === 'inline'
+  element.tagName.toLowerCase() === 'table'
 
 const hideScrollbarClass = 'hide-indicate-scrollbar'
 

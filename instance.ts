@@ -2,7 +2,7 @@ import { getOptions } from './options'
 import { createInstance, addIndicators, addObservers } from './element'
 import { observe } from './observer'
 import { Instance, Elements, Options, directions, PluginOptions } from './types'
-import { isTable, log, removeHideScrollbarStyle } from './helper'
+import { log, removeHideScrollbarStyle } from './helper'
 import { undoMove } from './feature/move-styles'
 
 export const instances = new Map<HTMLElement, Instance>()
@@ -111,7 +111,7 @@ export const remove = (element: Elements) => {
 
     removeHideScrollbarStyle(instance.element, instance.innerWrapper)
 
-    undoMove(instance.element, instance.outerWrapper, instance.options)
+    undoMove(instance.element, instance.outerWrapper, instance)
 
     if (!instance.options.outerWrapper) {
       // Remove outer wrapper.
@@ -122,7 +122,7 @@ export const remove = (element: Elements) => {
 
     if (!instance.options.innerWrapper) {
       // Remove inner wrapper.
-      if (isTable(instance.element)) {
+      if (instance.table) {
         instance.innerWrapper.replaceWith(
           ...Array.from(instance.innerWrapper.childNodes)
         )

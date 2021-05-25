@@ -24,33 +24,55 @@ export const isStart = (direction: Direction) =>
 export const isEnd = (direction: Direction) =>
   direction === Direction.right || direction === Direction.bottom
 
+export type Inline = false | 'inline' | 'inline-block' | 'inline-flex'
+
 export type Elements = string | Element | HTMLElement | NodeListOf<Element>
 
 export interface Theme {
   indicator?:
     | ((
         element: HTMLElement,
-        direction: Direction,
-        options: Options
+
+        options: Options,
+        direction: Direction
       ) => CSSProperties | void)
     | CSSProperties
   hide?: (indicator: HTMLSpanElement) => void | CSSProperties
   show?: (indicator: HTMLSpanElement) => void | CSSProperties
-  arrow?: (arrow: HTMLElement, direction: Direction) => CSSProperties | void
+  arrow?: (
+    arrow: HTMLElement,
+    options: Options,
+    direction: Direction
+  ) => CSSProperties | void
+  outerWrapper?:
+    | ((
+        element: HTMLElement,
+        options: Options,
+        table: boolean,
+        inline: Inline
+      ) => CSSProperties | void)
+    | CSSProperties
   element?:
-    | ((element: HTMLElement, options: Options) => CSSProperties | void)
+    | ((
+        element: HTMLElement,
+        options: Options,
+        table: boolean,
+        inline: Inline
+      ) => CSSProperties | void)
     | CSSProperties
   innerWrapper?:
-    | ((element: HTMLElement, options: Options) => CSSProperties | void)
+    | ((
+        element: HTMLElement,
+        options: Options,
+        table: boolean
+      ) => CSSProperties | void)
     | CSSProperties
-  outerWrapper?:
-    | ((element: HTMLElement, options: Options) => CSSProperties | void)
-    | CSSProperties
+
   observer?:
     | ((
         element: HTMLElement,
-        direction: Direction,
-        options: Options
+        options: Options,
+        direction: Direction
       ) => CSSProperties | void)
     | CSSProperties
 }
@@ -143,6 +165,8 @@ export interface Instance {
   }
   intersectionObserver: IntersectionObserver
   options: Options
+  table: boolean
+  inline: Inline
 }
 
 export interface Visibility {

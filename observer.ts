@@ -1,4 +1,3 @@
-import { isTable } from './helper'
 import { theme } from './style'
 import { Instance, directions } from './types'
 
@@ -31,9 +30,7 @@ export const observe = (instance: Instance) => {
   const observer = new IntersectionObserver(
     handleObservation.bind(null, instance),
     {
-      root: isTable(instance.element)
-        ? instance.innerWrapper
-        : instance.element,
+      root: instance.table ? instance.innerWrapper : instance.element,
       // Only parts of element inside the root element are counted.
       rootMargin: '0px',
       // Even if only 10% of the observer is visible, trigger handler.

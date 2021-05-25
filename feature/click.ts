@@ -1,4 +1,3 @@
-import { isTable } from '../helper'
 import { Direction, Instance, isHorizontal } from '../types'
 
 const scrollHorizontal = (
@@ -63,7 +62,7 @@ export const registerClickListener = (
   // Access here, as inferred type check above is lost inside methods.
   const { denominator } = instance.options.click
 
-  const scrollableElement = isTable(instance.element)
+  const scrollableElement = instance.table
     ? instance.innerWrapper
     : instance.element
 
