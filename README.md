@@ -31,6 +31,10 @@ import { Indicate } from 'indicate'
 const Scrollable = () => <Indicate as="div" color="#00FF00">{`...`}</Indicate>
 ```
 
+### Vue
+
+See [indicate/plugins/vue](https://github.com/tobua/indicate/tree/master/plugins/vue) for instructions and an example of how to integrate with Vue.
+
 ### React Native
 
 See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/master/plugins/react-native) note that this plugin is quite different and has some drawbacks compared to the web version.
