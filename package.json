@@ -15,6 +15,7 @@
     "entry": "theme/*.ts"
   },
   "dependencies": {
+    "csstype": "^3.0.8",
     "react": "^17.0.2"
   },
   "main": "dist/index.js",
@@ -26,9 +27,9 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^17.0.7",
-    "cypress": "^7.4.0",
-    "padua": "^0.3.5"
+    "@types/react": "^17.0.14",
+    "cypress": "^7.7.0",
+    "padua": "^0.3.7"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {

@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
@@ -83,11 +84,12 @@ export const Tiles = ({
   )
 }
 
-const Plugin = observer(() => (
+const Plugin = observer((props: { noEffect?: boolean }) => (
   <Indicate
     as="div"
     style={getElementStyleProps(styles)}
     {...addDirectionToOptions(styles.rows)}
+    {...props}
   >
     <Tiles rows={styles.rows} columns={styles.tiles} />
   </Indicate>
@@ -107,10 +109,38 @@ const ReactCode = observer(() => (
   </Code>
 ))
 
+const ChildAsElement = () => {
+  const childRef = useRef()
+
+  return (
+    <Indicate
+      ref={childRef}
+      childAsElement={childRef}
+      style={getElementStyleProps(styles)}
+      {...addDirectionToOptions(styles.rows)}
+    >
+      <div
+        ref={childRef}
+        style={{
+          display: 'inline-flex',
+          whiteSpace: 'nowrap',
+          maxHeight: styles.maxHeight,
+        }}
+      >
+        {Array.from({ length: styles.tiles }).map((_, index) => (
+          <p key={index} className="tile" />
+        ))}
+      </div>
+    </Indicate>
+  )
+}
+
 export const ReactPreview = () => (
   <>
     <h2>React</h2>
     <Plugin />
     <ReactCode />
+    <p>Use child as element</p>
+    <ChildAsElement />
   </>
 )

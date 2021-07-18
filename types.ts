@@ -1,3 +1,6 @@
+import { ReactNode } from 'react'
+import { Properties } from 'csstype'
+
 export enum Direction {
   left = 'left',
   right = 'right',
@@ -26,7 +29,12 @@ export const isEnd = (direction: Direction) =>
 
 export type Inline = false | string
 
-export type Elements = string | Element | HTMLElement | NodeListOf<Element>
+export type Elements =
+  | string
+  | Element
+  | HTMLElement
+  | NodeListOf<Element>
+  | ReactNode
 
 export interface Theme {
   indicator?:
@@ -92,7 +100,7 @@ export const pluginOptionsProperties = [
 ]
 
 // Unpublished, required for React plugin.
-interface UnpublishedOptions {
+export interface UnpublishedOptions {
   outerWrapper?: HTMLElement
   innerWrapper?: HTMLElement
 }
@@ -176,7 +184,4 @@ export interface Visibility {
   bottom: boolean
 }
 
-// See https://stackoverflow.com/a/52876098/3185545 if nesting required.
-export type CSSProperties = {
-  [P in keyof CSSStyleDeclaration]?: CSSStyleDeclaration[P]
-}
+export interface CSSProperties extends Properties<string | number> {}

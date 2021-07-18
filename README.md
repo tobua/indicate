@@ -93,6 +93,41 @@ indicate(document.getElementById('my-element'), {
 })
 ```
 
+### React options
+
+In the React version you can use all regular options plus a few specific ones.
+
+```tsx
+<Indicate
+  // Specify what kind of tag the element should be, default 'div'.
+  as="div"
+  // Use any regular option.
+  color="#00FF00"
+  inlineStyles={{
+    element: { background: 'black' }
+  }}
+>
+  {`...`}
+</Indicate>
+
+// If you already have an element with overflow, just wrap that element with <Indicate>
+// and the first child will be used as the element. Make sure to pass a ref.
+const elementRef = useRef()
+<Indicate childAsElement ref={elementRef}>
+  <div ref={elementRef} style={{overflow: 'auto'}}>
+    <p>Whatever</p>
+  </div>
+</Indicate>
+```
+
+The `childAsElement` option is useful if you're adding `Indicate` to existing markup that
+already has an element with overflow. Without the option another unnecessary element is
+added and one overflow has no effect.
+
+Note that with `SSR` the plugin will render the `outerWrapper`, `element` and `innerWrapper`
+and apply their respective `inlineStyles`. Use these styles to prevent layout changes once
+the regular plugin is initialized along with the required listeners.
+
 ## Instance
 
 ```tsx

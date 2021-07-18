@@ -48,8 +48,8 @@ const alignment = (
   return style
 }
 
-const base: Theme = {
-  indicator: (_, options: Options, direction: Direction) => {
+export const base = {
+  indicator: (_: HTMLElement, options: Options, direction: Direction) => {
     const style: CSSProperties = {
       position: 'absolute',
       // Initially hidden.
@@ -80,7 +80,7 @@ const base: Theme = {
   show: (indicator: HTMLSpanElement) => {
     indicator.style.display = 'flex'
   },
-  arrow: (_, __: Options, direction: Direction) => ({
+  arrow: (_: HTMLElement, __: Options, direction: Direction) => ({
     width: '12px',
     height: '12px',
     display: 'block',
@@ -129,13 +129,13 @@ const base: Theme = {
       verticalAlign: 'top',
     }
 
-    if (table && element.style.overflow !== 'scroll') {
+    if (table && element && element.style.overflow !== 'scroll') {
       styles.overflow = 'auto'
     }
 
     return styles
   },
-  observer: (_, options, direction) =>
+  observer: (_: HTMLElement, options: Options, direction: Direction) =>
     ({
       position: 'absolute',
       pointerEvents: 'none',
