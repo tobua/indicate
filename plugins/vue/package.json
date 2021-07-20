@@ -4,18 +4,18 @@
     "start": "synec --no-watch && vue-cli-service serve"
   },
   "dependencies": {
-    "core-js": "^3.12.1",
-    "vue": "^2.6.12"
+    "core-js": "^3.15.2",
+    "vue": "^2.6.14"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.13",
     "@vue/cli-plugin-eslint": "~4.5.13",
     "@vue/cli-service": "~4.5.13",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.27.0",
-    "eslint-plugin-vue": "^7.9.0",
-    "synec": "^0.1.16",
-    "vue-template-compiler": "^2.6.12"
+    "eslint": "^7.31.0",
+    "eslint-plugin-vue": "^7.14.0",
+    "synec": "^0.2.0",
+    "vue-template-compiler": "^2.6.14"
   },
   "localDependencies": {
     "indicate": "../.."

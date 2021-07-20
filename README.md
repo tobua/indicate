@@ -98,26 +98,30 @@ indicate(document.getElementById('my-element'), {
 In the React version you can use all regular options plus a few specific ones.
 
 ```tsx
-<Indicate
-  // Specify what kind of tag the element should be, default 'div'.
-  as="div"
-  // Use any regular option.
-  color="#00FF00"
-  inlineStyles={{
-    element: { background: 'black' }
-  }}
->
-  {`...`}
-</Indicate>
+const Regular = (
+  <Indicate
+    // Specify what kind of tag the element should be, default 'div'.
+    as="div"
+    // Use any regular option.
+    color="#00FF00"
+    inlineStyles={{
+      element: { background: 'black' },
+    }}
+  >
+    {`...`}
+  </Indicate>
+)
 
 // If you already have an element with overflow, just wrap that element with <Indicate>
 // and the first child will be used as the element. Make sure to pass a ref.
 const elementRef = useRef()
-<Indicate childAsElement ref={elementRef} style={{display: 'inline-flex'}}>
-  <div ref={elementRef}>
-    <p>Whatever</p>
-  </div>
-</Indicate>
+const Existing = (
+  <Indicate childAsElement ref={elementRef} style={{ display: 'inline-flex' }}>
+    <div ref={elementRef}>
+      <p>Whatever</p>
+    </div>
+  </Indicate>
+)
 ```
 
 The `childAsElement` option is useful if you're adding `Indicate` to existing markup that
