@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/tobua/indicate/compare/v3.0.0...v3.1.0) (2021-07-20)
+
+
+### Features
+
+* **react:** draft version of layout preserving render for SSR ([9a3b937](https://github.com/tobua/indicate/commit/9a3b937dfcaa9f4fd329ea21b01a332478ccf295))
+
+
+### Bug Fixes
+
+* **plugins:** update vue example and documentation formatting ([4a9aece](https://github.com/tobua/indicate/commit/4a9aece1806aa0f040e3eb84f4e24691e0e91760))
+* **react:** improve SSR and option to use child element with ref ([b0cbd2b](https://github.com/tobua/indicate/commit/b0cbd2b05af1ddab36cf93b27aeb7ee21de5a43f))
+
 ## [3.0.0](https://github.com/tobua/indicate/compare/v2.3.1...v3.0.0) (2021-05-25)
 
 
