@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { Tiles } from 'react-preview'
-import { indicate, remove } from 'indicate'
+import { indicate, remove, Indicate } from 'indicate'
 import youtube from 'indicate/dist/theme/youtube'
 import className from 'indicate/dist/theme/class-name'
 import { Button } from 'markup/Button'
@@ -91,7 +92,40 @@ const toggleTestCases = () => {
   }
 }
 
+const ServerSideRendering = () => {
+  const [renderedMarkup, setMarkup] = useState('')
+  const reactRef = useRef()
+
+  useEffect(() => {
+    const markup = (
+      <>
+        <h4>Regular</h4>
+        <Indicate className="react-server-regular">
+          <Tiles />
+        </Indicate>
+        <h4>childAsElement</h4>
+        <Indicate
+          ref={reactRef}
+          childAsElement
+          style={{ display: 'inline-flex' }}
+          className="react-server-child"
+        >
+          <div ref={reactRef}>
+            <Tiles />
+          </div>
+        </Indicate>
+      </>
+    )
+
+    setMarkup(renderToStaticMarkup(markup))
+  }, [])
+
+  return <div dangerouslySetInnerHTML={{ __html: renderedMarkup }} />
+}
+
 export const TestCases = () => {
+  const reactRef = useRef()
+
   useEffect(() => {
     renderTestCases()
   })
@@ -273,6 +307,18 @@ export const TestCases = () => {
       <div style={{ display: 'flex' }} className="remove">
         <Tiles />
       </div>
+      <h2>React</h2>
+      <Indicate className="react-regular">
+        <Tiles />
+      </Indicate>
+      <h3>childAsElement</h3>
+      <Indicate ref={reactRef} childAsElement className="react-child">
+        <div ref={reactRef}>
+          <Tiles />
+        </div>
+      </Indicate>
+      <h3>Server-Side Rendering</h3>
+      <ServerSideRendering />
     </>
   )
 }

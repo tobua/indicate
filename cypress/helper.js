@@ -17,6 +17,16 @@ export const getIndicator = (className, position, inline = false) => {
   return wrapper.find(`span`).eq(positionToIndex[position] + 3)
 }
 
+export const noIndicators = (className, inline = false) => {
+  let wrapper = cy.get(className).parent()
+
+  if (inline) {
+    wrapper = wrapper.parent()
+  }
+
+  return wrapper.find('span').should('not.exist')
+}
+
 export const getIndicatorElement = (document, selector, position) =>
   document.querySelector(
     `${selector} ~ span:nth-of-type(${positionToIndex[position]})`
