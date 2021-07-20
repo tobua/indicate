@@ -9,8 +9,10 @@ export const log = (messageKey: string, objects = null) => {
       RemoveNoInstance: 'remove() no instance found for element',
       InvalidElement: 'Initialized failed due to invalid element',
       InvalidTheme: 'Invalid value provided to theme option',
-      ReactChildFragment:
-        'When using React with childAsElement option child cannot be a Fragment, falling back to adding an element',
+      ReactMultipleChildren:
+        'When using React with childAsElement option there can only be a single child node at the top, falling back to adding a wrapper element',
+      ReactMissingRef:
+        'When using React with childAsElement option a ref to the child node is required, falling back to adding a wrapper element',
     }
 
     const prefixedMessage = `indicate: ${Messages[messageKey]}.`

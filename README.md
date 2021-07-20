@@ -113,8 +113,8 @@ In the React version you can use all regular options plus a few specific ones.
 // If you already have an element with overflow, just wrap that element with <Indicate>
 // and the first child will be used as the element. Make sure to pass a ref.
 const elementRef = useRef()
-<Indicate childAsElement ref={elementRef}>
-  <div ref={elementRef} style={{overflow: 'auto'}}>
+<Indicate childAsElement ref={elementRef} style={{display: 'inline-flex'}}>
+  <div ref={elementRef}>
     <p>Whatever</p>
   </div>
 </Indicate>
@@ -124,9 +124,13 @@ The `childAsElement` option is useful if you're adding `Indicate` to existing ma
 already has an element with overflow. Without the option another unnecessary element is
 added and one overflow has no effect.
 
-Note that with `SSR` the plugin will render the `outerWrapper`, `element` and `innerWrapper`
-and apply their respective `inlineStyles`. Use these styles to prevent layout changes once
-the regular plugin is initialized along with the required listeners.
+The React version mostly wraps the vanilla JS version of the plugin. During Server-Side
+Rendering the plugin will not be initialized. This can cause layout issues between the
+first render and the second one after hydration. To fix these issues the React plugin will
+add the `outerWrapper`, the `element` and the `innerWrapper` during the server-side render
+already. With the `inlineStyles` option you can add custom styles to these elements to
+keep the layout intact. With the `childAsElement` option the 'reffed' element's style will
+be overriden, use the style prop on `Indicate` instead.
 
 ## Instance
 

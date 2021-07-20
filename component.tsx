@@ -6,10 +6,10 @@ import React, {
   ElementType,
   ReactNode,
   ReactElement,
-  Fragment,
   Children,
   forwardRef,
   MutableRefObject,
+  ForwardedRef,
 } from 'react'
 import { remove, indicate } from './instance'
 import { PluginOptions, pluginOptionsProperties } from './types'
@@ -47,44 +47,42 @@ const getElementProps = (ref: any, options: PluginOptions) => {
   return props
 }
 
-// Get the options applicable to the plugin.
-const getPluginProps = (options: {}, alsoEmpty = false) => {
-  const props = {}
+// Get plugin options from props and extract all values for useEffect().
+const spreadProperties = (optionsAndProps: {}) => {
+  const options: PluginOptions = {}
+  const optionValues = []
 
   pluginOptionsProperties.forEach((property) => {
-    if (alsoEmpty || Object.prototype.hasOwnProperty.call(options, property)) {
-      props[property] = options[property]
+    if (Object.prototype.hasOwnProperty.call(optionsAndProps, property)) {
+      options[property] = optionsAndProps[property]
     }
+    optionValues.push(optionsAndProps[property])
   })
 
-  return props
+  return {
+    options,
+    // Size of arguments with useEffect needs to stay constant, therefore also empty options.
+    optionValues,
+  }
 }
 
-// https://stackoverflow.com/questions/49012718/check-if-a-child-is-react-fragment
-const isFragment = (element: any, evaluated = false) => {
-  if (typeof element === 'object' && element.type === Fragment) {
-    return true
+const childrenValid = (
+  children: ReactNode,
+  childRef: ForwardedRef<HTMLElement>
+) => {
+  let valid = true
+
+  if (Children.count(children) !== 1) {
+    log('ReactMultipleChildren', { children })
+    valid = false
   }
 
-  if (element === Fragment) {
-    return true
+  if (!childRef) {
+    log('ReactMissingRef')
+    valid = false
   }
 
-  if (typeof element.type !== 'function') {
-    return false
-  }
-
-  // Only using this check in development.
-  if (process.env.NODE_ENV !== 'production') {
-    // Workaround to evaluate element.
-    const Element = element.type(element.props)
-
-    if (!evaluated) {
-      return isFragment(Element, true)
-    }
-  }
-
-  return false
+  return valid
 }
 
 type ReactHTMLElementProperties = React.DetailedHTMLProps<
@@ -106,15 +104,12 @@ interface Props {
 export const Indicate = forwardRef<
   HTMLElement,
   Props & PluginOptions & ReactHTMLElementProperties
->(({ as = 'div', children, childAsElement, ...options }, childRef) => {
+>(({ as = 'div', children, childAsElement, ...optionsAndProps }, childRef) => {
   const outerWrapperRef = useRef<HTMLDivElement>(null)
   const elementRef = useRef<HTMLElement>(null)
   const innerWrapperRef = useRef<HTMLDivElement>(null)
-  const elementProps = getElementProps(elementRef, options)
-  const allPluginOptions = getPluginProps(options, true)
-  const pluginOptions = getPluginProps(options)
-  const considerFragment = childAsElement && Children.count(children) === 1
-  const isChildFragment = considerFragment && isFragment(children)
+  const elementProps = getElementProps(elementRef, optionsAndProps)
+  const { options, optionValues } = spreadProperties(optionsAndProps)
   let content = null
   const outerWrapperProps: ReactHTMLDivElementProperties = {
     ref: outerWrapperRef,
@@ -132,34 +127,31 @@ export const Indicate = forwardRef<
     innerWrapperProps.style = base.innerWrapper(null, null, false)
   }
 
-  useEffect(
-    () => {
-      const outerWrapper = outerWrapperRef.current
-      const element =
-        elementRef?.current ??
-        (childRef as MutableRefObject<HTMLElement>)?.current
-      const innerWrapper = innerWrapperRef?.current
+  useEffect(() => {
+    const outerWrapper = outerWrapperRef.current
+    const element =
+      elementRef?.current ??
+      (childRef as MutableRefObject<HTMLElement>)?.current
+    const innerWrapper = innerWrapperRef?.current
 
-      indicate(element, { outerWrapper, innerWrapper, ...pluginOptions })
+    indicate(element, { outerWrapper, innerWrapper, ...options })
 
-      return () => {
-        remove(element)
-      }
-    },
-    // Size of arguments needs to stay constant, therefore also empty options.
-    Object.keys(allPluginOptions).map((key) => allPluginOptions[key])
-  )
+    return () => {
+      remove(element)
+    }
+  }, optionValues)
 
-  if (considerFragment && !isChildFragment) {
+  if (childAsElement && childrenValid(children, childRef)) {
     // cloneElement necessary to add styles, React elements immutable.
     content = cloneElement(children as ReactElement, {
-      style: { overflow: 'auto', ...options?.inlineStyles?.element },
+      ...elementProps,
+      style: {
+        overflow: 'auto',
+        ...options?.inlineStyles?.element,
+        ...elementProps?.style,
+      },
     })
   } else {
-    if (considerFragment && isChildFragment) {
-      log('ReactChildFragment', { children })
-    }
-
     // createElement workaround to render "as" element from string.
     content = createElement(
       as,
