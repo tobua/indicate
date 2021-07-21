@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, forwardRef } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Tiles } from 'react-preview'
 import { indicate, remove, Indicate } from 'indicate'
@@ -31,29 +31,31 @@ const TableColumn = (name) => (
   </td>
 )
 
-export const Table = ({ className }) => (
-  <table className={className}>
-    <thead>
-      <tr>
-        {TableHeader('First')}
-        {TableHeader('Second')}
-        {TableHeader('Third')}
-        {TableHeader('Fourth')}
-        {TableHeader('Fifth')}
-      </tr>
-    </thead>
-    <tbody>
-      {Array.from({ length: 3 }).map((_, index) => (
-        <tr key={index}>
-          {TableColumn('First')}
-          {TableColumn('Second')}
-          {TableColumn('Third')}
-          {TableColumn('Fourth')}
-          {TableColumn('Fifth')}
+export const Table = forwardRef<HTMLTableElement, { className?: string }>(
+  ({ className = '' }, ref) => (
+    <table ref={ref} className={className}>
+      <thead>
+        <tr>
+          {TableHeader('First')}
+          {TableHeader('Second')}
+          {TableHeader('Third')}
+          {TableHeader('Fourth')}
+          {TableHeader('Fifth')}
         </tr>
-      ))}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <tr key={index}>
+            {TableColumn('First')}
+            {TableColumn('Second')}
+            {TableColumn('Third')}
+            {TableColumn('Fourth')}
+            {TableColumn('Fifth')}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  )
 )
 
 const renderTestCases = () => {
@@ -95,6 +97,8 @@ const toggleTestCases = () => {
 const ServerSideRendering = () => {
   const [renderedMarkup, setMarkup] = useState('')
   const reactRef = useRef()
+  const reactStyleRef = useRef()
+  const reactTableRef = useRef()
 
   useEffect(() => {
     const markup = (
@@ -102,6 +106,10 @@ const ServerSideRendering = () => {
         <h4>Regular</h4>
         <Indicate className="react-server-regular">
           <Tiles />
+        </Indicate>
+        <h4>Table</h4>
+        <Indicate className="react-server-table">
+          <Table />
         </Indicate>
         <h4>childAsElement</h4>
         <Indicate
@@ -111,6 +119,58 @@ const ServerSideRendering = () => {
           className="react-server-child"
         >
           <div ref={reactRef}>
+            <Tiles />
+          </div>
+        </Indicate>
+        <h4>Table as Element</h4>
+        <Indicate
+          ref={reactTableRef}
+          childAsElement
+          className="react-server-child-table"
+        >
+          <Table ref={reactTableRef} />
+        </Indicate>
+        <h4>inlineStyles</h4>
+        <Indicate
+          inlineStyles={{
+            outerWrapper: {
+              backgroundColor: 'red',
+            },
+            element: {
+              backgroundColor: 'green',
+            },
+            innerWrapper: {
+              backgroundColor: 'blue',
+            },
+          }}
+          style={{
+            color: 'yellow',
+          }}
+          className="react-server-regular-styles"
+        >
+          <Tiles />
+        </Indicate>
+        <h4>inlineStyles with childAsElement</h4>
+        <Indicate
+          ref={reactStyleRef}
+          childAsElement
+          inlineStyles={{
+            outerWrapper: {
+              backgroundColor: 'red',
+            },
+            element: {
+              backgroundColor: 'green',
+            },
+            innerWrapper: {
+              display: 'inline-flex',
+            },
+          }}
+          style={{
+            color: 'yellow',
+          }}
+          className="react-server-regular-child-styles"
+        >
+          <div ref={reactStyleRef}>
             <Tiles />
           </div>
         </Indicate>
@@ -125,6 +185,8 @@ const ServerSideRendering = () => {
 
 export const TestCases = () => {
   const reactRef = useRef()
+  const reactStylesRef = useRef()
+  const reactTableRef = useRef()
 
   useEffect(() => {
     renderTestCases()
@@ -311,11 +373,47 @@ export const TestCases = () => {
       <Indicate className="react-regular">
         <Tiles />
       </Indicate>
+      <h3>Table</h3>
+      <Indicate className="react-table">
+        <Table />
+      </Indicate>
       <h3>childAsElement</h3>
       <Indicate ref={reactRef} childAsElement className="react-child">
         <div ref={reactRef}>
           <Tiles />
         </div>
+      </Indicate>
+      <h3>childAsElement with inlineStyles</h3>
+      <Indicate
+        ref={reactStylesRef}
+        childAsElement
+        inlineStyles={{
+          outerWrapper: {
+            backgroundColor: 'red',
+          },
+          element: {
+            backgroundColor: 'green',
+          },
+          innerWrapper: {
+            display: 'inline-flex',
+          },
+        }}
+        style={{
+          color: 'yellow',
+        }}
+        className="react-child-styles"
+      >
+        <div ref={reactStylesRef}>
+          <Tiles />
+        </div>
+      </Indicate>
+      <h3>Table as Element</h3>
+      <Indicate
+        ref={reactTableRef}
+        childAsElement
+        className="react-child-table"
+      >
+        <Table ref={reactTableRef} />
       </Indicate>
       <h3>Server-Side Rendering</h3>
       <ServerSideRendering />

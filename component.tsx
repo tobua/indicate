@@ -17,11 +17,11 @@ import { base } from './style'
 import { log } from './helper'
 
 // Remove PluginOptions from props to get the props meant for the element.
-const getElementProps = (ref: any, options: PluginOptions) => {
+const getElementProps = (ref: any, optionsAndProps: PluginOptions) => {
   const props: React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLDivElement>,
     HTMLDivElement
-  > = { ref, ...options }
+  > = { ref, ...optionsAndProps }
 
   pluginOptionsProperties.forEach((property) => {
     if (Object.prototype.hasOwnProperty.call(props, property)) {
@@ -29,18 +29,18 @@ const getElementProps = (ref: any, options: PluginOptions) => {
     }
   })
 
-  if (options.inlineStyles && options.inlineStyles.element) {
+  if (optionsAndProps.inlineStyles && optionsAndProps.inlineStyles.element) {
     props.style = {
-      ...options.inlineStyles.element,
+      ...optionsAndProps.inlineStyles.element,
       ...props.style,
     }
   }
 
-  if (
-    props.style &&
-    props.style.overflow !== 'auto' &&
-    props.style.overflow !== 'scroll'
-  ) {
+  if (!props.style) {
+    props.style = {}
+  }
+
+  if (props.style.overflow !== 'auto' && props.style.overflow !== 'scroll') {
     props.style.overflow = 'auto'
   }
 
@@ -119,12 +119,15 @@ export const Indicate = forwardRef<
   }
 
   if (!elementRef.current) {
-    // TODO consider table and inline elements as well.
     outerWrapperProps.style = {
-      overflow: 'auto',
+      ...(childAsElement && { overflow: 'auto' }),
       ...base.outerWrapper(null, null, null, false),
+      ...options.inlineStyles?.outerWrapper,
     }
-    innerWrapperProps.style = base.innerWrapper(null, null, false)
+    innerWrapperProps.style = {
+      ...base.innerWrapper(null, null, false),
+      ...options.inlineStyles?.innerWrapper,
+    }
   }
 
   useEffect(() => {
@@ -149,6 +152,8 @@ export const Indicate = forwardRef<
         overflow: 'auto',
         ...options?.inlineStyles?.element,
         ...elementProps?.style,
+        ...(!(childRef as MutableRefObject<HTMLElement>)?.current &&
+          options?.inlineStyles?.innerWrapper),
       },
     })
   } else {
