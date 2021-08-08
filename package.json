@@ -27,9 +27,9 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^17.0.14",
-    "cypress": "^8.0.0",
-    "padua": "^0.3.7"
+    "@types/react": "^17.0.16",
+    "cypress": "^8.2.0",
+    "padua": "^0.3.8"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {

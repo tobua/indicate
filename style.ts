@@ -205,7 +205,7 @@ export const theme = (
     ? { ...baseProperties, ...userProperties }
     : baseProperties
 
-  if (styles) {
+  if (styles && Object.keys(styles).length) {
     add(element, styles)
   }
 }

@@ -395,7 +395,7 @@ export const TestCases = () => {
             backgroundColor: 'green',
           },
           innerWrapper: {
-            display: 'inline-flex',
+            backgroundColor: 'red',
           },
         }}
         style={{
