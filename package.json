@@ -1,7 +1,7 @@
 {
   "name": "indicate",
   "description": "Scroll indicator for elements with scrollable overflow.",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "repository": "github:tobua/indicate",
   "homepage": "https://tobua.github.io/indicate",
   "license": "MIT",

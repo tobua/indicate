@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.1](https://github.com/tobua/indicate/compare/v3.1.0...v3.1.1) (2021-08-08)
+
+
+### Bug Fixes
+
+* **react:** improve placement of styles in SSR, check table and add tests ([5210410](https://github.com/tobua/indicate/commit/52104102071d757e5621db0e731a2682a9928a58))
+* **style:** only add styles if present and update ([1542ea3](https://github.com/tobua/indicate/commit/1542ea35705159a9abf08717982013dd49e16f38))
+
 ## [3.1.0](https://github.com/tobua/indicate/compare/v3.0.0...v3.1.0) (2021-07-20)
 
 
