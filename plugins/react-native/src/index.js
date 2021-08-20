@@ -1,14 +1,15 @@
 // @flow
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, ScrollView, SafeAreaView } from 'react-native'
 import omit from 'omit.js'
 import type {
   LayoutEvent,
-  ScrollEvent
+  ScrollEvent,
 } from 'react-native/Libraries/Types/CoreEventTypes'
 import type { Props as ScrollViewProps } from 'react-native/Libraries/Components/ScrollView/ScrollView'
-import direction from './util/direction'
+import { getDirectionFromBoolean } from './direction'
 import { Fade } from './Fade'
+import type { Direction, FadeType, View, Content } from './types'
 
 export type Props = {
   appearanceOffset: number,
@@ -19,237 +20,226 @@ export type Props = {
   wrapperStyle: ?any,
   contentContainerStyle: ?any,
   gradient: ?any,
-  children: ?any
+  children: ?any,
 } & ScrollViewProps
 
 type State = {
   direction: Direction,
-  fade: {
-    top: boolean,
-    right: boolean,
-    bottom: boolean,
-    left: boolean
-  },
-  view: {
-    width: number,
-    height: number
-  },
-  content: {
-    width: number,
-    height: number
-  }
+  setDirection: (value: Direction) => void,
+  fade: FadeType,
+  setFade: (value: FadeType) => void,
+  view: View,
+  setView: (value: View) => void,
+  content: Content,
+  setContent: (value: Content) => void,
 }
 
-export type Direction = 'both' | 'horizontal' | 'vertical'
+const handleLayout = (state, event: LayoutEvent) => {
+  const layout = event.nativeEvent.layout
 
-export default class Indicate extends Component<Props, State> {
-  static defaultProps = {
-    appearanceOffset: 10,
-    fadeWidth: 20
+  if (state.view.width < layout.width) {
+    state.view.width = layout.width
+  }
+  if (state.content.width) {
+    state.fade.right = state.content.width > state.view.width
   }
 
-  state = {
-    // Scroll directions (horizontal, vertical or both).
-    direction: direction(this.props.horizontal, this.props.vertical),
-    // Which fade elements are currently active.
-    fade: {
-      top: false,
-      right:
-        direction(this.props.horizontal, this.props.vertical) !== 'vertical',
-      bottom:
-        direction(this.props.horizontal, this.props.vertical) !== 'horizontal',
-      left: false
-    },
-    view: {
-      width: 0,
-      height: 0
-    },
-    content: {
-      width: 0,
-      height: 0
+  if (state.view.height < layout.height) {
+    state.view.height = layout.height
+  }
+  if (state.content.height) {
+    state.fade.bottom = state.content.height > state.view.height
+  }
+
+  state.setFade(state.fade)
+  state.setView(state.view)
+}
+
+const handleScroll = (
+  props: Props,
+  state: State,
+  direction: Direction,
+  event: ScrollEvent
+) => {
+  const offset = event.nativeEvent.contentOffset
+
+  if (direction === 'horizontal' || direction === 'both') {
+    state.fade.right =
+      offset.x + state.view.width + props.appearanceOffset < state.content.width
+    state.fade.left = offset.x > props.appearanceOffset
+  }
+
+  if (direction === 'vertical' || direction === 'both') {
+    state.fade.top = offset.y > props.appearanceOffset
+    state.fade.bottom =
+      offset.y + state.view.height + props.appearanceOffset <
+      state.content.height
+  }
+
+  state.setFade(state.fade)
+}
+
+const handleContentSizeChange = (
+  state: State,
+  direction: Direction,
+  width: number,
+  height: number
+) => {
+  // TODO new object
+  if (direction === 'horizontal' || direction === 'both') {
+    state.content.width = width
+    if (state.view.width) {
+      state.fade.right = state.content.width > state.view.width
     }
   }
 
-  handleLayout = (event: LayoutEvent) => {
-    const layout = event.nativeEvent.layout
-    const { fade, view, content } = this.state
-
-    if (view.width < layout.width) {
-      view.width = layout.width
+  if (direction === 'vertical' || direction === 'both') {
+    state.content.height = height
+    if (state.view.height) {
+      state.fade.bottom = state.content.height > state.view.height
     }
-    if (content.width) {
-      fade.right = content.width > view.width
-    }
-
-    if (view.height < layout.height) {
-      view.height = layout.height
-    }
-    if (content.height) {
-      fade.bottom = content.height > view.height
-    }
-
-    this.setState({
-      fade,
-      view
-    })
   }
 
-  handleContentSizeChange = (
-    direction: Direction,
-    width: number,
-    height: number
-  ) => {
-    const { fade, view, content } = this.state
+  state.setFade(state.fade)
+  state.setContent(state.content)
+}
 
-    if (direction === 'horizontal' || direction === 'both') {
-      content.width = width
-      if (view.width) {
-        fade.right = content.width > view.width
+const renderInnerScrollView = (
+  viewCompatibleProps: any,
+  props: Props,
+  state: State,
+  direction: Direction
+) => {
+  if (direction !== 'both') {
+    return props.children
+  }
+
+  // Second ScrollView for other direction as a ScrollView only supports one direction.
+  return (
+    <ScrollView
+      style={[styles.view, props.style]}
+      contentContainerStyle={[styles.container, props.contentContainerStyle]}
+      onContentSizeChange={(width, height) =>
+        handleContentSizeChange(state, 'vertical', width, height)
       }
-    }
-
-    if (direction === 'vertical' || direction === 'both') {
-      content.height = height
-      if (view.height) {
-        fade.bottom = content.height > view.height
+      scrollEventThrottle={300}
+      onScroll={(event: ScrollEvent) =>
+        handleScroll(props, state, 'vertical', event)
       }
-    }
+      {...viewCompatibleProps}
+    >
+      {props.children}
+    </ScrollView>
+  )
+}
 
-    this.setState({
-      fade,
-      content
-    })
+export default (props: Props): any => {
+  const { horizontal, vertical } = props
+
+  if (!props.appearanceOffset) {
+    props.appearanceOffset = 10
   }
 
-  handleScroll = (direction: Direction, event: ScrollEvent) => {
-    const offset = event.nativeEvent.contentOffset
-    const { fade, view, content } = this.state
-
-    if (direction === 'horizontal' || direction === 'both') {
-      fade.right =
-        offset.x + view.width + this.props.appearanceOffset < content.width
-      fade.left = offset.x > this.props.appearanceOffset
-    }
-
-    if (direction === 'vertical' || direction === 'both') {
-      fade.top = offset.y > this.props.appearanceOffset
-      fade.bottom =
-        offset.y + view.height + this.props.appearanceOffset < content.height
-    }
-
-    this.setState({
-      fade
-    })
+  if (!props.fadeWidth) {
+    props.fadeWidth = 20
   }
 
-  renderFadeElements() {
-    const { fadeWidth, gradient } = this.props
-    const { fade, view } = this.state
+  // Scroll directions (horizontal, vertical or both).
+  const [direction, setDirection] = useState<Direction>(
+    getDirectionFromBoolean(horizontal, vertical)
+  )
+  // Which fade elements are currently active.
+  const [fade, setFade] = useState<FadeType>({
+    top: false,
+    right: getDirectionFromBoolean(horizontal, vertical) !== 'vertical',
+    bottom: getDirectionFromBoolean(horizontal, vertical) !== 'horizontal',
+    left: false,
+  })
+  const [view, setView] = useState<View>({ width: 0, height: 0 })
+  const [content, setContent] = useState<Content>({ width: 0, height: 0 })
 
-    return (
-      <>
-        <Fade
-          side="top"
-          show={fade.top}
-          width={fadeWidth}
-          view={view}
-          gradient={gradient}
-        />
-        <Fade
-          side="right"
-          show={fade.right}
-          width={fadeWidth}
-          view={view}
-          gradient={gradient}
-        />
-        <Fade
-          side="bottom"
-          show={fade.bottom}
-          width={fadeWidth}
-          view={view}
-          gradient={gradient}
-        />
-        <Fade
-          side="left"
-          show={fade.left}
-          width={fadeWidth}
-          view={view}
-          gradient={gradient}
-        />
-      </>
-    )
+  const state: State = {
+    direction,
+    setDirection,
+    fade,
+    setFade,
+    view,
+    setView,
+    content,
+    setContent,
   }
 
-  renderInnerScrollView(passedProps: any) {
-    const { children } = this.props
+  // Make sure not to overwrite default styles of the ScrollView.
+  const viewCompatibleProps = omit(props, [
+    'style',
+    'contentContainerStyle',
+    'horizontal',
+    'vertical',
+  ])
 
-    if (this.state.direction !== 'both') {
-      return this.props.children
-    }
-
-    // Second ScrollView for other direction as a ScrollView only supports one direction.
-    return (
+  return (
+    <SafeAreaView style={[styles.wrapper, props.wrapperStyle]}>
       <ScrollView
-        style={[styles.view, this.props.style]}
-        contentContainerStyle={[
-          styles.container,
-          this.props.contentContainerStyle
-        ]}
-        onContentSizeChange={this.handleContentSizeChange.bind(
-          this,
-          'vertical'
-        )}
+        style={[styles.view, props.style]}
+        contentContainerStyle={[styles.container, props.contentContainerStyle]}
+        onContentSizeChange={(width, height) =>
+          handleContentSizeChange(
+            state,
+            direction === 'both' ? 'horizontal' : direction,
+            width,
+            height
+          )
+        }
         scrollEventThrottle={300}
-        onScroll={this.handleScroll.bind(this, 'vertical')}
-        {...passedProps}
+        onScroll={(event: ScrollEvent) =>
+          handleScroll(
+            props,
+            state,
+            direction === 'both' ? 'horizontal' : direction,
+            event
+          )
+        }
+        onLayout={(event: LayoutEvent) => handleLayout(state, event)}
+        horizontal={direction === 'both' || direction === 'horizontal'}
+        // All additional Indicate props will be passed to the ScrollView element.
+        {...viewCompatibleProps}
       >
-        {children}
+        {renderInnerScrollView(viewCompatibleProps, props, state, direction)}
       </ScrollView>
-    )
-  }
-
-  render() {
-    const { wrapperStyle, contentContainerStyle, style } = this.props
-    const { direction } = this.state
-    // Make sure not to overwrite default styles of the ScrollView.
-    const passedProps = omit(this.props, [
-      'style',
-      'contentContainerStyle',
-      'horizontal',
-      'vertical',
-      'appearanceOffset',
-      'fadeWidth'
-    ])
-
-    return (
-      <SafeAreaView style={[styles.wrapper, wrapperStyle]}>
-        <ScrollView
-          style={[styles.view, style]}
-          contentContainerStyle={[styles.container, contentContainerStyle]}
-          onContentSizeChange={this.handleContentSizeChange.bind(
-            this,
-            direction === 'both' ? 'horizontal' : direction
-          )}
-          scrollEventThrottle={300}
-          onScroll={this.handleScroll.bind(
-            this,
-            direction === 'both' ? 'horizontal' : direction
-          )}
-          onLayout={this.handleLayout}
-          horizontal={direction === 'both' || direction === 'horizontal'}
-          // All additional Indicate props will be passed to the ScrollView element.
-          {...passedProps}
-        >
-          {this.renderInnerScrollView(passedProps)}
-        </ScrollView>
-        {this.renderFadeElements()}
-      </SafeAreaView>
-    )
-  }
+      <Fade
+        side="top"
+        show={fade.top}
+        width={props.fadeWidth}
+        view={view}
+        gradient={props.gradient}
+      />
+      <Fade
+        side="right"
+        show={fade.right}
+        width={props.fadeWidth}
+        view={view}
+        gradient={props.gradient}
+      />
+      <Fade
+        side="bottom"
+        show={fade.bottom}
+        width={props.fadeWidth}
+        view={view}
+        gradient={props.gradient}
+      />
+      <Fade
+        side="left"
+        show={fade.left}
+        width={props.fadeWidth}
+        view={view}
+        gradient={props.gradient}
+      />
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
   wrapper: {},
   view: {},
-  container: {}
+  container: {},
 })

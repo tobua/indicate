@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 import renderer from 'react-test-renderer'
 import Indicate from 'react-native-indicate'
 
-const getChildren = tree =>
+const getChildren = (tree) =>
   tree.children[0].children[0].children[0].children[0].children
 
 test('Renders empty and without any options.', () => {

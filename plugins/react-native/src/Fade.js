@@ -8,7 +8,7 @@ type Props = {
   show: boolean,
   width: number,
   view: { width: number, height: number },
-  gradient: ?number
+  gradient: ?number,
 }
 
 type Side = 'top' | 'right' | 'bottom' | 'left'
@@ -28,26 +28,26 @@ export const Fade = ({ side, show, width, view, gradient }: Props) => {
           right: side === 'right' ? 0 : 'auto',
           top: topPosition(side, view, width),
           height: side === 'left' || side === 'right' ? '100%' : view.width,
-          width: side === 'bottom' || side === 'top' ? width : width
-        }
+          width: side === 'bottom' || side === 'top' ? width : width,
+        },
       ]}
     >
       <ImageBackground
         source={gradient || defaultGradient}
         style={{
           width: '100%',
-          height: '100%'
+          height: '100%',
         }}
         imageStyle={{
           resizeMode: 'stretch',
-          transform: [{ rotate: rotateGradient(side) }]
+          transform: [{ rotate: rotateGradient(side) }],
         }}
       />
     </View>
   )
 }
 
-const rotateGradient = side => {
+const rotateGradient = (side) => {
   if (side === 'right') {
     return '180deg'
   }
@@ -90,6 +90,6 @@ const topPosition = (side, view, width) => {
 
 const styles = StyleSheet.create({
   fade: {
-    position: 'absolute'
-  }
+    position: 'absolute',
+  },
 })
