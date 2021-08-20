@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, Text, ScrollView } from 'react-native'
 import Indicate from 'react-native-indicate'
 import blackGradient from './black-gradient.png'
 
 export default () => (
-  <View style={styles.screen}>
+  <ScrollView contentContainerStyle={styles.screen}>
     <Text style={styles.title}>Indicate</Text>
     <Text style={styles.subtitle}>both directions</Text>
     <Indicate wrapperStyle={styles.wrapper} style={styles.view}>
@@ -83,7 +83,7 @@ export default () => (
       </Text>
     </Indicate>
     <Text style={styles.footer}>create-react-native-plugin</Text>
-  </View>
+  </ScrollView>
 )
 
 const styles = StyleSheet.create({
