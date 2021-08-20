@@ -2,7 +2,7 @@ name: test
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   cypress:
@@ -28,3 +28,16 @@ jobs:
           # Wait for server above to start before testing.
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 240
+  react-native:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2.3.4
+      - uses: actions/setup-node@v2.1.2
+        with:
+          node-version: '14'
+          check-latest: true
+      - name: Test 📱
+        run: |
+          cd plugins/react-native
+          npm install
+          npm test
