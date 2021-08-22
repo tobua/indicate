@@ -5,7 +5,7 @@
   "repository": "github:tobua/indicate",
   "homepage": "https://github.com/tobua/indicate/tree/master/plugins/react-native",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "jest",
     "watch": "cpx 'src/**/*' app/node_modules/react-native-indicate/src --watch",
     "app": "node create-app.js"
   },
