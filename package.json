@@ -57,8 +57,8 @@
       "dist/index.d.ts": [
         "dist/index.d.ts"
       ],
-      "*": [
-        "dist/*"
+      "theme/*": [
+        "dist/theme/*"
       ]
     }
   }
