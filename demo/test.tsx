@@ -2,8 +2,8 @@ import { useState, useEffect, useRef, forwardRef } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { Tiles } from 'react-preview'
 import { indicate, remove, Indicate } from 'indicate'
-import youtube from 'indicate/dist/theme/youtube'
-import className from 'indicate/dist/theme/class-name'
+import youtube from 'indicate/theme/youtube'
+import className from 'indicate/theme/class-name'
 import { Button } from 'markup/Button'
 
 const TableHeader = (name) => (

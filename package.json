@@ -18,18 +18,32 @@
     "csstype": "^3.0.8",
     "react": "^17.0.2"
   },
+  "type": "module",
   "main": "dist/index.js",
-  "module": "dist/index.js",
+  "exports": {
+    ".": {
+      "default": "./dist/index.js"
+    },
+    "./theme/*": {
+      "default": "./dist/theme/*.js"
+    }
+  },
   "sideEffects": false,
   "source": "index.ts",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "keywords": [
+    "scroll",
+    "indicator",
+    "fade",
+    "overflow"
+  ],
   "devDependencies": {
-    "@types/react": "^17.0.16",
-    "cypress": "^8.2.0",
-    "padua": "^0.3.8"
+    "@types/react": "^17.0.19",
+    "cypress": "^8.3.0",
+    "padua": "^0.3.9"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {
@@ -37,5 +51,15 @@
   },
   "engines": {
     "node": ">= 14"
+  },
+  "typesVersions": {
+    "*": {
+      "dist/index.d.ts": [
+        "dist/index.d.ts"
+      ],
+      "*": [
+        "dist/*"
+      ]
+    }
   }
 }

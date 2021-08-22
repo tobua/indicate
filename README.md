@@ -156,9 +156,9 @@ Use themes to modify the styles of added elements. Use either one of the [publis
 
 ```ts
 // Adds a classname to every element for styling with CSS.
-import className from 'indicate/dist/theme/class-name.js'
+import className from 'indicate/theme/class-name'
 // Fade effect similar to the one found on youtube.
-import youtube from 'indicate/dist/theme/youtube.js'
+import youtube from 'indicate/theme/youtube'
 
 indicate('.element', { theme: youtube, color: '#FF00FF' })
 ```

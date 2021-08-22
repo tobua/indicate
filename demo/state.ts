@@ -1,7 +1,7 @@
 import { observable } from 'mobx'
 import { Type } from 'konfi'
-import youtube from 'indicate/dist/theme/youtube'
-import className from 'indicate/dist/theme/class-name'
+import youtube from 'indicate/theme/youtube'
+import className from 'indicate/theme/class-name'
 
 const themes = {
   youtube,
