@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.0.0](https://github.com/tobua/indicate/compare/v3.1.1...v4.0.0) (2021-08-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **react-native:** style not applied to inner view anymore, use innerViewStyle
+* **package:** theme import without /dist, e.g. 'indicate/theme/youtube'
+
+### Features
+
+* **package:** add exports map with link to themes ([bc1ef78](https://github.com/tobua/indicate/commit/bc1ef78989ddef790f0e5a920156f2c56f114d3a))
+
+
+### Bug Fixes
+
+* **react-native:** issue with updating size, prop types and better demo ([ee2a031](https://github.com/tobua/indicate/commit/ee2a0313f3bbd2e8f9b8d7f775b167dc283e5cbf))
+
 ### [3.1.1](https://github.com/tobua/indicate/compare/v3.1.0...v3.1.1) (2021-08-08)
 
 
