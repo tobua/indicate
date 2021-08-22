@@ -39,6 +39,7 @@ the following props.
 | appearanceOffset      | In this range scrollable overflow will be ignored.            | 10      | number  |
 | wrapperStyle          | Added to the wrapping SafeAreaView component.                 | null    | object  |
 | style                 | Styles added to the ScrollView.                               | null    | object  |
+| innerViewStyle        | Styles added to the inner ScrollView (both directions).       | null    | object  |
 | contentContainerStyle | Passed to the ScrollView as well.                             | null    | object  |
 | gradient              | Imported image representing a gradient for the left element.  | null    | number  |
 | any                   | All other props passed will be passed down to the ScrollView. | null    | any     |

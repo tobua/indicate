@@ -8,7 +8,7 @@ export default () => (
     <Text style={styles.title}>Indicate</Text>
     <Text style={styles.subtitle}>both directions</Text>
     <Indicate wrapperStyle={styles.wrapper} style={styles.view}>
-      <Text style={{ width: 500, height: 200 }}>
+      <Text style={styles.first}>
         Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa.Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa. Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
@@ -26,7 +26,7 @@ export default () => (
     </Indicate>
     <Text style={styles.subtitle}>horizontal</Text>
     <Indicate horizontal wrapperStyle={styles.wrapper} style={styles.view}>
-      <Text style={{ width: 500, height: 100 }}>
+      <Text style={styles.second}>
         Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa.Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa. Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
@@ -44,7 +44,7 @@ export default () => (
     </Indicate>
     <Text style={styles.subtitle}>vertical</Text>
     <Indicate vertical wrapperStyle={styles.wrapper} style={styles.view}>
-      <Text style={{ width: 200, height: 200 }}>
+      <Text style={styles.third}>
         Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa.Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa. Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
@@ -63,10 +63,10 @@ export default () => (
     <Text style={styles.subtitle}>gradient and style</Text>
     <Indicate
       wrapperStyle={styles.wrapper}
-      style={[styles.view, { borderWidth: 2 }]}
+      style={[styles.view, styles.viewBorder]}
       gradient={blackGradient}
     >
-      <Text style={{ width: 500, height: 200 }}>
+      <Text style={styles.fourth}>
         Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa.Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
         arepa. Lorem ipsum dolor ipsum sit loret amo loremata disorato molutiso
@@ -88,23 +88,23 @@ export default () => (
 
 const styles = StyleSheet.create({
   screen: {
-    paddingTop: 70,
-    paddingBottom: 50,
+    paddingTop: 60,
+    paddingBottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: 30,
+    paddingRight: 30,
   },
   title: {
-    marginBottom: 30,
-    fontSize: 50,
+    marginBottom: 20,
+    fontSize: 40,
   },
   footer: {
     marginTop: 30,
     fontSize: 15,
   },
   subtitle: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 10,
     fontSize: 20,
     alignSelf: 'flex-start',
@@ -115,4 +115,9 @@ const styles = StyleSheet.create({
   view: {
     backgroundColor: 'lightgray',
   },
+  first: { width: 500, height: 200 },
+  second: { width: 500, height: 100 },
+  third: { width: 200, height: 200 },
+  fourth: { width: 500, height: 200 },
+  viewBorder: { borderWidth: 2 },
 })

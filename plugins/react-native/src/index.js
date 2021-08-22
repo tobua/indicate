@@ -11,7 +11,20 @@ import { getDirectionFromBoolean } from './direction'
 import { Fade } from './Fade'
 import type { Direction, FadeType, View, Content } from './types'
 
-export type Props = {
+type Props = {
+  appearanceOffset: number,
+  fadeWidth: number,
+  horizontal: ?boolean,
+  vertical: ?boolean,
+  style: ?any,
+  innerViewStyle: ?any,
+  wrapperStyle: ?any,
+  contentContainerStyle: ?any,
+  gradient: ?any,
+  children: ?any,
+} & ScrollViewProps
+
+export type InputProps = {
   appearanceOffset: number,
   fadeWidth: number,
   horizontal: ?boolean,
@@ -88,20 +101,25 @@ const handleContentSizeChange = (
   width: number,
   height: number
 ) => {
+  // Wait until layout handler called.
+  if (!state.view.width && !state.view.height) {
+    return
+  }
+
   const newContent = { ...state.content }
   const newFade = { ...state.fade }
 
   if (direction === 'horizontal' || direction === 'both') {
     newContent.width = width
     if (state.view.width) {
-      newFade.right = state.content.width > state.view.width
+      newFade.right = newContent.width > state.view.width
     }
   }
 
   if (direction === 'vertical' || direction === 'both') {
     newContent.height = height
     if (state.view.height) {
-      newFade.bottom = state.content.height > state.view.height
+      newFade.bottom = newContent.height > state.view.height
     }
   }
 
@@ -109,6 +127,7 @@ const handleContentSizeChange = (
   state.setContent(newContent)
 }
 
+// Second ScrollView for other direction as a ScrollView only supports one direction.
 const renderInnerScrollView = (
   viewCompatibleProps: any,
   props: Props,
@@ -119,10 +138,9 @@ const renderInnerScrollView = (
     return props.children
   }
 
-  // Second ScrollView for other direction as a ScrollView only supports one direction.
   return (
     <ScrollView
-      style={[styles.view, props.style]}
+      style={[styles.view, props.innerViewStyle]}
       contentContainerStyle={[styles.container, props.contentContainerStyle]}
       onContentSizeChange={(width, height) =>
         handleContentSizeChange(state, 'vertical', width, height)
@@ -139,7 +157,7 @@ const renderInnerScrollView = (
   )
 }
 
-const addDefaults = (props: Props) => {
+const addDefaults = (props: InputProps): Props => {
   const allProps = { ...props }
 
   if (!props.appearanceOffset) {
@@ -150,11 +168,13 @@ const addDefaults = (props: Props) => {
     allProps.fadeWidth = 20
   }
 
-  return allProps
+  const result: any = allProps
+
+  return result
 }
 
-export default (props: Props): any => {
-  const allProps = addDefaults(props)
+export default (props: InputProps): any => {
+  const allProps: Props = addDefaults(props)
   const { horizontal, vertical, fadeWidth, gradient } = allProps
 
   // Scroll directions (horizontal, vertical or both).
