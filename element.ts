@@ -55,10 +55,7 @@ const wrap = ({
   return { outerWrapper, innerWrapper }
 }
 
-export const createInstance = (
-  element: HTMLElement,
-  options: Options
-): Instance => {
+export const createInstance = (element: HTMLElement, options: Options): Instance => {
   const table = isTable(element)
   const inline = isInline(element)
   const getSpansByDirection = () => {
@@ -99,11 +96,7 @@ export const createInstance = (
   } as Instance
 }
 
-const addArrow = (
-  instance: Instance,
-  indicator: HTMLSpanElement,
-  direction: Direction
-) => {
+const addArrow = (instance: Instance, indicator: HTMLSpanElement, direction: Direction) => {
   const options = instance.options.arrow
 
   if (!options) {

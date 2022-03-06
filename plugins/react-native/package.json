@@ -3,7 +3,7 @@
   "description": "Enhanced ScrollView with elements indicating scrollable overflow.",
   "version": "2.0.0",
   "repository": "github:tobua/indicate",
-  "homepage": "https://github.com/tobua/indicate/tree/master/plugins/react-native",
+  "homepage": "https://github.com/tobua/indicate/tree/main/plugins/react-native",
   "license": "MIT",
   "author": "Matthias Giger",
   "scripts": {

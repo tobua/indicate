@@ -1,12 +1,4 @@
-import {
-  CSSProperties,
-  Direction,
-  Options,
-  isHorizontal,
-  isVertical,
-  Theme,
-  Inline,
-} from './types'
+import { CSSProperties, Direction, Options, isHorizontal, isVertical, Theme, Inline } from './types'
 
 const directionToRotation = {
   [Direction.left]: 180,
@@ -22,11 +14,7 @@ const add = (element: HTMLElement, properties: CSSProperties) => {
   })
 }
 
-const alignment = (
-  direction: Direction,
-  options: Options,
-  observer = false
-) => {
+const alignment = (direction: Direction, options: Options, observer = false) => {
   const style: CSSProperties = {}
   const horizontal = isHorizontal(direction)
   const vertical = isVertical(direction)
@@ -95,12 +83,7 @@ export const base = {
 
     return styles
   },
-  element: (
-    element: HTMLElement,
-    _: Options,
-    table: boolean,
-    inline: Inline
-  ) => {
+  element: (element: HTMLElement, _: Options, table: boolean, inline: Inline) => {
     const styles: CSSProperties = {}
 
     if (inline) {
@@ -165,12 +148,7 @@ const apply = (
 
 // Base theme usually applied as required for plugin to work.
 // show and hide will not be extended when overridden by theme.
-const applyBaseTheme = (
-  key: ThemeKey,
-  element: HTMLElement,
-  options: Options,
-  args: any[]
-) => {
+const applyBaseTheme = (key: ThemeKey, element: HTMLElement, options: Options, args: any[]) => {
   if (['show', 'hide'].includes(key) && options.theme[key]) {
     return {}
   }
@@ -178,12 +156,7 @@ const applyBaseTheme = (
   return apply(base[key], element, options, ...args)
 }
 
-export const theme = (
-  element: HTMLElement,
-  key: ThemeKey,
-  options: Options,
-  ...args: any[]
-) => {
+export const theme = (element: HTMLElement, key: ThemeKey, options: Options, ...args: any[]) => {
   let userProperties: CSSProperties | undefined
 
   if (options.theme && options.theme[key]) {
@@ -193,17 +166,12 @@ export const theme = (
   let baseProperties = applyBaseTheme(key, element, options, args)
 
   // Add simple user styles from options.
-  if (
-    typeof options.inlineStyles === 'object' &&
-    typeof options.inlineStyles[key] === 'object'
-  ) {
+  if (typeof options.inlineStyles === 'object' && typeof options.inlineStyles[key] === 'object') {
     baseProperties = { ...baseProperties, ...options.inlineStyles[key] }
   }
 
   // Add default theme or user theme.
-  const styles = userProperties
-    ? { ...baseProperties, ...userProperties }
-    : baseProperties
+  const styles = userProperties ? { ...baseProperties, ...userProperties } : baseProperties
 
   if (styles && Object.keys(styles).length) {
     add(element, styles)

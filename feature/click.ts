@@ -1,10 +1,6 @@
 import { Direction, Instance, isHorizontal } from '../types'
 
-const scrollHorizontal = (
-  direction: Direction,
-  element: HTMLElement,
-  denominator: number
-) => {
+const scrollHorizontal = (direction: Direction, element: HTMLElement, denominator: number) => {
   const position = element.scrollLeft
   // Scoll for 50% of currently visible part.
   let scrollOffset = element.offsetWidth / denominator
@@ -19,11 +15,7 @@ const scrollHorizontal = (
   })
 }
 
-const scrollVertical = (
-  direction: Direction,
-  element: HTMLElement,
-  denominator: number
-) => {
+const scrollVertical = (direction: Direction, element: HTMLElement, denominator: number) => {
   const position = element.scrollTop
   // Scoll for 50% of currently visible part.
   let scrollOffset = element.offsetHeight / denominator
@@ -38,11 +30,7 @@ const scrollVertical = (
   })
 }
 
-const handleIndicatorClick = (
-  direction: Direction,
-  element: HTMLElement,
-  denominator: number
-) => {
+const handleIndicatorClick = (direction: Direction, element: HTMLElement, denominator: number) => {
   if (isHorizontal(direction)) {
     scrollHorizontal(direction, element, denominator)
   } else {
@@ -62,9 +50,7 @@ export const registerClickListener = (
   // Access here, as inferred type check above is lost inside methods.
   const { denominator } = instance.options.click
 
-  const scrollableElement = instance.table
-    ? instance.innerWrapper
-    : instance.element
+  const scrollableElement = instance.table ? instance.innerWrapper : instance.element
 
   if (instance.options.click) {
     element.addEventListener(

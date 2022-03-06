@@ -94,8 +94,7 @@ export const remove = (element: Elements) => {
   }
 
   elements.forEach((currentElement: HTMLElement) => {
-    const instance =
-      instances.get(currentElement) || wrappers.get(currentElement)
+    const instance = instances.get(currentElement) || wrappers.get(currentElement)
 
     if (!instance) {
       log('RemoveNoInstance', { element: currentElement })
@@ -115,17 +114,13 @@ export const remove = (element: Elements) => {
 
     if (!instance.options.outerWrapper) {
       // Remove outer wrapper.
-      instance.outerWrapper.replaceWith(
-        ...Array.from(instance.outerWrapper.childNodes)
-      )
+      instance.outerWrapper.replaceWith(...Array.from(instance.outerWrapper.childNodes))
     }
 
     if (!instance.options.innerWrapper) {
       // Remove inner wrapper.
       if (instance.table) {
-        instance.innerWrapper.replaceWith(
-          ...Array.from(instance.innerWrapper.childNodes)
-        )
+        instance.innerWrapper.replaceWith(...Array.from(instance.innerWrapper.childNodes))
       } else {
         const contents = instance.innerWrapper.innerHTML
         instance.innerWrapper.remove()

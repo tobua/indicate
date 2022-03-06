@@ -1,24 +1,25 @@
 {
   "name": "indicate",
   "description": "Scroll indicator for elements with scrollable overflow.",
-  "version": "4.0.0",
+  "version": "0.0.0-development",
   "repository": "github:tobua/indicate",
   "homepage": "https://tobua.github.io/indicate",
   "license": "MIT",
   "author": "Matthias Giger",
   "scripts": {
-    "start": "padua watch",
     "build": "padua build",
+    "start": "padua watch",
     "test": "cypress open"
   },
   "padua": {
     "entry": "theme/*.ts"
   },
   "dependencies": {
-    "csstype": "^3.0.8",
+    "csstype": "^3.0.11",
     "react": "^17.0.2"
   },
   "type": "module",
+  "sideEffects": false,
   "main": "dist/index.js",
   "exports": {
     ".": {
@@ -28,7 +29,6 @@
       "default": "./dist/theme/*.js"
     }
   },
-  "sideEffects": false,
   "source": "index.ts",
   "types": "dist/index.d.ts",
   "files": [
@@ -41,9 +41,9 @@
     "overflow"
   ],
   "devDependencies": {
-    "@types/react": "^17.0.19",
-    "cypress": "^8.3.0",
-    "padua": "^0.3.9"
+    "@types/react": "^17.0.39",
+    "cypress": "^9.5.1",
+    "padua": "^0.5.3"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {

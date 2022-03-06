@@ -1,6 +1,6 @@
 # indicate
 
-<img align="right" src="https://github.com/tobua/indicate/raw/master/logo.png" width="20%" alt="Indicate Scroll Plugin" />
+<img align="right" src="https://github.com/tobua/indicate/raw/main/logo.png" width="20%" alt="Indicate Scroll Plugin" />
 
 Indicates possible scroll using a fade effect in elements with overflow.
 
@@ -33,11 +33,11 @@ const Scrollable = () => <Indicate as="div" color="#00FF00">{`...`}</Indicate>
 
 ### Vue
 
-See [indicate/plugins/vue](https://github.com/tobua/indicate/tree/master/plugins/vue) for instructions and an example of how to integrate with Vue.
+See [indicate/plugins/vue](https://github.com/tobua/indicate/tree/main/plugins/vue) for instructions and an example of how to integrate with Vue.
 
 ### React Native
 
-See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/master/plugins/react-native) note that this plugin is quite different and has some drawbacks compared to the web version.
+See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/main/plugins/react-native) note that this plugin is quite different and has some drawbacks compared to the web version.
 
 ## Options
 
@@ -152,7 +152,7 @@ indicate('#my-element', { arrow: false })
 
 ## Theme
 
-Use themes to modify the styles of added elements. Use either one of the [published themes](https://github.com/tobua/indicate/tree/master/theme):
+Use themes to modify the styles of added elements. Use either one of the [published themes](https://github.com/tobua/indicate/tree/main/theme):
 
 ```ts
 // Adds a classname to every element for styling with CSS.
@@ -163,7 +163,7 @@ import youtube from 'indicate/theme/youtube'
 indicate('.element', { theme: youtube, color: '#FF00FF' })
 ```
 
-or create your **own theme** through the [dedicated documentation](https://github.com/tobua/indicate/tree/master/theme).
+or create your **own theme** through the [dedicated documentation](https://github.com/tobua/indicate/tree/main/theme).
 
 ## Styling
 

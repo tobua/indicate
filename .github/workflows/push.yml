@@ -1,0 +1,41 @@
+name: push
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test-publish-build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: npm install
+      - name: 🛠️ Build Demo
+        run: |
+          cd demo
+          npm install
+          npx papua build
+      - name: 🚀 Deploy Demo
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: demo
+          folder: demo/dist
+      - name: 🖥️ Serve Demo for Test
+        run: |
+          cd demo
+          # The & at the end ensures that the command exits
+          # and the server continues in the background.
+          npx papua serve &
+      - name: 🌲 Cypress Test
+        uses: cypress-io/github-action@v2
+        with:
+          install: false
+          # Wait for server above to start before testing.
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 240
+      - name: 🚧 Build
+        run: npm run build
+      - name: 📢 Release
+        uses: tobua/release-npm-action@v1
+        with:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

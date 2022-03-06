@@ -57,7 +57,7 @@ Any theme element can be configured in the following three ways:
 
 ## Default Theme
 
-Unless you provide a theme the default theme with some basic styling is applied. Therefore, once you pass in your own theme those styles are gone. Refer to the [default Theme](https://github.com/tobua/indicate/tree/master/theme/default.ts) in case you want to keep some of those styles or functionality.
+Unless you provide a theme the default theme with some basic styling is applied. Therefore, once you pass in your own theme those styles are gone. Refer to the [default Theme](https://github.com/tobua/indicate/tree/main/theme/default.ts) in case you want to keep some of those styles or functionality.
 
 ## TypeScript
 

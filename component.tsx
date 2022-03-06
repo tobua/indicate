@@ -18,10 +18,10 @@ import { log } from './helper'
 
 // Remove PluginOptions from props to get the props meant for the element.
 const getElementProps = (ref: any, optionsAndProps: PluginOptions) => {
-  const props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  > = { ref, ...optionsAndProps }
+  const props: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement> = {
+    ref,
+    ...optionsAndProps,
+  }
 
   pluginOptionsProperties.forEach((property) => {
     if (Object.prototype.hasOwnProperty.call(props, property)) {
@@ -66,10 +66,7 @@ const spreadProperties = (optionsAndProps: {}) => {
   }
 }
 
-const childrenValid = (
-  children: ReactNode,
-  childRef: ForwardedRef<HTMLElement>
-) => {
+const childrenValid = (children: ReactNode, childRef: ForwardedRef<HTMLElement>) => {
   let valid = true
 
   if (Children.count(children) !== 1) {
@@ -101,69 +98,62 @@ interface Props {
 }
 
 /* eslint-disable react/prop-types */
-export const Indicate = forwardRef<
-  HTMLElement,
-  Props & PluginOptions & ReactHTMLElementProperties
->(({ as = 'div', children, childAsElement, ...optionsAndProps }, childRef) => {
-  const outerWrapperRef = useRef<HTMLDivElement>(null)
-  const elementRef = useRef<HTMLElement>(null)
-  const innerWrapperRef = useRef<HTMLDivElement>(null)
-  const elementProps = getElementProps(elementRef, optionsAndProps)
-  const { options, optionValues } = spreadProperties(optionsAndProps)
-  let content = null
-  const outerWrapperProps: ReactHTMLDivElementProperties = {
-    ref: outerWrapperRef,
-  }
-  const innerWrapperProps: ReactHTMLDivElementProperties = {
-    ref: innerWrapperRef,
-  }
-
-  if (!elementRef.current) {
-    outerWrapperProps.style = {
-      ...(childAsElement && { overflow: 'auto' }),
-      ...base.outerWrapper(null, null, null, false),
-      ...options.inlineStyles?.outerWrapper,
+export const Indicate = forwardRef<HTMLElement, Props & PluginOptions & ReactHTMLElementProperties>(
+  ({ as = 'div', children, childAsElement, ...optionsAndProps }, childRef) => {
+    const outerWrapperRef = useRef<HTMLDivElement>(null)
+    const elementRef = useRef<HTMLElement>(null)
+    const innerWrapperRef = useRef<HTMLDivElement>(null)
+    const elementProps = getElementProps(elementRef, optionsAndProps)
+    const { options, optionValues } = spreadProperties(optionsAndProps)
+    let content = null
+    const outerWrapperProps: ReactHTMLDivElementProperties = {
+      ref: outerWrapperRef,
     }
-    innerWrapperProps.style = {
-      ...base.innerWrapper(null, null, false),
-      ...options.inlineStyles?.innerWrapper,
+    const innerWrapperProps: ReactHTMLDivElementProperties = {
+      ref: innerWrapperRef,
     }
-  }
 
-  useEffect(() => {
-    const outerWrapper = outerWrapperRef.current
-    const element =
-      elementRef?.current ??
-      (childRef as MutableRefObject<HTMLElement>)?.current
-    const innerWrapper = innerWrapperRef?.current
-
-    indicate(element, { outerWrapper, innerWrapper, ...options })
-
-    return () => {
-      remove(element)
+    if (!elementRef.current) {
+      outerWrapperProps.style = {
+        ...(childAsElement && { overflow: 'auto' }),
+        ...base.outerWrapper(null, null, null, false),
+        ...options.inlineStyles?.outerWrapper,
+      }
+      innerWrapperProps.style = {
+        ...base.innerWrapper(null, null, false),
+        ...options.inlineStyles?.innerWrapper,
+      }
     }
-  }, optionValues)
 
-  if (childAsElement && childrenValid(children, childRef)) {
-    // cloneElement necessary to add styles, React elements immutable.
-    content = cloneElement(children as ReactElement, {
-      ...elementProps,
-      style: {
-        overflow: 'auto',
-        ...options?.inlineStyles?.element,
-        ...elementProps?.style,
-        ...(!(childRef as MutableRefObject<HTMLElement>)?.current &&
-          options?.inlineStyles?.innerWrapper),
-      },
-    })
-  } else {
-    // createElement workaround to render "as" element from string.
-    content = createElement(
-      as,
-      elementProps,
-      <div {...innerWrapperProps}>{children}</div>
-    )
+    useEffect(() => {
+      const outerWrapper = outerWrapperRef.current
+      const element = elementRef?.current ?? (childRef as MutableRefObject<HTMLElement>)?.current
+      const innerWrapper = innerWrapperRef?.current
+
+      indicate(element, { outerWrapper, innerWrapper, ...options })
+
+      return () => {
+        remove(element)
+      }
+    }, optionValues)
+
+    if (childAsElement && childrenValid(children, childRef)) {
+      // cloneElement necessary to add styles, React elements immutable.
+      content = cloneElement(children as ReactElement, {
+        ...elementProps,
+        style: {
+          overflow: 'auto',
+          ...options?.inlineStyles?.element,
+          ...elementProps?.style,
+          ...(!(childRef as MutableRefObject<HTMLElement>)?.current &&
+            options?.inlineStyles?.innerWrapper),
+        },
+      })
+    } else {
+      // createElement workaround to render "as" element from string.
+      content = createElement(as, elementProps, <div {...innerWrapperProps}>{children}</div>)
+    }
+
+    return <div {...outerWrapperProps}>{content}</div>
   }
-
-  return <div {...outerWrapperProps}>{content}</div>
-})
+)

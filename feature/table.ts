@@ -4,13 +4,7 @@ import { wrapElementIn } from '../helper'
 
 // For tables both wrappers are applied around the element
 // to keep the DOM structure inside the table intact.
-export const wrapTable = ({
-  element,
-  options,
-}: {
-  element: HTMLElement
-  options: Options
-}) => {
+export const wrapTable = ({ element, options }: { element: HTMLElement; options: Options }) => {
   const outerWrapper = options.outerWrapper ?? document.createElement('div')
 
   theme(outerWrapper, 'outerWrapper', options, true, false)

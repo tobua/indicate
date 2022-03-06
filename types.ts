@@ -29,12 +29,7 @@ export const isEnd = (direction: Direction) =>
 
 export type Inline = false | string
 
-export type Elements =
-  | string
-  | Element
-  | HTMLElement
-  | NodeListOf<Element>
-  | ReactNode
+export type Elements = string | Element | HTMLElement | NodeListOf<Element> | ReactNode
 
 export interface Theme {
   indicator?:
@@ -47,11 +42,7 @@ export interface Theme {
     | CSSProperties
   hide?: (indicator: HTMLSpanElement) => void | CSSProperties
   show?: (indicator: HTMLSpanElement) => void | CSSProperties
-  arrow?: (
-    arrow: HTMLElement,
-    options: Options,
-    direction: Direction
-  ) => CSSProperties | void
+  arrow?: (arrow: HTMLElement, options: Options, direction: Direction) => CSSProperties | void
   outerWrapper?:
     | ((
         element: HTMLElement,
@@ -69,19 +60,11 @@ export interface Theme {
       ) => CSSProperties | void)
     | CSSProperties
   innerWrapper?:
-    | ((
-        element: HTMLElement,
-        options: Options,
-        table: boolean
-      ) => CSSProperties | void)
+    | ((element: HTMLElement, options: Options, table: boolean) => CSSProperties | void)
     | CSSProperties
 
   observer?:
-    | ((
-        element: HTMLElement,
-        options: Options,
-        direction: Direction
-      ) => CSSProperties | void)
+    | ((element: HTMLElement, options: Options, direction: Direction) => CSSProperties | void)
     | CSSProperties
 }
 
@@ -109,11 +92,7 @@ export interface ClickOptions {
   denominator?: number
 }
 
-export type ArrowIcon =
-  | 'arrow-rounded'
-  | 'pointer-rounded'
-  | 'arrow'
-  | 'pointer'
+export type ArrowIcon = 'arrow-rounded' | 'pointer-rounded' | 'arrow' | 'pointer'
 
 export interface PluginArrowOptions {
   position?: ArrowPosition

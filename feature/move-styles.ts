@@ -1,10 +1,6 @@
 import { Instance, Options } from '../types'
 
-export const move = (
-  element: HTMLElement,
-  wrapper: HTMLElement,
-  options: Options
-) => {
+export const move = (element: HTMLElement, wrapper: HTMLElement, options: Options) => {
   if (!options.moveStylesToWrapper) {
     return
   }
@@ -17,11 +13,7 @@ export const move = (
   element.style.cssText = null
 }
 
-export const undoMove = (
-  element: HTMLElement,
-  wrapper: HTMLElement,
-  instance: Instance
-) => {
+export const undoMove = (element: HTMLElement, wrapper: HTMLElement, instance: Instance) => {
   if (!instance.options.moveStylesToWrapper) {
     return
   }
