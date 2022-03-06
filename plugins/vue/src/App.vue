@@ -20,9 +20,9 @@ import { indicate } from 'indicate'
 
 export default {
   name: 'App',
-  mounted: function() {
+  mounted: function () {
     indicate(this.$refs.element)
-  }
+  },
 }
 </script>
 

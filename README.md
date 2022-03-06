@@ -37,7 +37,7 @@ See [indicate/plugins/vue](https://github.com/tobua/indicate/tree/main/plugins/v
 
 ### React Native
 
-See [indicate/plugins/react-native](https://github.com/tobua/indicate/tree/main/plugins/react-native) note that this plugin is quite different and has some drawbacks compared to the web version.
+See [react-native-indicate](https://github.com/tobua/react-native-indicate) but note that this plugin is quite different and has some drawbacks compared to the web version.
 
 ## Options
 
