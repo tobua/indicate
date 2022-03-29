@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "csstype": "^3.0.11",
-    "react": "^17.0.2"
+    "react": "^18.0.0"
   },
   "type": "module",
   "sideEffects": false,
@@ -41,9 +41,9 @@
     "overflow"
   ],
   "devDependencies": {
-    "@types/react": "^17.0.39",
-    "cypress": "^9.5.1",
-    "padua": "^0.5.3"
+    "@types/react": "^17.0.43",
+    "cypress": "^9.5.3",
+    "padua": "^0.5.4"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {
