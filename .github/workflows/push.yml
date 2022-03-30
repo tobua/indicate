@@ -13,7 +13,7 @@ jobs:
       - name: 🛠️ Build Demo
         run: |
           cd demo
-          npm install
+          npm install --legacy-peer-deps
           npx papua build
       - name: 🚀 Deploy Demo
         uses: JamesIves/github-pages-deploy-action@v4

@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "exmpl": "^3.0.0",
-    "konfi": "^0.1.11",
+    "konfi": "^1.0.0",
     "mobx": "^6.5.0",
     "mobx-react-lite": "^3.3.0",
     "papua": "^1.0.0",
