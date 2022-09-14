@@ -55,13 +55,7 @@ const tileArray = (count: number) => (
   </>
 )
 
-export const Tiles = ({
-  rows = 1,
-  columns = 9,
-}: {
-  rows?: number
-  columns?: number
-}) => {
+export const Tiles = ({ rows = 1, columns = 9 }: { rows?: number; columns?: number }) => {
   if (rows < 2) {
     return tileArray(columns)
   }
@@ -84,6 +78,7 @@ export const Tiles = ({
 }
 
 const Plugin = observer((props: { noEffect?: boolean }) => (
+  // @ts-ignore
   <Indicate
     as="div"
     style={getElementStyleProps(styles)}

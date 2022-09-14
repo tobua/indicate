@@ -1,0 +1,344 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Indicate } from 'indicate'
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<h1>Indicate SSR</h1>
+		<pre>{`<Indicate>`}</pre>
+		<Indicate>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate>`}</pre>
+		<Indicate>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate horizontal>`}</pre>
+		<Indicate horizontal>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate style={{ height: '90px' }}>`}</pre>
+		<Indicate style={{ height: '90px' }}>
+			<div style={{ display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
+				<div style={{ display: 'flex', flexDirection: 'row' }}>
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+				</div>
+				<div style={{ display: 'flex', flexDirection: 'row' }}>
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+				</div>
+			</div>
+		</Indicate>
+		<pre>{`<Indicate color="red">`}</pre>
+		<Indicate color="red">
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate width="80px">`}</pre>
+		<Indicate width="80px">
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<h2>Hydrated</h2>
+		<pre>{`<Indicate client:load>`}</pre>
+		<Indicate client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate client:load>`}</pre>
+		<Indicate client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate horizontal client:load>`}</pre>
+		<Indicate horizontal client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate click={false} client:load>`}</pre>
+		<Indicate click={false} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate style={{ height: '90px' }} client:load>`}</pre>
+		<Indicate style={{ height: '90px' }} client:load>
+			<div style={{ display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
+				<div style={{ display: 'flex', flexDirection: 'row' }}>
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+				</div>
+				<div style={{ display: 'flex', flexDirection: 'row' }}>
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+					<div class="box" />
+				</div>
+			</div>
+		</Indicate>
+		<pre>{`<Indicate color="red" client:load>`}</pre>
+		<Indicate color="red" client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate width="80px" client:load>`}</pre>
+		<Indicate width="80px" client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+	</main>
+</Layout>
+
+<style>
+	main {
+		margin: auto;
+		max-width: 60ch;
+	}
+
+	.box {
+		display: flex;
+		width: 50px;
+		height: 50px;
+		background: lightblue;
+		border-radius: 5px;
+		margin-right: 10px;
+	}
+</style>

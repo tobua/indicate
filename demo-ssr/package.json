@@ -1,0 +1,20 @@
+{
+  "name": "indicate-ssr-demo",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^1.2.3",
+    "indicate": "file:.."
+  },
+  "devDependencies": {
+    "@astrojs/react": "^1.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

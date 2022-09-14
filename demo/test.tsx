@@ -123,25 +123,16 @@ const ServerSideRendering = () => {
           </div>
         </Indicate>
         <h4>Table as Element</h4>
-        <Indicate
-          ref={reactTableRef}
-          childAsElement
-          className="react-server-child-table"
-        >
+        <Indicate ref={reactTableRef} childAsElement className="react-server-child-table">
           <Table ref={reactTableRef} />
         </Indicate>
         <h4>inlineStyles</h4>
         <Indicate
-          inlineStyles={{
-            outerWrapper: {
-              backgroundColor: 'red',
-            },
-            element: {
-              backgroundColor: 'green',
-            },
-            innerWrapper: {
-              backgroundColor: 'blue',
-            },
+          outerStyle={{
+            backgroundColor: 'red',
+          }}
+          innerStyle={{
+            backgroundColor: 'blue',
           }}
           style={{
             color: 'yellow',
@@ -154,16 +145,11 @@ const ServerSideRendering = () => {
         <Indicate
           ref={reactStyleRef}
           childAsElement
-          inlineStyles={{
-            outerWrapper: {
-              backgroundColor: 'red',
-            },
-            element: {
-              backgroundColor: 'green',
-            },
-            innerWrapper: {
-              display: 'inline-flex',
-            },
+          outerStyle={{
+            backgroundColor: 'red',
+          }}
+          innerStyle={{
+            display: 'inline-flex',
           }}
           style={{
             color: 'yellow',
@@ -195,8 +181,8 @@ export const TestCases = () => {
   return (
     <>
       <p>
-        These test cases are used to run automated tests with cypress and also
-        quickly spot issues after changes.
+        These test cases are used to run automated tests with cypress and also quickly spot issues
+        after changes.
       </p>
       <div
         style={{
@@ -214,10 +200,7 @@ export const TestCases = () => {
         <Tiles />
       </div>
       <h2>Vertical</h2>
-      <div
-        style={{ whiteSpace: 'nowrap', height: 120 }}
-        className="test vertical"
-      >
+      <div style={{ whiteSpace: 'nowrap', height: 120 }} className="test vertical">
         <Tiles rows={2} />
       </div>
       <h2>No Click</h2>
@@ -246,8 +229,8 @@ export const TestCases = () => {
       </div>
       <h2>Inline</h2>
       <p>
-        Adding absolutely positioned indicators to an inline element isn't
-        possible so inline elements are converted to inline-block.
+        Adding absolutely positioned indicators to an inline element isn't possible so inline
+        elements are converted to inline-block.
       </p>
       <div
         style={{
@@ -298,18 +281,12 @@ export const TestCases = () => {
         </div>
       </div>
       <h3>Inline-block and inline-flex</h3>
-      <div
-        className="test inline-display"
-        style={{ display: 'inline-block', width: 400 }}
-      >
+      <div className="test inline-display" style={{ display: 'inline-block', width: 400 }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Tiles />
         </div>
       </div>
-      <div
-        className="test inline-display"
-        style={{ display: 'inline-flex', width: 400 }}
-      >
+      <div className="test inline-display" style={{ display: 'inline-flex', width: 400 }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <Tiles />
         </div>
@@ -387,16 +364,11 @@ export const TestCases = () => {
       <Indicate
         ref={reactStylesRef}
         childAsElement
-        inlineStyles={{
-          outerWrapper: {
-            backgroundColor: 'red',
-          },
-          element: {
-            backgroundColor: 'green',
-          },
-          innerWrapper: {
-            backgroundColor: 'red',
-          },
+        outerStyle={{
+          backgroundColor: 'red',
+        }}
+        innerStyle={{
+          backgroundColor: 'red',
         }}
         style={{
           color: 'yellow',
@@ -408,11 +380,7 @@ export const TestCases = () => {
         </div>
       </Indicate>
       <h3>Table as Element</h3>
-      <Indicate
-        ref={reactTableRef}
-        childAsElement
-        className="react-child-table"
-      >
+      <Indicate ref={reactTableRef} childAsElement className="react-child-table">
         <Table ref={reactTableRef} />
       </Indicate>
       <h3>Server-Side Rendering</h3>

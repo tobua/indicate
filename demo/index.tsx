@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { autorun, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { Konfi } from 'konfi'
@@ -69,8 +69,7 @@ const handleOptions = (data: any) => {
   runInAction(() => Object.assign(options, data))
 }
 
-const handleStyles = (data: any) =>
-  runInAction(() => Object.assign(styles, data))
+const handleStyles = (data: any) => runInAction(() => Object.assign(styles, data))
 
 // Code preview matching current options.
 const CodePreview = observer(() => (
@@ -95,11 +94,7 @@ const Demo = () => {
       <div className="edits">
         <div style={{ flex: 1 }}>
           <h2>Edit Options</h2>
-          <Konfi
-            schema={optionsSchema}
-            data={options}
-            onChange={handleOptions}
-          />
+          <Konfi schema={optionsSchema} data={options} onChange={handleOptions} />
         </div>
         <div style={{ flex: 1 }}>
           <h2>Edit Styles & Contents</h2>
@@ -134,4 +129,4 @@ const Body = () => {
   )
 }
 
-render(<Body />, document.body)
+createRoot(document.body).render(<Body />)
