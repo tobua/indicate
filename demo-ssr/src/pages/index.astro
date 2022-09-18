@@ -58,6 +58,29 @@ import { Indicate } from 'indicate'
 			<div class="box" />
 			<div class="box" />
 		</Indicate>
+		<pre>{`<Indicate arrow={false}>`}</pre>
+		<Indicate arrow={false}>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
 		<pre>{`<Indicate style={{ height: '90px' }}>`}</pre>
 		<Indicate style={{ height: '90px' }}>
 			<div style={{ display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
@@ -153,6 +176,25 @@ import { Indicate } from 'indicate'
 			<div class="box" />
 			<div class="box" />
 		</Indicate>
+		<pre>{`<Indicate as="table">
+<Indicate style={{ display: 'inline' }}>`}</pre>
+		<Indicate as="table">
+			<tr>
+				<th>Company</th>
+				<th>Contact</th>
+				<th>Country</th>
+			</tr>
+			<tr>
+				<td>Alfreds Futterkiste</td>
+				<td>Maria Anders</td>
+				<td>Germany</td>
+			</tr>
+			<tr>
+				<td>Centro comercial Moctezuma</td>
+				<td>Francisco Chang</td>
+				<td>Mexico</td>
+			</tr>
+		</Indicate>
 		<h2>Hydrated</h2>
 		<pre>{`<Indicate client:load>`}</pre>
 		<Indicate client:load>
@@ -185,6 +227,29 @@ import { Indicate } from 'indicate'
 		</Indicate>
 		<pre>{`<Indicate horizontal client:load>`}</pre>
 		<Indicate horizontal client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={false} client:load>`}</pre>
+		<Indicate arrow={false} client:load>
 			<div class="box" />
 			<div class="box" />
 			<div class="box" />
@@ -323,6 +388,209 @@ import { Indicate } from 'indicate'
 			<div class="box" />
 			<div class="box" />
 			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={{ icon: 'pointer' }} client:load>`}</pre>
+		<Indicate arrow={{ icon: 'pointer' }} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={{ color: 'blue' }} client:load>`}</pre>
+		<Indicate arrow={{ color: 'blue' }} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={{ image: '/arrow.png' }} client:load>`}</pre>
+		<Indicate arrow={{ image: '/arrow.png' }} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={{ image: 'data:image/svg+xml;base64,...' }} client:load>`}</pre>
+		<Indicate arrow={{ image: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iNzUycHQiIGhlaWdodD0iNzUycHQiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDc1MiA3NTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8ZGVmcz4KICA8Y2xpcFBhdGggaWQ9ImEiPgogICA8cGF0aCBkPSJtMjM5IDE1OWgzNzMuNzl2NDM0aC0zNzMuNzl6Ii8+CiAgPC9jbGlwUGF0aD4KIDwvZGVmcz4KIDxwYXRoIGQ9Im0yMTIuNDcgNTM5LjU0Yy00My42Ni00My42Ni02Ny43MDctMTAxLjc1LTY3LjcwNy0xNjMuNTQgMC02MS43ODUgMjQuMDQ3LTExOS44OCA2Ny43MDctMTYzLjUzIDQzLjY1Ni00My42NiAxMDEuNzUtNjcuNzA3IDE2My41My02Ny43MDcgNjEuNzg5IDAgMTE5Ljg4IDI0LjA1MSAxNjMuNTQgNjcuNzA3IDQzLjY1NiA0My42NTYgNjcuNzA3IDEwMS43NSA2Ny43MDcgMTYzLjUzIDAgNjEuNzg5LTI0LjA1MSAxMTkuODgtNjcuNzA3IDE2My41NC00My42NiA0My42NTYtMTAxLjc1IDY3LjcwNy0xNjMuNTQgNjcuNzA3LTYxLjc4NSAwLTExOS44OC0yNC4wNTEtMTYzLjUzLTY3LjcwN3ptLTQ5LjIwNy0xNjMuNTRjMCAxMTcuMjkgOTUuNDU3IDIxMi43NCAyMTIuNzQgMjEyLjc0czIxMi43NC05NS40NTcgMjEyLjc0LTIxMi43NGMtMC4wMDM5MDYtMTE3LjI5LTk1LjQ2MS0yMTIuNzQtMjEyLjc1LTIxMi43NHMtMjEyLjc0IDk1LjQ1My0yMTIuNzQgMjEyLjc0eiIvPgogPHBhdGggZD0ibTM2OS45OSA0MzYuMzEgNjAuMzA5LTYwLjMwOS02MC4zMDktNjAuMzA5IDI1LjYyMS0yNS43MTUgODYuMDIzIDg2LjAyMy04Ni4wMjMgODYuMDIzem0yNS42MjEtMTM2LjYyLTE2IDE2LjA5NCA2MC4zMDkgNjAuMzA5LTYwLjMwOSA2MC4zMDkgMTYgMTYuMDk0IDc2LjQwMi03Ni40MDJ6Ii8+CiA8ZyBjbGlwLXBhdGg9InVybCgjYSkiPgogIDxwYXRoIHRyYW5zZm9ybT0ibWF0cml4KC45MjQ5NiAwIDAgLjkyNDk2IDEzOS4yMSAxMzkuMjEpIiBkPSJtMjQ5LjUgMzIxLjIgNjUuMjAxLTY1LjIwMS02NS4yMDEtNjUuMjAxIDI3LjctMjcuODAxIDkzLjAwMiA5My4wMDItOTMuMDAyIDkzLjAwMnptMjcuNy0xNDcuNy0xNy4yOTggMTcuMzk5IDY1LjIwMSA2NS4yMDEtNjUuMjAxIDY1LjIwMSAxNy4yOTggMTcuMzk5IDgyLjYtODIuNnoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzdHJva2Utd2lkdGg9IjEwIi8+CiA8L2c+CiA8cGF0aCB0cmFuc2Zvcm09Im1hdHJpeCguOTI0OTYgMCAwIC45MjQ5NiAxMzkuMjEgMTM5LjIxKSIgZD0ibTE1My45IDMyMS4yIDY1LjEtNjUuMjAxLTY1LjIwMS02NS4yMDEgMjcuNy0yNy44MDEgOTMuMDAyIDkzLjAwMi05My4wMDIgOTMuMDAyem0yNy41OTgtMTQ3LjctMTcuMjk4IDE3LjM5OSA2NS4yMDEgNjUuMjAxLTY1LjIwMSA2NS4yMDEgMTcuMjk4IDE3LjM5OSA4Mi42LTgyLjZ6IiBzdHJva2U9IiMwMDAiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgc3Ryb2tlLXdpZHRoPSIxMCIvPgo8L3N2Zz4K' }} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={{ markup: <span>{\`>\`}</span> }} client:load>`}</pre>
+		<Indicate arrow={{ markup: '>' }} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate arrow={{ position: 'end' }} client:load>`}</pre>
+		<Indicate arrow={{ position: 'end' }} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate hideScrollbar={false} client:load>`}</pre>
+		<Indicate hideScrollbar={false} client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate hideScrollbar={false} className="hello-class" client:load>`}</pre>
+		<Indicate hideScrollbar={false} className="hello-class" client:load>
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+			<div class="box" />
+		</Indicate>
+		<pre>{`<Indicate as="table" client:load>
+<Indicate style={{ display: 'inline' }} client:load>`}</pre>
+		<Indicate as="table" client:load>
+			<tr>
+				<th>Company</th>
+				<th>Contact</th>
+				<th>Country</th>
+			</tr>
+			<tr>
+				<td>Alfreds Futterkiste</td>
+				<td>Maria Anders</td>
+				<td>Germany</td>
+			</tr>
+			<tr>
+				<td>Centro comercial Moctezuma</td>
+				<td>Francisco Chang</td>
+				<td>Mexico</td>
+			</tr>
 		</Indicate>
 	</main>
 </Layout>

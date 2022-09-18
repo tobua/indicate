@@ -44,6 +44,122 @@ const childrenValid = (children: ReactNode, childRef: ForwardedRef<HTMLElement>)
   return valid
 }
 
+const hideScrollbarClass = 'hide-indicate-scrollbar'
+
+type ArrowIcon = 'arrow-rounded' | 'pointer-rounded' | 'arrow' | 'pointer'
+type ArrowPosition = 'center' | 'end' | 'start'
+
+interface ArrowProps {
+  // eslint-disable-next-line react/no-unused-prop-types
+  position: ArrowPosition
+  icon: ArrowIcon
+  color: string
+  image?: string
+  markup?: JSX.Element
+}
+
+const defaultArrowProps: ArrowProps = {
+  position: 'center',
+  icon: 'arrow-rounded',
+  color: '#000000',
+}
+
+const directionToRotation = {
+  [Direction.left]: 180,
+  [Direction.right]: 0,
+  [Direction.top]: 270,
+  [Direction.bottom]: 90,
+}
+
+function Arrow({ icon, color, markup, image, direction }: ArrowProps & { direction: Direction }) {
+  const style = {
+    width: 12,
+    height: 12,
+    display: 'block',
+    transform: `rotate(${directionToRotation[direction]}deg)`,
+  }
+
+  if (image) {
+    return <img style={style} src={image} alt={`indicate arrow ${direction}`} />
+  }
+
+  if (markup) {
+    return <span style={style}>{markup}</span>
+  }
+
+  if (icon === 'arrow-rounded') {
+    return (
+      <svg style={style} viewBox="0 0 120 120" stroke={color}>
+        <line strokeWidth={20} strokeLinecap="round" x1="10" y1="60" x2="110" y2="60" />
+        <line
+          strokeWidth={20}
+          strokeLinecap="round"
+          x1="108.213"
+          y1="57.3553"
+          x2="61.5442"
+          y2="10.6863"
+        />
+        <line
+          strokeWidth={20}
+          strokeLinecap="round"
+          x1="61.5442"
+          y1="109.213"
+          x2="108.213"
+          y2="62.5442"
+        />
+      </svg>
+    )
+  }
+
+  if (icon === 'pointer-rounded') {
+    return (
+      <svg style={style} viewBox="0 0 120 120" stroke={color}>
+        <line
+          strokeWidth={20}
+          strokeLinecap="round"
+          x1="43.1421"
+          y1="11"
+          x2="91.2254"
+          y2="59.0833"
+        />
+        <line
+          strokeWidth={20}
+          strokeLinecap="round"
+          x1="91.2254"
+          y1="60.1421"
+          x2="43.1421"
+          y2="108.225"
+        />
+      </svg>
+    )
+  }
+
+  if (icon === 'arrow') {
+    return (
+      <svg style={style} viewBox="0 0 120 120" stroke={color}>
+        <line strokeWidth={20} x1="0" y1="60" x2="120" y2="60" />
+        <line strokeWidth={20} x1="62.9289" y1="112.929" x2="113.284" y2="62.5736" />
+        <line strokeWidth={20} x1="113.284" y1="57.4264" x2="62.929" y2="7.07109" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg style={style} viewBox="0 0 120 120" stroke={color}>
+      <line strokeWidth={20} x1="37.0711" y1="6.92893" x2="96.8923" y2="66.7502" />
+      <line strokeWidth={20} x1="96.468" y1="53.0711" x2="37.0711" y2="112.468" />
+    </svg>
+  )
+}
+
+const getArrowPosition = (position: ArrowPosition) => {
+  if (position === 'center') {
+    return position
+  }
+
+  return `flex-${position}`
+}
+
 type ReactHTMLElementProperties = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>
 type ReactHTMLDivElementProperties = DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
@@ -60,10 +176,13 @@ interface Props {
   color?: string
   width?: string
   style?: CSSProperties
+  hideScrollbar?: boolean
   innerStyle?: CSSProperties
   outerStyle?: CSSProperties
   outerWrapperProps?: ReactHTMLDivElementProperties
   innerWrapperProps?: ReactHTMLDivElementProperties
+  arrow?: false & Partial<ArrowProps>
+  theme?: any // TODO
 }
 
 const createDirectionRefsObject = () =>
@@ -89,6 +208,9 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       outerStyle,
       outerWrapperProps,
       innerWrapperProps,
+      arrow = defaultArrowProps,
+      hideScrollbar = true,
+      className,
       ...props
     },
     childRef
@@ -182,6 +304,10 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       const element = elementRef?.current ?? (childRef as MutableRefObject<HTMLElement>)?.current
       // const innerWrapper = innerWrapperRef?.current
 
+      if (as === 'table') {
+        console.log(element, element instanceof Element)
+      }
+
       const disconnectObserver = observe(element)
 
       return disconnectObserver
@@ -193,16 +319,60 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         ...props,
         style: {
           overflow: 'auto',
+          ...(hideScrollbar && {
+            '-ms-overflow-style': 'none',
+            'scrollbar-width': 'none',
+          }),
+          ...style,
           // ...options?.inlineStyles?.element,
           // ...elementProps?.style,
           // ...(!(childRef as MutableRefObject<HTMLElement>)?.current && options?.inlineStyles?.innerWrapper),
         },
       })
+    } else if (as === 'table') {
+      content = (
+        <div
+          ref={elementRef}
+          style={{ position: 'relative', overflow: 'auto', verticalAlign: 'top' }}
+        >
+          <table ref={innerWrapperRef}>{children}</table>
+          {/* Observers */}
+          {directions.map((direction) => (
+            <span
+              key={direction}
+              ref={observersRef[direction]}
+              style={{
+                position: 'absolute',
+                top: isHorizontal(direction) ? '0' : 'auto',
+                left: isVertical(direction) ? '0' : 'auto',
+                [direction]: '0',
+                width: isVertical(direction) ? '100%' : 1,
+                height: isHorizontal(direction) ? '100%' : 1,
+              }}
+            />
+          ))}
+        </div>
+      )
     } else {
       // createElement workaround to render "as" element from string.
       content = createElement(
         as,
-        { ref: elementRef, style: { overflow: 'auto', ...style }, ...props },
+        {
+          ref: elementRef,
+          className:
+            className || hideScrollbar
+              ? `${className}${hideScrollbar ? ` ${hideScrollbarClass}` : ''}`
+              : undefined,
+          style: {
+            overflow: 'auto',
+            ...(hideScrollbar && {
+              '-ms-overflow-style': 'none',
+              'scrollbar-width': 'none',
+            }),
+            ...style,
+          },
+          ...props,
+        },
         <div
           style={{
             ...innerStyle,
@@ -239,6 +409,9 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         ref={outerWrapperRef}
         {...outerWrapperProps}
       >
+        {hideScrollbar && (
+          <style>{`.${hideScrollbarClass}::-webkit-scrollbar { display: none; }`}</style>
+        )}
         {content}
         {/* Indicators */}
         {directions.map((direction, index) => (
@@ -255,8 +428,8 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
               top: isHorizontal(direction) ? '0' : 'auto',
               left: isVertical(direction) ? '0' : 'auto',
               [direction]: '0',
-              alignItems: 'center',
-              justifyContent: 'center',
+              alignItems: getArrowPosition(arrow.position ?? 'center'),
+              justifyContent: getArrowPosition(arrow.position ?? 'center'),
               width: isHorizontal(direction) ? width : '100%',
               height: isVertical(direction) ? width : '100%',
             }}
@@ -266,7 +439,9 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             onKeyDown={() => {}}
             ref={indicatorsRef[index]}
             onClick={click ? () => handleIndicatorClick(direction) : null}
-          />
+          >
+            {arrow && <Arrow {...defaultArrowProps} {...arrow} direction={direction} />}
+          </span>
         ))}
       </div>
     )
