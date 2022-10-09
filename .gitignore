@@ -6,3 +6,4 @@ demo/.gitignore
 cypress/fixtures
 cypress/screenshots
 cypress/support
+.next

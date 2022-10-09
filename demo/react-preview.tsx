@@ -78,7 +78,6 @@ export const Tiles = ({ rows = 1, columns = 9 }: { rows?: number; columns?: numb
 }
 
 const Plugin = observer((props: { noEffect?: boolean }) => (
-  // @ts-ignore
   <Indicate
     as="div"
     style={getElementStyleProps(styles)}

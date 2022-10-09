@@ -19,7 +19,8 @@ import React, {
 import { directions, Direction, isHorizontal, isVertical } from './types'
 import { log } from './helper'
 
-type ObserverRefs = Record<Direction, MutableRefObject<HTMLSpanElement>>
+type ObserverRefs = Record<Direction, MutableRefObject<HTMLSpanElement & HTMLTableSectionElement>>
+type Visibility = Record<Direction, boolean>
 
 const initialVisibility = (horizontal: boolean, vertical: boolean) => ({
   [Direction.top]: false,
@@ -55,7 +56,7 @@ interface ArrowProps {
   icon: ArrowIcon
   color: string
   image?: string
-  markup?: JSX.Element
+  markup?: JSX.Element | ReactNode
 }
 
 const defaultArrowProps: ArrowProps = {
@@ -152,12 +153,95 @@ function Arrow({ icon, color, markup, image, direction }: ArrowProps & { directi
   )
 }
 
-const getArrowPosition = (position: ArrowPosition) => {
+const getArrowPosition = (arrow: false | Partial<ArrowProps>) => {
+  if (arrow === false) {
+    return 'normal'
+  }
+
+  const position = arrow.position ?? 'center'
+
   if (position === 'center') {
     return position
   }
 
   return `flex-${position}`
+}
+
+const getInline = (tag: ElementType<any>, display?: string) => {
+  if (display && display.startsWith('inline')) {
+    return true
+  }
+
+  return ['a', 'code', 'cite', 'span', 'strong', 'b', 'textarea'].includes(String(tag))
+}
+
+function Observers({ observersRef }: { observersRef: ObserverRefs }) {
+  return (
+    <>
+      {directions.map((direction) => (
+        <span
+          key={direction}
+          ref={observersRef[direction]}
+          style={{
+            position: 'absolute',
+            top: isHorizontal(direction) ? '0' : 'auto',
+            left: isVertical(direction) ? '0' : 'auto',
+            [direction]: '0',
+            width: isVertical(direction) ? '100%' : 1,
+            height: isHorizontal(direction) ? '100%' : 1,
+          }}
+        />
+      ))}
+    </>
+  )
+}
+
+function Indicators({
+  visibility,
+  click,
+  arrow,
+  indicatorsRef,
+  handleIndicatorClick,
+  width,
+  color,
+}: Partial<Props> & {
+  indicatorsRef: MutableRefObject<HTMLSpanElement[]>
+  visibility: Visibility
+  handleIndicatorClick: (direction: Direction) => void
+}) {
+  return (
+    <>
+      {directions.map((direction, index) => (
+        <span
+          key={direction}
+          style={{
+            display: 'flex',
+            opacity: visibility[direction] ? 1 : 0,
+            pointerEvents: visibility[direction] ? 'auto' : 'none',
+            background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${color})`,
+            transition: 'opacity 300ms linear',
+            position: 'absolute',
+            cursor: click ? 'pointer' : 'inherit',
+            top: isHorizontal(direction) ? '0' : 'auto',
+            left: isVertical(direction) ? '0' : 'auto',
+            [direction]: '0',
+            alignItems: getArrowPosition(arrow),
+            justifyContent: getArrowPosition(arrow),
+            width: isHorizontal(direction) ? width : '100%',
+            height: isVertical(direction) ? width : '100%',
+          }}
+          role="button"
+          aria-label={`Scroll ${direction}.`}
+          tabIndex={0}
+          onKeyDown={() => {}}
+          ref={indicatorsRef[index]}
+          onClick={click ? () => handleIndicatorClick(direction) : null}
+        >
+          {arrow && <Arrow {...defaultArrowProps} {...arrow} direction={direction} />}
+        </span>
+      ))}
+    </>
+  )
 }
 
 type ReactHTMLElementProperties = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>
@@ -172,7 +256,7 @@ interface Props {
   childAsElement?: boolean
   horizontal?: boolean
   vertical?: boolean
-  click?: false & { scrollDenominator: number }
+  click?: boolean | { scrollDenominator: number }
   color?: string
   width?: string
   style?: CSSProperties
@@ -181,8 +265,11 @@ interface Props {
   outerStyle?: CSSProperties
   outerWrapperProps?: ReactHTMLDivElementProperties
   innerWrapperProps?: ReactHTMLDivElementProperties
-  arrow?: false & Partial<ArrowProps>
+  arrow?: boolean | Partial<ArrowProps>
   theme?: any // TODO
+  show?: (indicator: HTMLSpanElement) => void
+  hide?: (hide: HTMLSpanElement) => void
+  moveStylesToWrapper?: boolean
 }
 
 const createDirectionRefsObject = () =>
@@ -211,15 +298,17 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       arrow = defaultArrowProps,
       hideScrollbar = true,
       className,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      moveStylesToWrapper = false, // TODO
       ...props
     },
     childRef
   ) => {
-    // TODO table, inline
     const outerWrapperRef = useRef<HTMLDivElement>(null)
     const elementRef = useRef<HTMLElement>(null)
-    const innerWrapperRef = useRef<HTMLDivElement>(null)
+    const innerWrapperRef = useRef<HTMLDivElement & HTMLTableElement>(null)
     const indicatorsRef = useRef<HTMLSpanElement[]>([])
+    const isInline = getInline(as, style && style.display)
 
     const observersRef = createDirectionRefsObject()
     const [visibility, setVisibility] = useState(initialVisibility(horizontal, vertical))
@@ -230,10 +319,11 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       const position = horizontalCurrent
         ? elementRef.current.scrollLeft
         : elementRef.current.scrollTop
+      const denominator = (click as { scrollDenominator: number }).scrollDenominator
 
       let scrollOffset =
         (horizontalCurrent ? elementRef.current.offsetWidth : elementRef.current.offsetHeight) /
-        click.scrollDenominator
+        denominator
 
       if (direction === Direction.left || direction === Direction.top) {
         scrollOffset = -scrollOffset
@@ -304,10 +394,6 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       const element = elementRef?.current ?? (childRef as MutableRefObject<HTMLElement>)?.current
       // const innerWrapper = innerWrapperRef?.current
 
-      if (as === 'table') {
-        console.log(element, element instanceof Element)
-      }
-
       const disconnectObserver = observe(element)
 
       return disconnectObserver
@@ -320,8 +406,8 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         style: {
           overflow: 'auto',
           ...(hideScrollbar && {
-            '-ms-overflow-style': 'none',
-            'scrollbar-width': 'none',
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none',
           }),
           ...style,
           // ...options?.inlineStyles?.element,
@@ -332,25 +418,38 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
     } else if (as === 'table') {
       content = (
         <div
+          // @ts-ignore
           ref={elementRef}
-          style={{ position: 'relative', overflow: 'auto', verticalAlign: 'top' }}
+          style={{ position: 'relative', overflow: 'auto', verticalAlign: 'top', ...style }}
         >
-          <table ref={innerWrapperRef}>{children}</table>
-          {/* Observers */}
-          {directions.map((direction) => (
-            <span
-              key={direction}
-              ref={observersRef[direction]}
-              style={{
-                position: 'absolute',
-                top: isHorizontal(direction) ? '0' : 'auto',
-                left: isVertical(direction) ? '0' : 'auto',
-                [direction]: '0',
-                width: isVertical(direction) ? '100%' : 1,
-                height: isHorizontal(direction) ? '100%' : 1,
-              }}
-            />
-          ))}
+          {/* @ts-ignore */}
+          <table
+            ref={innerWrapperRef}
+            style={{ display: 'inline-block', position: 'relative', verticalAlign: 'top' }}
+          >
+            {children}
+            <Observers observersRef={observersRef} />
+          </table>
+        </div>
+      )
+    } else if (isInline) {
+      content = (
+        <div
+          // @ts-ignore
+          ref={elementRef}
+          style={{ ...style, display: 'inline-block', overflow: 'auto', verticalAlign: 'top' }}
+        >
+          {createElement(
+            as,
+            {
+              ref: innerWrapperRef,
+              style: { position: 'relative', verticalAlign: 'top', display: 'inline-flex' },
+            },
+            <>
+              {children}
+              <Observers observersRef={observersRef} />
+            </>
+          )}
         </div>
       )
     } else {
@@ -366,8 +465,8 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           style: {
             overflow: 'auto',
             ...(hideScrollbar && {
-              '-ms-overflow-style': 'none',
-              'scrollbar-width': 'none',
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
             }),
             ...style,
           },
@@ -384,28 +483,19 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           {...innerWrapperProps}
         >
           {children}
-          {/* Observers */}
-          {directions.map((direction) => (
-            <span
-              key={direction}
-              ref={observersRef[direction]}
-              style={{
-                position: 'absolute',
-                top: isHorizontal(direction) ? '0' : 'auto',
-                left: isVertical(direction) ? '0' : 'auto',
-                [direction]: '0',
-                width: isVertical(direction) ? '100%' : 1,
-                height: isHorizontal(direction) ? '100%' : 1,
-              }}
-            />
-          ))}
+          <Observers observersRef={observersRef} />
         </div>
       )
     }
 
     return (
       <div
-        style={{ ...outerStyle, position: 'relative', ...(childAsElement && { overflow: 'auto' }) }}
+        style={{
+          ...outerStyle,
+          position: 'relative',
+          ...(childAsElement && { overflow: 'auto' }),
+          ...(isInline && { display: 'inline-block' }),
+        }}
         ref={outerWrapperRef}
         {...outerWrapperProps}
       >
@@ -413,36 +503,15 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           <style>{`.${hideScrollbarClass}::-webkit-scrollbar { display: none; }`}</style>
         )}
         {content}
-        {/* Indicators */}
-        {directions.map((direction, index) => (
-          <span
-            key={direction}
-            style={{
-              display: 'flex',
-              opacity: visibility[direction] ? 1 : 0,
-              pointerEvents: visibility[direction] ? 'auto' : 'none',
-              background: `linear-gradient(to ${direction}, rgba(255, 255, 255, 0), ${color})`,
-              transition: 'opacity 300ms linear',
-              position: 'absolute',
-              cursor: click ? 'pointer' : 'inherit',
-              top: isHorizontal(direction) ? '0' : 'auto',
-              left: isVertical(direction) ? '0' : 'auto',
-              [direction]: '0',
-              alignItems: getArrowPosition(arrow.position ?? 'center'),
-              justifyContent: getArrowPosition(arrow.position ?? 'center'),
-              width: isHorizontal(direction) ? width : '100%',
-              height: isVertical(direction) ? width : '100%',
-            }}
-            role="button"
-            aria-label={`Scroll ${direction}.`}
-            tabIndex={0}
-            onKeyDown={() => {}}
-            ref={indicatorsRef[index]}
-            onClick={click ? () => handleIndicatorClick(direction) : null}
-          >
-            {arrow && <Arrow {...defaultArrowProps} {...arrow} direction={direction} />}
-          </span>
-        ))}
+        <Indicators
+          visibility={visibility}
+          click={click}
+          arrow={arrow}
+          indicatorsRef={indicatorsRef}
+          handleIndicatorClick={handleIndicatorClick}
+          width={width}
+          color={color}
+        />
       </div>
     )
   }

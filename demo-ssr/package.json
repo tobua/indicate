@@ -1,20 +1,32 @@
 {
-  "name": "indicate-ssr-demo",
-  "version": "0.0.1",
+  "name": "indicate-demo-ssr",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 100
+  },
+  "eslintConfig": {
+    "extends": "next/core-web-vitals",
+    "root": true
   },
   "dependencies": {
-    "astro": "^1.2.6",
+    "next": "12.3.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "indicate": "file:.."
   },
   "devDependencies": {
-    "@astrojs/react": "^1.1.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@types/node": "18.8.3",
+    "@types/react": "18.0.21",
+    "@types/react-dom": "18.0.6",
+    "eslint": "8.25.0",
+    "eslint-config-next": "12.3.1",
+    "typescript": "4.8.4"
   }
 }
