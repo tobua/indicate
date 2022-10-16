@@ -153,11 +153,7 @@ function Arrow({ icon, color, markup, image, direction }: ArrowProps & { directi
   )
 }
 
-const getArrowPosition = (arrow: false | Partial<ArrowProps>) => {
-  if (arrow === false) {
-    return 'normal'
-  }
-
+const getArrowPosition = (arrow: Partial<ArrowProps>) => {
   const position = arrow.position ?? 'center'
 
   if (position === 'center') {
@@ -175,11 +171,18 @@ const getInline = (tag: ElementType<any>, display?: string) => {
   return ['a', 'code', 'cite', 'span', 'strong', 'b', 'textarea'].includes(String(tag))
 }
 
-function Observers({ observersRef }: { observersRef: ObserverRefs }) {
+function Observers({
+  observersRef,
+  as: ObserverElementType = 'span',
+  theme,
+}: Partial<Omit<Props, 'arrow'>> & {
+  observersRef: ObserverRefs
+  as?: 'span' | 'tbody'
+}) {
   return (
     <>
       {directions.map((direction) => (
-        <span
+        <ObserverElementType
           key={direction}
           ref={observersRef[direction]}
           style={{
@@ -189,6 +192,7 @@ function Observers({ observersRef }: { observersRef: ObserverRefs }) {
             [direction]: '0',
             width: isVertical(direction) ? '100%' : 1,
             height: isHorizontal(direction) ? '100%' : 1,
+            ...theme.observer,
           }}
         />
       ))}
@@ -204,10 +208,12 @@ function Indicators({
   handleIndicatorClick,
   width,
   color,
-}: Partial<Props> & {
+  theme,
+}: Partial<Omit<Props, 'arrow'>> & {
   indicatorsRef: MutableRefObject<HTMLSpanElement[]>
   visibility: Visibility
   handleIndicatorClick: (direction: Direction) => void
+  arrow: Partial<ArrowProps>
 }) {
   return (
     <>
@@ -229,6 +235,10 @@ function Indicators({
             justifyContent: getArrowPosition(arrow),
             width: isHorizontal(direction) ? width : '100%',
             height: isVertical(direction) ? width : '100%',
+            ...theme.indicator,
+            ...(visibility[direction]
+              ? theme.show && theme.show(indicatorsRef[index])
+              : theme.show && theme.hide(indicatorsRef[index])),
           }}
           role="button"
           aria-label={`Scroll ${direction}.`}
@@ -266,7 +276,16 @@ interface Props {
   outerWrapperProps?: ReactHTMLDivElementProperties
   innerWrapperProps?: ReactHTMLDivElementProperties
   arrow?: boolean | Partial<ArrowProps>
-  theme?: any // TODO
+  theme?: {
+    outerWrapper?: CSSProperties
+    element?: CSSProperties
+    innerWrapper?: CSSProperties
+    indicator?: CSSProperties
+    observer?: CSSProperties
+    arrow?: CSSProperties
+    hide?: (indicator: HTMLSpanElement) => void | CSSProperties
+    show?: (indicator: HTMLSpanElement) => void | CSSProperties
+  }
   show?: (indicator: HTMLSpanElement) => void
   hide?: (hide: HTMLSpanElement) => void
   moveStylesToWrapper?: boolean
@@ -300,6 +319,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       className,
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       moveStylesToWrapper = false, // TODO
+      theme = {},
       ...props
     },
     childRef
@@ -312,7 +332,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
 
     const observersRef = createDirectionRefsObject()
     const [visibility, setVisibility] = useState(initialVisibility(horizontal, vertical))
-    const sharedVisibility = useRef(visibility)
+    const sharedVisibility = useRef<Visibility>(visibility)
     let content = null
     const handleIndicatorClick = useCallback((direction: Direction) => {
       const horizontalCurrent = isHorizontal(direction)
@@ -334,6 +354,11 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         behavior: 'smooth',
       })
     }, [])
+
+    if (arrow === true) {
+      // eslint-disable-next-line no-param-reassign
+      arrow = defaultArrowProps
+    }
 
     const handleObservation = useCallback(
       (entries: IntersectionObserverEntry[]) => {
@@ -359,13 +384,13 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         })
 
         if (
-          newState.top !== visibility.top ||
-          newState.right !== visibility.right ||
-          newState.bottom !== visibility.bottom ||
-          newState.left !== visibility.left
+          newState.top !== sharedVisibility.current.top ||
+          newState.right !== sharedVisibility.current.right ||
+          newState.bottom !== sharedVisibility.current.bottom ||
+          newState.left !== sharedVisibility.current.left
         ) {
-          setVisibility(newState)
           sharedVisibility.current = newState
+          setVisibility(newState)
         }
       },
       [visibility, observersRef, sharedVisibility]
@@ -410,6 +435,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             scrollbarWidth: 'none',
           }),
           ...style,
+          ...theme.element,
           // ...options?.inlineStyles?.element,
           // ...elementProps?.style,
           // ...(!(childRef as MutableRefObject<HTMLElement>)?.current && options?.inlineStyles?.innerWrapper),
@@ -420,15 +446,26 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         <div
           // @ts-ignore
           ref={elementRef}
-          style={{ position: 'relative', overflow: 'auto', verticalAlign: 'top', ...style }}
+          style={{
+            position: 'relative',
+            overflow: 'auto',
+            verticalAlign: 'top',
+            ...style,
+            ...theme.element,
+          }}
         >
           {/* @ts-ignore */}
           <table
             ref={innerWrapperRef}
-            style={{ display: 'inline-block', position: 'relative', verticalAlign: 'top' }}
+            style={{
+              display: 'inline-block',
+              position: 'relative',
+              verticalAlign: 'top',
+              ...theme.innerWrapper,
+            }}
           >
             {children}
-            <Observers observersRef={observersRef} />
+            <Observers as="tbody" observersRef={observersRef} theme={theme} />
           </table>
         </div>
       )
@@ -437,17 +474,28 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         <div
           // @ts-ignore
           ref={elementRef}
-          style={{ ...style, display: 'inline-block', overflow: 'auto', verticalAlign: 'top' }}
+          style={{
+            ...style,
+            display: 'inline-block',
+            overflow: 'auto',
+            verticalAlign: 'top',
+            ...theme.element,
+          }}
         >
           {createElement(
             as,
             {
               ref: innerWrapperRef,
-              style: { position: 'relative', verticalAlign: 'top', display: 'inline-flex' },
+              style: {
+                position: 'relative',
+                verticalAlign: 'top',
+                display: 'inline-flex',
+                ...theme.innerWrapper,
+              },
             },
             <>
               {children}
-              <Observers observersRef={observersRef} />
+              <Observers observersRef={observersRef} theme={theme} />
             </>
           )}
         </div>
@@ -469,6 +517,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
               scrollbarWidth: 'none',
             }),
             ...style,
+            ...theme.element,
           },
           ...props,
         },
@@ -478,12 +527,13 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             position: 'relative',
             display: 'inline-flex',
             verticalAlign: 'top',
+            ...theme.innerWrapper,
           }}
           ref={innerWrapperRef}
           {...innerWrapperProps}
         >
           {children}
-          <Observers observersRef={observersRef} />
+          <Observers observersRef={observersRef} theme={theme} />
         </div>
       )
     }
@@ -495,6 +545,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           position: 'relative',
           ...(childAsElement && { overflow: 'auto' }),
           ...(isInline && { display: 'inline-block' }),
+          ...theme.outerWrapper,
         }}
         ref={outerWrapperRef}
         {...outerWrapperProps}
@@ -506,11 +557,12 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         <Indicators
           visibility={visibility}
           click={click}
-          arrow={arrow}
+          arrow={arrow as Partial<ArrowProps>}
           indicatorsRef={indicatorsRef}
           handleIndicatorClick={handleIndicatorClick}
           width={width}
           color={color}
+          theme={theme}
         />
       </div>
     )

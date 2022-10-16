@@ -226,7 +226,17 @@ const Home: NextPage = () => {
           <Boxes />
         </Indicate>
         <pre>{`<Indicate theme={{ ... }}>`}</pre>
-        <Indicate theme={{}}>
+        <Indicate
+          theme={{
+            outerWrapper: { border: '5px solid red' },
+            element: { border: '5px solid green' },
+            innerWrapper: { border: '5px solid blue' },
+            indicator: { border: '2px solid yellow' },
+            observer: { border: '2px solid purple' },
+            show: () => ({ backgroundColor: 'salmon' }),
+            hide: () => ({ backgroundColor: 'lime', opacity: 0.2 }),
+          }}
+        >
           <Boxes />
         </Indicate>
       </main>

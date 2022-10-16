@@ -42,7 +42,7 @@
   ],
   "devDependencies": {
     "@types/react": "^18.0.21",
-    "cypress": "^10.9.0",
+    "cypress": "^10.10.0",
     "padua": "^0.6.1"
   },
   "prettier": "padua/configuration/.prettierrc.json",
