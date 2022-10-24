@@ -37,6 +37,14 @@ const childrenValid = (children: ReactNode, childRef: ForwardedRef<HTMLElement>)
     valid = false
   }
 
+  if (
+    valid &&
+    (Children.toArray(children)[0] as any).type.toString() === Symbol('react.fragment').toString()
+  ) {
+    log('ReactFragmentRef', { children })
+    valid = false
+  }
+
   if (!childRef) {
     log('ReactMissingRef')
     valid = false
@@ -324,9 +332,9 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
     },
     childRef
   ) => {
-    const outerWrapperRef = useRef<HTMLDivElement>(null)
-    const elementRef = useRef<HTMLElement>(null)
-    const innerWrapperRef = useRef<HTMLDivElement & HTMLTableElement>(null)
+    const outerWrapperRef = useRef<HTMLDivElement>()
+    const elementRef = useRef<HTMLElement & HTMLDivElement>()
+    const innerWrapperRef = useRef<HTMLDivElement & HTMLTableElement>()
     const indicatorsRef = useRef<HTMLSpanElement[]>([])
     const isInline = getInline(as, style && style.display)
 
@@ -398,7 +406,6 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
 
     const observe = useCallback((element: HTMLElement) => {
       const observer = new IntersectionObserver(handleObservation, {
-        // TODO innerWrapper if table
         root: element,
         // Only parts of element inside the root element are counted.
         rootMargin: '0px',
@@ -415,36 +422,54 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
     }, [])
 
     useEffect(() => {
-      // const outerWrapper = outerWrapperRef.current
       const element = elementRef?.current ?? (childRef as MutableRefObject<HTMLElement>)?.current
-      // const innerWrapper = innerWrapperRef?.current
-
       const disconnectObserver = observe(element)
-
       return disconnectObserver
     }, [])
 
     if (childAsElement && childrenValid(children, childRef)) {
-      // cloneElement necessary to add styles, React elements immutable.
+      const innerChildrenModifiable = Children.toArray((children as any).props.children)
+
+      innerChildrenModifiable.push(
+        <Observers key="observers" observersRef={observersRef} theme={theme} />
+      )
+
+      // cloneElement necessary to add styles and observers, React elements immutable.
       content = cloneElement(children as ReactElement, {
         ...props,
+        className,
+        children: createElement(
+          'div',
+          {
+            style: {
+              // Transferring styles from child to inner wrapper.
+              ...(children as any).props.style,
+              display: 'inline-flex',
+              position: 'relative',
+              verticalAlign: 'top',
+              ...innerStyle,
+              ...theme.innerWrapper,
+            },
+            ref: innerWrapperRef,
+            ...innerWrapperProps,
+          },
+          innerChildrenModifiable
+        ),
         style: {
+          position: 'relative',
           overflow: 'auto',
+          verticalAlign: 'top',
           ...(hideScrollbar && {
             msOverflowStyle: 'none',
             scrollbarWidth: 'none',
           }),
           ...style,
           ...theme.element,
-          // ...options?.inlineStyles?.element,
-          // ...elementProps?.style,
-          // ...(!(childRef as MutableRefObject<HTMLElement>)?.current && options?.inlineStyles?.innerWrapper),
         },
       })
     } else if (as === 'table') {
       content = (
         <div
-          // @ts-ignore
           ref={elementRef}
           style={{
             position: 'relative',
@@ -454,13 +479,13 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             ...theme.element,
           }}
         >
-          {/* @ts-ignore */}
           <table
             ref={innerWrapperRef}
             style={{
               display: 'inline-block',
               position: 'relative',
               verticalAlign: 'top',
+              ...innerStyle,
               ...theme.innerWrapper,
             }}
           >
@@ -472,7 +497,6 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
     } else if (isInline) {
       content = (
         <div
-          // @ts-ignore
           ref={elementRef}
           style={{
             ...style,
@@ -490,6 +514,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
                 position: 'relative',
                 verticalAlign: 'top',
                 display: 'inline-flex',
+                ...innerStyle,
                 ...theme.innerWrapper,
               },
             },
@@ -523,10 +548,10 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         },
         <div
           style={{
-            ...innerStyle,
             position: 'relative',
             display: 'inline-flex',
             verticalAlign: 'top',
+            ...innerStyle,
             ...theme.innerWrapper,
           }}
           ref={innerWrapperRef}
@@ -543,7 +568,6 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         style={{
           ...outerStyle,
           position: 'relative',
-          ...(childAsElement && { overflow: 'auto' }),
           ...(isInline && { display: 'inline-block' }),
           ...theme.outerWrapper,
         }}

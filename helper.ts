@@ -13,6 +13,7 @@ export const log = (messageKey: string, objects = null) => {
         'When using React with childAsElement option there can only be a single child node at the top, falling back to adding a wrapper element',
       ReactMissingRef:
         'When using React with childAsElement option a ref to the child node is required, falling back to adding a wrapper element',
+      ReactFragmentRef: 'Cannot use a Fragment in conjunction with childAsElement',
     }
 
     const prefixedMessage = `indicate: ${Messages[messageKey]}.`

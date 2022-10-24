@@ -1,3 +1,4 @@
+import { useRef, Fragment } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Indicate } from 'indicate'
@@ -79,6 +80,9 @@ const Table = () => (
 )
 
 const Home: NextPage = () => {
+  const childRef = useRef<HTMLElement>(null)
+  const tableRef = useRef<HTMLTableElement>(null)
+
   return (
     <>
       <Head>
@@ -239,6 +243,60 @@ const Home: NextPage = () => {
         >
           <Boxes />
         </Indicate>
+        <pre>{`<Indicate childAsElement>`}</pre>
+        <Indicate childAsElement ref={childRef}>
+          <section style={{ display: 'inline-flex' }} ref={childRef}>
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+          </section>
+        </Indicate>
+        {/* <Indicate childAsElement ref={tableRef}>
+          <table ref={tableRef}>
+            <tr>
+              <th>Company</th>
+              <th>Contact</th>
+              <th>Country</th>
+            </tr>
+            <tr>
+              <td style={{ whiteSpace: 'nowrap' }}>Alfreds Futterkiste</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Maria Anders and Much More Text</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Germany and Some More Text</td>
+            </tr>
+            <tr>
+              <td style={{ whiteSpace: 'nowrap' }}>Centro comercial Moctezuma</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Francisco Chang</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Mexico and Some More Text</td>
+            </tr>
+            <tr>
+              <td style={{ whiteSpace: 'nowrap' }}>Centro comercial Moctezuma</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Francisco Chang</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Mexico and Some More Text</td>
+            </tr>
+            <tr>
+              <td style={{ whiteSpace: 'nowrap' }}>Centro comercial Moctezuma</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Francisco Chang</td>
+              <td style={{ whiteSpace: 'nowrap' }}>Mexico and Some More Text</td>
+            </tr>
+          </table>
+        </Indicate> */}
       </main>
     </>
   )

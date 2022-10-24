@@ -107,25 +107,24 @@ const ServerSideRendering = () => {
         <Indicate className="react-server-regular">
           <Tiles />
         </Indicate>
+        <h4>Horizontal</h4>
+        <Indicate horizontal className="react-server-horizontal">
+          <Tiles />
+        </Indicate>
         <h4>Table</h4>
         <Indicate className="react-server-table">
           <Table />
         </Indicate>
         <h4>childAsElement</h4>
-        <Indicate
-          ref={reactRef}
-          childAsElement
-          style={{ display: 'inline-flex' }}
-          className="react-server-child"
-        >
+        <Indicate ref={reactRef} childAsElement className="react-server-child">
           <div ref={reactRef}>
             <Tiles />
           </div>
         </Indicate>
-        <h4>Table as Element</h4>
+        {/* <h4>Table as Element</h4>
         <Indicate ref={reactTableRef} childAsElement className="react-server-child-table">
           <Table ref={reactTableRef} />
-        </Indicate>
+        </Indicate> */}
         <h4>inlineStyles</h4>
         <Indicate
           outerStyle={{
@@ -379,10 +378,10 @@ export const TestCases = () => {
           <Tiles />
         </div>
       </Indicate>
-      <h3>Table as Element</h3>
+      {/* <h3>Table as Element</h3>
       <Indicate ref={reactTableRef} childAsElement className="react-child-table">
         <Table ref={reactTableRef} />
-      </Indicate>
+      </Indicate> */}
       <h3>Server-Side Rendering</h3>
       <ServerSideRendering />
     </>
