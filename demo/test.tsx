@@ -98,7 +98,6 @@ const ServerSideRendering = () => {
   const [renderedMarkup, setMarkup] = useState('')
   const reactRef = useRef()
   const reactStyleRef = useRef()
-  const reactTableRef = useRef()
 
   useEffect(() => {
     const markup = (
@@ -121,10 +120,6 @@ const ServerSideRendering = () => {
             <Tiles />
           </div>
         </Indicate>
-        {/* <h4>Table as Element</h4>
-        <Indicate ref={reactTableRef} childAsElement className="react-server-child-table">
-          <Table ref={reactTableRef} />
-        </Indicate> */}
         <h4>inlineStyles</h4>
         <Indicate
           outerStyle={{
@@ -132,6 +127,11 @@ const ServerSideRendering = () => {
           }}
           innerStyle={{
             backgroundColor: 'blue',
+          }}
+          theme={{
+            element: {
+              backgroundColor: 'green',
+            },
           }}
           style={{
             color: 'yellow',
@@ -149,6 +149,11 @@ const ServerSideRendering = () => {
           }}
           innerStyle={{
             display: 'inline-flex',
+          }}
+          theme={{
+            element: {
+              backgroundColor: 'green',
+            },
           }}
           style={{
             color: 'yellow',
@@ -369,6 +374,11 @@ export const TestCases = () => {
         innerStyle={{
           backgroundColor: 'red',
         }}
+        theme={{
+          element: {
+            backgroundColor: 'green',
+          },
+        }}
         style={{
           color: 'yellow',
         }}
@@ -378,10 +388,6 @@ export const TestCases = () => {
           <Tiles />
         </div>
       </Indicate>
-      {/* <h3>Table as Element</h3>
-      <Indicate ref={reactTableRef} childAsElement className="react-child-table">
-        <Table ref={reactTableRef} />
-      </Indicate> */}
       <h3>Server-Side Rendering</h3>
       <ServerSideRendering />
     </>

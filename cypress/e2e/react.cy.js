@@ -43,9 +43,7 @@ describe('Basic tests for table elements', () => {
     cy.get(className).should('be.visible')
 
     // outerWrapper
-    cy.get(className)
-      .parent()
-      .should('have.css', 'background-color', 'rgb(255, 0, 0)')
+    cy.get(className).parent().should('have.css', 'background-color', 'rgb(255, 0, 0)')
     // element
     cy.get(className).should('have.css', 'background-color', 'rgb(0, 128, 0)')
     // element from style={}
@@ -53,14 +51,6 @@ describe('Basic tests for table elements', () => {
 
     // TODO innerWrapper styles for some reason moved to outerWrapper during init.
     // cy.get(className).parent().should('not.have.css', 'display', 'inline-flex')
-  })
-  it('React with childAsElement and table works.', () => {
-    const className = '.react-child-table'
-    open()
-    cy.get(className).should('be.visible')
-
-    getIndicator(className, 'left', true).should('not.be.visible')
-    getIndicator(className, 'right', true).should('be.visible')
   })
 })
 
@@ -70,10 +60,21 @@ describe('Preserves layout with server-side rendering.', () => {
     open()
     cy.get(className).should('be.visible')
 
-    // Indicators are be layout preserving and will only be added on the client.
-    noIndicators(className)
+    // Initial default indicators are already rendered on the server.
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'bottom').should('be.visible')
 
     // Tiles layout kept horizontal.
+    cy.get(className).invoke('height').should('be.lt', 300)
+  })
+  it('Horizontal only works on the server.', () => {
+    const className = '.react-server-horizontal'
+    open()
+    cy.get(className).should('be.visible')
+
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'bottom').should('not.be.visible')
+
     cy.get(className).invoke('height').should('be.lt', 300)
   })
   it('Table works when rendering on the server.', () => {
@@ -81,7 +82,8 @@ describe('Preserves layout with server-side rendering.', () => {
     open()
     cy.get(className).should('be.visible')
 
-    noIndicators(className, true)
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'bottom').should('be.visible')
 
     cy.get(className).invoke('height').should('be.lt', 300)
   })
@@ -90,16 +92,8 @@ describe('Preserves layout with server-side rendering.', () => {
     open()
     cy.get(className).should('be.visible')
 
-    noIndicators(className)
-
-    cy.get(className).invoke('height').should('be.lt', 300)
-  })
-  it('Table works with childAsElement when rendering on the server.', () => {
-    const className = '.react-server-child-table'
-    open()
-    cy.get(className).should('be.visible')
-
-    noIndicators(className, true)
+    getIndicator(className, 'right').should('be.visible')
+    getIndicator(className, 'bottom').should('be.visible')
 
     cy.get(className).invoke('height').should('be.lt', 300)
   })
@@ -109,18 +103,13 @@ describe('Preserves layout with server-side rendering.', () => {
     cy.get(className).should('be.visible')
 
     // outerWrapper
-    cy.get(className)
-      .parent()
-      .should('have.css', 'background-color', 'rgb(255, 0, 0)')
+    cy.get(className).parent().should('have.css', 'background-color', 'rgb(255, 0, 0)')
     // element
     cy.get(className).should('have.css', 'background-color', 'rgb(0, 128, 0)')
     // element from style={}
     cy.get(className).should('have.css', 'color', 'rgb(255, 255, 0)')
     // innerWrapper
-    cy.get(className)
-      .children()
-      .first()
-      .should('have.css', 'background-color', 'rgb(0, 0, 255)')
+    cy.get(className).children().first().should('have.css', 'background-color', 'rgb(0, 0, 255)')
   })
   it('Applies inline styles added.', () => {
     const className = '.react-server-regular-child-styles'
@@ -128,9 +117,7 @@ describe('Preserves layout with server-side rendering.', () => {
     cy.get(className).should('be.visible')
 
     // outerWrapper
-    cy.get(className)
-      .parent()
-      .should('have.css', 'background-color', 'rgb(255, 0, 0)')
+    cy.get(className).parent().should('have.css', 'background-color', 'rgb(255, 0, 0)')
     // element
     cy.get(className).should('have.css', 'background-color', 'rgb(0, 128, 0)')
     // element from style={}

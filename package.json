@@ -41,8 +41,8 @@
     "overflow"
   ],
   "devDependencies": {
-    "@types/react": "^18.0.21",
-    "cypress": "^10.10.0",
+    "@types/react": "^18.0.23",
+    "cypress": "^10.11.0",
     "padua": "^0.6.1"
   },
   "prettier": "padua/configuration/.prettierrc.json",
