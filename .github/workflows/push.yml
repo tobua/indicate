@@ -27,7 +27,7 @@ jobs:
           # and the server continues in the background.
           npx papua serve &
       - name: 🌲 Cypress Test
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           install: false
           # Wait for server above to start before testing.
