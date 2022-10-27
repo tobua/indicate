@@ -21,6 +21,16 @@ import { log } from './helper'
 
 type ObserverRefs = Record<Direction, MutableRefObject<HTMLSpanElement & HTMLTableSectionElement>>
 type Visibility = Record<Direction, boolean>
+type Theme = {
+  outerWrapper?: CSSProperties
+  element?: CSSProperties
+  innerWrapper?: CSSProperties
+  indicator?: CSSProperties
+  observer?: CSSProperties
+  arrow?: CSSProperties
+  hide?: (indicator: HTMLSpanElement) => void | CSSProperties
+  show?: (indicator: HTMLSpanElement) => void | CSSProperties
+}
 
 const initialVisibility = (horizontal: boolean, vertical: boolean) => ({
   [Direction.top]: false,
@@ -80,12 +90,20 @@ const directionToRotation = {
   [Direction.bottom]: 90,
 }
 
-function Arrow({ icon, color, markup, image, direction }: ArrowProps & { direction: Direction }) {
+function Arrow({
+  icon,
+  color,
+  markup,
+  image,
+  direction,
+  theme,
+}: ArrowProps & { direction: Direction; theme: Theme }) {
   const style = {
     width: 12,
     height: 12,
     display: 'block',
     transform: `rotate(${directionToRotation[direction]}deg)`,
+    ...theme.arrow,
   }
 
   if (image) {
@@ -255,7 +273,7 @@ function Indicators({
           ref={indicatorsRef[index]}
           onClick={click ? () => handleIndicatorClick(direction) : null}
         >
-          {arrow && <Arrow {...defaultArrowProps} {...arrow} direction={direction} />}
+          {arrow && <Arrow {...defaultArrowProps} {...arrow} direction={direction} theme={theme} />}
         </span>
       ))}
     </>
@@ -284,16 +302,7 @@ interface Props {
   outerWrapperProps?: ReactHTMLDivElementProperties
   innerWrapperProps?: ReactHTMLDivElementProperties
   arrow?: boolean | Partial<ArrowProps>
-  theme?: {
-    outerWrapper?: CSSProperties
-    element?: CSSProperties
-    innerWrapper?: CSSProperties
-    indicator?: CSSProperties
-    observer?: CSSProperties
-    arrow?: CSSProperties
-    hide?: (indicator: HTMLSpanElement) => void | CSSProperties
-    show?: (indicator: HTMLSpanElement) => void | CSSProperties
-  }
+  theme?: Theme
   show?: (indicator: HTMLSpanElement) => void
   hide?: (hide: HTMLSpanElement) => void
   moveStylesToWrapper?: boolean
@@ -325,8 +334,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       arrow = defaultArrowProps,
       hideScrollbar = true,
       className,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      moveStylesToWrapper = false, // TODO
+      moveStylesToWrapper = false,
       theme = {},
       ...props
     },
@@ -443,7 +451,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           {
             style: {
               // Transferring styles from child to inner wrapper.
-              ...(children as any).props.style,
+              ...(!moveStylesToWrapper && (children as any).props.style),
               display: 'inline-flex',
               position: 'relative',
               verticalAlign: 'top',
@@ -570,6 +578,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           position: 'relative',
           ...(isInline && { display: 'inline-block' }),
           ...theme.outerWrapper,
+          ...(childAsElement && moveStylesToWrapper && (children as any).props.style),
         }}
         ref={outerWrapperRef}
         {...outerWrapperProps}

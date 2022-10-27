@@ -1,4 +1,4 @@
-import { useRef, Fragment } from 'react'
+import { useRef, useState, memo } from 'react'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Indicate } from 'indicate'
@@ -16,38 +16,15 @@ const Box = () => (
   />
 )
 
-const FewBoxes = () => (
+const Boxes = ({ count = 20 }) => (
   <>
-    <Box />
-    <Box />
-    <Box />
+    {Array.from(Array(count)).map((value, index) => (
+      <Box key={index} />
+    ))}
   </>
 )
 
-const Boxes = () => (
-  <>
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-    <Box />
-  </>
-)
+const FewBoxes = () => <Boxes count={3} />
 
 const Table = () => (
   <tbody>
@@ -79,9 +56,64 @@ const Table = () => (
   </tbody>
 )
 
+let memoRenderCount = 0
+
+const MemoizedBoxesWithCounter = memo(function MemoizedBoxesWithCounter() {
+  const [count, setCount] = useState(1)
+
+  memoRenderCount++
+
+  return (
+    <>
+      <p>Memo Child Count: {count}</p>
+      <p>Memo Render Count: {memoRenderCount}</p>
+      <button onClick={() => setCount(count + 1)}>add</button>
+      <Boxes />
+    </>
+  )
+})
+
+let renderCount = 0
+
+const BoxesWithCounter = () => {
+  const [count, setCount] = useState(1)
+
+  renderCount++
+
+  return (
+    <>
+      <p>Child Count: {count}</p>
+      <p>Render Count: {renderCount}</p>
+      <button onClick={() => setCount(count + 1)}>add</button>
+      <Boxes />
+    </>
+  )
+}
+
+const RerenderCounter = () => {
+  const [count, setCount] = useState(1)
+
+  return (
+    <div>
+      <p>Outer Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Add</button>
+      <Indicate>
+        <div>
+          <div style={{ display: 'inline-flex' }}>
+            <BoxesWithCounter />
+          </div>
+          <div style={{ display: 'inline-flex' }}>
+            <MemoizedBoxesWithCounter />
+          </div>
+        </div>
+      </Indicate>
+    </div>
+  )
+}
+
 const Home: NextPage = () => {
   const childRef = useRef<HTMLElement>(null)
-  const tableRef = useRef<HTMLTableElement>(null)
+  const childRefMoveStyles = useRef<HTMLElement>(null)
 
   return (
     <>
@@ -102,6 +134,19 @@ const Home: NextPage = () => {
         <Indicate horizontal>
           <Boxes />
         </Indicate>
+        <pre>{`<Indicate vertical style={{ height: '90px' }}>`}</pre>
+        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Indicate vertical style={{ height: '90px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <Boxes count={7} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <Boxes count={7} />
+              </div>
+            </div>
+          </Indicate>
+        </div>
         <pre>{`<Indicate arrow={false}>`}</pre>
         <Indicate arrow={false}>
           <Boxes />
@@ -143,6 +188,19 @@ const Home: NextPage = () => {
         <Indicate horizontal>
           <Boxes />
         </Indicate>
+        <pre>{`<Indicate vertical style={{ height: '90px' }}>`}</pre>
+        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+          <Indicate vertical style={{ height: '90px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', rowGap: '10px' }}>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <Boxes count={7} />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <Boxes count={7} />
+              </div>
+            </div>
+          </Indicate>
+        </div>
         <pre>{`<Indicate arrow={false}>`}</pre>
         <Indicate arrow={false}>
           <Boxes />
@@ -192,11 +250,11 @@ const Home: NextPage = () => {
           <Boxes />
         </Indicate>
         <pre>{`<Indicate arrow={{ markup: '>' }}>`}</pre>
-        <Indicate arrow={{ markup: '>' }}>
+        <Indicate arrow={{ markup: '>' }} theme={{ arrow: { height: 20 } }}>
           <Boxes />
         </Indicate>
         <pre>{`<Indicate arrow={{ markup: <span>{\`>\`}</span> }}>`}</pre>
-        <Indicate arrow={{ markup: <span>{`>`}</span> }}>
+        <Indicate arrow={{ markup: <span>{`>`}</span> }} theme={{ arrow: { height: 20 } }}>
           <Boxes />
         </Indicate>
         <pre>{`<Indicate arrow={{ position: 'end' }}>`}</pre>
@@ -268,35 +326,33 @@ const Home: NextPage = () => {
             <Box />
           </section>
         </Indicate>
-        {/* <Indicate childAsElement ref={tableRef}>
-          <table ref={tableRef}>
-            <tr>
-              <th>Company</th>
-              <th>Contact</th>
-              <th>Country</th>
-            </tr>
-            <tr>
-              <td style={{ whiteSpace: 'nowrap' }}>Alfreds Futterkiste</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Maria Anders and Much More Text</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Germany and Some More Text</td>
-            </tr>
-            <tr>
-              <td style={{ whiteSpace: 'nowrap' }}>Centro comercial Moctezuma</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Francisco Chang</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Mexico and Some More Text</td>
-            </tr>
-            <tr>
-              <td style={{ whiteSpace: 'nowrap' }}>Centro comercial Moctezuma</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Francisco Chang</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Mexico and Some More Text</td>
-            </tr>
-            <tr>
-              <td style={{ whiteSpace: 'nowrap' }}>Centro comercial Moctezuma</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Francisco Chang</td>
-              <td style={{ whiteSpace: 'nowrap' }}>Mexico and Some More Text</td>
-            </tr>
-          </table>
-        </Indicate> */}
+        <pre>{`<Indicate moveStylesToWrapper childAsElement>`}</pre>
+        <Indicate moveStylesToWrapper childAsElement ref={childRefMoveStyles}>
+          <section style={{ background: 'red' }} ref={childRefMoveStyles}>
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+            <Box />
+          </section>
+        </Indicate>
+        <h2>Rerendering Behaviour</h2>
+        <RerenderCounter />
       </main>
     </>
   )
