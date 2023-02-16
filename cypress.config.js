@@ -4,5 +4,6 @@ export default defineConfig({
   chromeWebSecurity: false,
   e2e: {
     supportFile: false,
+    testIsolation: false,
   },
 })

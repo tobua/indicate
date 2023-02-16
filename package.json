@@ -41,16 +41,16 @@
     "overflow"
   ],
   "devDependencies": {
-    "@types/react": "^18.0.23",
-    "cypress": "^10.11.0",
-    "padua": "^0.6.1"
+    "@types/react": "^18.0.28",
+    "cypress": "^12.5.1",
+    "padua": "^1.1.0"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {
     "extends": "./node_modules/padua/configuration/eslint.cjs"
   },
   "engines": {
-    "node": ">= 14"
+    "node": ">= 16"
   },
   "typesVersions": {
     "*": {

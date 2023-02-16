@@ -65,6 +65,19 @@ const childrenValid = (children: ReactNode, childRef: ForwardedRef<HTMLElement>)
 
 const hideScrollbarClass = 'hide-indicate-scrollbar'
 
+const getClassName = (className: string, hideScrollbar: boolean) => {
+  if (className === 'undefined') {
+    // eslint-disable-next-line no-param-reassign
+    className = undefined
+  }
+
+  if (!className && !hideScrollbar) {
+    return undefined
+  }
+
+  return [className, hideScrollbar && hideScrollbarClass].filter(Boolean).join(' ')
+}
+
 type ArrowIcon = 'arrow-rounded' | 'pointer-rounded' | 'arrow' | 'pointer'
 type ArrowPosition = 'center' | 'end' | 'start'
 
@@ -539,10 +552,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         as,
         {
           ref: elementRef,
-          className:
-            className || hideScrollbar
-              ? `${className}${hideScrollbar ? ` ${hideScrollbarClass}` : ''}`
-              : undefined,
+          className: getClassName(className, hideScrollbar),
           style: {
             overflow: 'auto',
             ...(hideScrollbar && {
