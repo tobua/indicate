@@ -1,3 +1,14 @@
+<script lang="ts">
+import { indicate } from 'indicate'
+
+export default {
+  name: 'App',
+  mounted: function () {
+    indicate(this.$refs.element)
+  },
+}
+</script>
+
 <template>
   <div id="app">
     <div ref="element" class="element">
@@ -15,18 +26,7 @@
   </div>
 </template>
 
-<script>
-import { indicate } from 'indicate'
-
-export default {
-  name: 'App',
-  mounted: function () {
-    indicate(this.$refs.element)
-  },
-}
-</script>
-
-<style>
+<style scoped>
 .element {
   display: flex;
   flex-direction: row;

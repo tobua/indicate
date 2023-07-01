@@ -15,7 +15,7 @@
     "entry": "theme/*.ts"
   },
   "dependencies": {
-    "csstype": "^3.1.1",
+    "csstype": "^3.1.2",
     "react": "^18.2.0"
   },
   "type": "module",
@@ -41,13 +41,16 @@
     "overflow"
   ],
   "devDependencies": {
-    "@types/react": "^18.0.28",
-    "cypress": "^12.5.1",
-    "padua": "^1.1.0"
+    "@types/react": "^18.2.14",
+    "cypress": "^12.16.0",
+    "padua": "^2.0.0"
   },
   "prettier": "padua/configuration/.prettierrc.json",
   "eslintConfig": {
     "extends": "./node_modules/padua/configuration/eslint.cjs"
+  },
+  "publishConfig": {
+    "provenance": true
   },
   "engines": {
     "node": ">= 16"

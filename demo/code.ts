@@ -1,6 +1,5 @@
 import { toJS } from 'mobx'
 import prettier from 'prettier'
-// @ts-ignore
 import parserBabel from 'prettier/esm/parser-babel.mjs'
 import { defaultOptions } from 'indicate'
 import { options } from 'state'
@@ -10,14 +9,8 @@ const removeDefaultOptions = (currentOptions, defaults = defaultOptions) => {
   const withoutDefaults = { ...currentOptions }
 
   Object.keys(withoutDefaults).forEach((key) => {
-    if (
-      withoutDefaults[key] !== null &&
-      typeof withoutDefaults[key] === 'object'
-    ) {
-      withoutDefaults[key] = removeDefaultOptions(
-        withoutDefaults[key],
-        defaults[key]
-      )
+    if (withoutDefaults[key] !== null && typeof withoutDefaults[key] === 'object') {
+      withoutDefaults[key] = removeDefaultOptions(withoutDefaults[key], defaults[key])
       return
     }
 

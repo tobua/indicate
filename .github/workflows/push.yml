@@ -7,9 +7,14 @@ on:
 jobs:
   test-publish-build-release:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - run: npm install
+      - name: 🚧 Build
+        run: npm run build
       - name: 🛠️ Build Demo
         run: |
           cd demo
@@ -33,9 +38,8 @@ jobs:
           # Wait for server above to start before testing.
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 240
-      - name: 🚧 Build
-        run: npm run build
+      - run: npm install -g npm@latest
       - name: 📢 Release
-        uses: tobua/release-npm-action@v1
+        uses: tobua/release-npm-action@v2
         with:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

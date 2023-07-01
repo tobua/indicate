@@ -81,9 +81,7 @@ export const Integrations = () => {
           }}
         >
           <div style={{ fontSize: 12 }}>
-            <span
-              style={{ display: 'flex', fontWeight: 'bold', marginBottom: 3 }}
-            >
+            <span style={{ display: 'flex', fontWeight: 'bold', marginBottom: 3 }}>
               Monday, May 3, 2021
             </span>
             <span>Today’s Paper</span>
@@ -137,20 +135,10 @@ export const Integrations = () => {
                 viewBox="0 0 5 9"
                 style={{ transform: 'rotate(180deg)' }}
               >
-                <g
-                  id="Page-1"
-                  stroke="none"
-                  strokeWidth="1"
-                  fill="none"
-                  fillRule="evenodd"
-                >
+                <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                   <g id="Artboard">
                     <g id="Group">
-                      <path
-                        d="M2.5,9 L2.5,3.373"
-                        id="Shape"
-                        stroke="#a61b1e"
-                      ></path>
+                      <path d="M2.5,9 L2.5,3.373" id="Shape" stroke="#a61b1e"></path>
                       <polyline
                         id="Shape"
                         fill="#a61b1e"
@@ -226,11 +214,7 @@ export const Integrations = () => {
             <span style={{ color: 'gray' }}>7°</span>
           </div>
           <div>
-            <svg
-              version="1.1"
-              viewBox="0 0 300 58"
-              style={{ width: '300px', height: '60px' }}
-            >
+            <svg version="1.1" viewBox="0 0 300 58" style={{ width: '300px', height: '60px' }}>
               <path
                 fill="#000000"
                 stroke="none"
@@ -244,23 +228,13 @@ export const Integrations = () => {
             </svg>
           </div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <svg
-              version="1.1"
-              viewBox="0 0 48 48"
-              style={{ width: 48, height: 48 }}
-            >
+            <svg version="1.1" viewBox="0 0 48 48" style={{ width: 48, height: 48 }}>
               <path
                 stroke="#000000"
                 fill="none"
                 d="M33.5 32v-2.5a4 4 0 00-4-4h-11a4 4 0 00-4 4V32"
               ></path>
-              <circle
-                stroke="#000000"
-                fill="none"
-                cx="24"
-                cy="19"
-                r="3.5"
-              ></circle>
+              <circle stroke="#000000" fill="none" cx="24" cy="19" r="3.5"></circle>
             </svg>
             <span>Anmelden</span>
           </div>

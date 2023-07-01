@@ -32,10 +32,7 @@ export const Button = ({
   children,
   ...props
 }: Props &
-  React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >) => (
+  React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) => (
   <button style={buttonStyle(color)} {...props}>
     {children}
   </button>

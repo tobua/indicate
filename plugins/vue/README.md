@@ -17,9 +17,7 @@ The key is adding a ref to the element and then initializing indicate on that el
 ```vue
 <template>
   <div id="app">
-    <div ref="element" class="element">
-      {...}
-    </div>
+    <div ref="element" class="element">{...}</div>
   </div>
 </template>
 
@@ -28,12 +26,12 @@ import { indicate } from 'indicate'
 
 export default {
   name: 'App',
-  mounted: function() {
+  mounted: function () {
     // Initialize indicate.
     indicate(this.$refs.element)
     // With options.
     indicate(this.$refs.element, { color: '#FF00FF' })
-  }
+  },
 }
 </script>
 ```
