@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { autorun, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -72,16 +72,26 @@ const handleOptions = (data: any) => {
 const handleStyles = (data: any) => runInAction(() => Object.assign(styles, data))
 
 // Code preview matching current options.
-const CodePreview = observer(() => (
-  <Code>
-    {formatCode(
-      (value) => `import { indicate } from 'indicate'
+const CodePreview = observer(() => {
+  const [code, setCode] = useState('Formatting...')
 
-indicate('.demo'${value})`,
-      (value) => `, ${value}`
-    )}
-  </Code>
-))
+  useEffect(() => {
+    async function startFormatting() {
+      setCode(
+        await formatCode(
+          (value) => `import { indicate } from 'indicate'
+  
+  indicate('.demo'${value})`,
+          (value) => `, ${value}`,
+        ),
+      )
+    }
+
+    startFormatting()
+  }, [])
+
+  return <Code>{code}</Code>
+})
 
 const Demo = () => {
   useEffect(() => {

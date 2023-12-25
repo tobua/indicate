@@ -1,6 +1,7 @@
 import { toJS } from 'mobx'
-import prettier from 'prettier'
-import parserBabel from 'prettier/esm/parser-babel.mjs'
+import * as prettier from 'prettier/standalone'
+import parserBabel from 'prettier/plugins/babel'
+import pluginEstree from 'prettier/plugins/estree'
 import { defaultOptions } from 'indicate'
 import { options } from 'state'
 
@@ -27,7 +28,7 @@ const removeDefaultOptions = (currentOptions, defaults = defaultOptions) => {
 
 export const formatCode = (
   code: (value: string, objectValues?: string) => string,
-  wrapper?: (value: string) => string
+  wrapper?: (value: string) => string,
 ) => {
   const modifiedOptions = removeDefaultOptions(options)
   const hasProperties = !!Object.keys(modifiedOptions).length
@@ -40,7 +41,7 @@ export const formatCode = (
 
   return prettier.format(code(stringifiedOptions, modifiedOptions), {
     parser: 'babel',
-    plugins: [parserBabel],
+    plugins: [parserBabel, pluginEstree],
     semi: false,
     trailingComma: 'none',
     singleQuote: true,

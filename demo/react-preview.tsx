@@ -3,6 +3,7 @@ import { Code } from 'exmpl'
 import { Indicate } from 'indicate'
 import { formatCode, addDirectionToOptions } from 'code'
 import { styles } from 'state'
+import { useEffect, useState } from 'react'
 
 const nonStyleProps = ['rows', 'tiles']
 
@@ -88,19 +89,29 @@ const Plugin = observer((props: { noEffect?: boolean }) => (
   </Indicate>
 ))
 
-const ReactCode = observer(() => (
-  <Code>
-    {formatCode(
-      (_, values) => `import { Indicate } from 'indicate'
-      
-  const Scrollable = () => (
-    <Indicate as="div"${objectToComponentProps(values)}>
-      {\`...\`}
-    </Indicate>
-  )`
-    )}
-  </Code>
-))
+const ReactCode = observer(() => {
+  const [code, setCode] = useState('Formatting...')
+
+  useEffect(() => {
+    async function startFormatting() {
+      setCode(
+        await formatCode(
+          (_, values) => `import { Indicate } from 'indicate'
+          
+      const Scrollable = () => (
+        <Indicate as="div"${objectToComponentProps(values)}>
+          {\`...\`}
+        </Indicate>
+      )`,
+        ),
+      )
+    }
+
+    startFormatting()
+  }, [])
+
+  return <Code>{code}</Code>
+})
 
 export const ReactPreview = () => (
   <>

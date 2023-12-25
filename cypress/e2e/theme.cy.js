@@ -1,4 +1,4 @@
-import { open, getIndicator } from '../helper.js'
+import { open, getIndicator } from './helper'
 
 describe('YouTube theme', () => {
   it('Proper parts visible.', () => {
@@ -24,11 +24,7 @@ describe('Class-Name theme', () => {
     getIndicator(className, 'left').should('have.class', 'i-indicator-left')
 
     cy.get(`${className} .i-observer-top`).should('exist')
-    cy.get(className)
-      .parent()
-      .get('.i-arrow-bottom')
-      .should('exist')
-      .should('not.be.visible')
+    cy.get(className).parent().get('.i-arrow-bottom').should('exist').should('not.be.visible')
 
     const outerWrapper = cy.get(className).parent().get('.i-outer-wrapper')
     const element = cy.get(`${className}.i-element`)

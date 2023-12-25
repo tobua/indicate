@@ -11,7 +11,7 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: npm install
       - name: 🚧 Build
         run: npm run build
@@ -32,14 +32,13 @@ jobs:
           # and the server continues in the background.
           npx papua serve &
       - name: 🌲 Cypress Test
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           install: false
           # Wait for server above to start before testing.
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 240
-      - run: npm install -g npm@latest
       - name: 📢 Release
-        uses: tobua/release-npm-action@v2
+        uses: tobua/release-npm-action@v3
         with:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

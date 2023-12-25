@@ -124,7 +124,7 @@ export const base = {
       pointerEvents: 'none',
       [direction]: '0',
       ...alignment(direction, options, true),
-    } as CSSProperties),
+    }) as CSSProperties,
 }
 
 type ThemeKey = keyof Theme

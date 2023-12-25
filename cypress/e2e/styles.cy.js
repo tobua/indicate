@@ -1,4 +1,4 @@
-import { open, getIndicator, getIndicatorElement } from '../helper.js'
+import { open, getIndicator, getIndicatorElement } from './helper'
 
 describe('Plugin works with custom styles on element.', () => {
   it('Padding.', () => {
@@ -7,11 +7,7 @@ describe('Plugin works with custom styles on element.', () => {
     cy.get(selector).should('be.visible')
 
     cy.document().then((document) => {
-      const defaultRightIndicator = getIndicatorElement(
-        document,
-        '.simple',
-        'right'
-      )
+      const defaultRightIndicator = getIndicatorElement(document, '.simple', 'right')
 
       getIndicator(selector, 'right')
         .invoke('outerHeight')

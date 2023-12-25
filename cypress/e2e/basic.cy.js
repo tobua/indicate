@@ -1,4 +1,4 @@
-import { open, getIndicator } from '../helper.js'
+import { open, getIndicator } from './helper'
 
 describe('Basic tests.', () => {
   it('Proper indicators visible.', () => {
@@ -46,9 +46,7 @@ describe('Basic tests.', () => {
       .should('contain', 'rgb(255, 0, 255)')
   })
   it('Arrow SVG is colored.', () => {
-    getIndicator('.pointer', 'right')
-      .find('svg')
-      .should('have.attr', 'stroke', '#FF00FF')
+    getIndicator('.pointer', 'right').find('svg').should('have.attr', 'stroke', '#FF00FF')
   })
   it('Vertical indicators show up as well.', () => {
     const className = '.vertical'

@@ -37,7 +37,7 @@ export interface Theme {
         element: HTMLElement,
 
         options: Options,
-        direction: Direction
+        direction: Direction,
       ) => CSSProperties | void)
     | CSSProperties
   hide?: (indicator: HTMLSpanElement) => void | CSSProperties
@@ -48,7 +48,7 @@ export interface Theme {
         element: HTMLElement,
         options: Options,
         table: boolean,
-        inline: Inline
+        inline: Inline,
       ) => CSSProperties | void)
     | CSSProperties
   element?:
@@ -56,7 +56,7 @@ export interface Theme {
         element: HTMLElement,
         options: Options,
         table: boolean,
-        inline: Inline
+        inline: Inline,
       ) => CSSProperties | void)
     | CSSProperties
   innerWrapper?:

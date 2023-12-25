@@ -1,4 +1,4 @@
-import { open, getIndicator } from '../helper.js'
+import { open, getIndicator } from './helper'
 
 describe('Basic tests for table elements', () => {
   it('Click also works with tables.', () => {

@@ -11,7 +11,7 @@ const handleObservation = (instance: Instance, entries: IntersectionObserverEntr
       if (isMatch) {
         visibilities.push({ direction, visible: entry.isIntersecting })
       }
-    })
+    }),
   )
 
   visibilities.forEach((visibility) => {

@@ -351,7 +351,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       theme = {},
       ...props
     },
-    childRef
+    childRef,
   ) => {
     const outerWrapperRef = useRef<HTMLDivElement>()
     const elementRef = useRef<HTMLElement & HTMLDivElement>()
@@ -401,7 +401,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             if (isMatch) {
               visibilities.push({ direction, visible: entry.isIntersecting })
             }
-          })
+          }),
         )
 
         visibilities.forEach((currentVisibility) => {
@@ -422,7 +422,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
           setVisibility(newState)
         }
       },
-      [visibility, observersRef, sharedVisibility]
+      [visibility, observersRef, sharedVisibility],
     )
 
     const observe = useCallback((element: HTMLElement) => {
@@ -452,7 +452,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
       const innerChildrenModifiable = Children.toArray((children as any).props.children)
 
       innerChildrenModifiable.push(
-        <Observers key="observers" observersRef={observersRef} theme={theme} />
+        <Observers key="observers" observersRef={observersRef} theme={theme} />,
       )
 
       // cloneElement necessary to add styles and observers, React elements immutable.
@@ -474,7 +474,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             ref: innerWrapperRef,
             ...innerWrapperProps,
           },
-          innerChildrenModifiable
+          innerChildrenModifiable,
         ),
         style: {
           position: 'relative',
@@ -542,7 +542,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
             <>
               {children}
               <Observers observersRef={observersRef} theme={theme} />
-            </>
+            </>,
           )}
         </div>
       )
@@ -577,7 +577,7 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         >
           {children}
           <Observers observersRef={observersRef} theme={theme} />
-        </div>
+        </div>,
       )
     }
 
@@ -609,5 +609,5 @@ export const Indicate = forwardRef<HTMLElement, Props & ReactHTMLElementProperti
         />
       </div>
     )
-  }
+  },
 )

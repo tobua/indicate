@@ -41,7 +41,7 @@ const handleIndicatorClick = (direction: Direction, element: HTMLElement, denomi
 export const registerClickListener = (
   direction: Direction,
   element: HTMLElement,
-  instance: Instance
+  instance: Instance,
 ) => {
   if (!instance.options.click) {
     return
@@ -55,7 +55,7 @@ export const registerClickListener = (
   if (instance.options.click) {
     element.addEventListener(
       'click',
-      handleIndicatorClick.bind(null, direction, scrollableElement, denominator)
+      handleIndicatorClick.bind(null, direction, scrollableElement, denominator),
     )
   }
 }
