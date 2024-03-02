@@ -1,5 +1,6 @@
 node_modules
 package-lock.json
+bun.lockb
 tsconfig.json
 dist
 demo/.gitignore
