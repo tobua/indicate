@@ -13,8 +13,7 @@
   },
   "padua": {
     "entry": [
-      "theme/*.ts",
-      "modern/index.tsx"
+      "theme/*.ts"
     ]
   },
   "dependencies": {
@@ -22,9 +21,9 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.61",
-    "cypress": "^13.6.6",
-    "padua": "^3.0.0"
+    "@types/react": "^18.2.74",
+    "cypress": "^13.7.2",
+    "padua": "^4.0.1"
   },
   "trustedDependencies": [
     "padua"
@@ -40,9 +39,6 @@
     "./theme/*": {
       "types": "./dist/theme/*",
       "default": "./dist/theme/*.js"
-    },
-    "./modern": {
-      "default": "./modern/index.tsx"
     }
   },
   "types": "./dist/index.d.ts",

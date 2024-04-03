@@ -10,6 +10,9 @@ Indicates possible scroll using a fade effect in elements with overflow.
 
 [![npm](https://img.shields.io/npm/v/indicate)](https://npmjs.com/indicate)
 
+> [!TIP]
+> A modern React version of this library, called [overflow-scroll-fade](https://github.com/tobua/overflow-scroll-fade), is currently under development. It is much smaller and more performant; however, it does have some limitations, as it requires support for [`scroll-timeline`](https://caniuse.com/mdn-css_properties_scroll-timeline).
+
 ## Installation & Usage
 
 ```

@@ -5,7 +5,6 @@ import { indicate, remove, Indicate } from 'indicate'
 import youtube from 'indicate/theme/youtube'
 import className from 'indicate/theme/class-name'
 import { Button } from 'markup/Button'
-import { Modern } from 'modern'
 
 const TableHeader = (name) => (
   <th
@@ -391,8 +390,6 @@ export const TestCases = () => {
       </Indicate>
       <h3>Server-Side Rendering</h3>
       <ServerSideRendering />
-      <h2>Modern React Implementation</h2>
-      <Modern />
     </>
   )
 }

@@ -7,9 +7,9 @@
   "dependencies": {
     "exmpl": "^3.1.0",
     "konfi": "^1.0.0",
-    "mobx": "^6.12.0",
-    "mobx-react-lite": "^4.0.5",
-    "papua": "^5.9.7",
+    "mobx": "^6.12.3",
+    "mobx-react-lite": "^4.0.7",
+    "papua": "^6.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
